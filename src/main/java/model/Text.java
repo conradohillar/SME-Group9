@@ -5,8 +5,12 @@ import java.util.Objects;
 public class Text extends ContentType {
     private String content;
 
+    public Text(String content) {
+        this.content = content;
+    }
+
     @Override
-    public String  getContent() {
+    public String getContent() {
         return content;
     }
 
@@ -16,5 +20,10 @@ public class Text extends ContentType {
         if (o == null || getClass() != o.getClass()) return false;
         Text text = (Text) o;
         return Objects.equals(this.content, text.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(content);
     }
 }

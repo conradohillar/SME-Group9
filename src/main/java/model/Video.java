@@ -5,6 +5,10 @@ import java.util.Objects;
 public class Video extends ContentType {
     private String videoUrl;
 
+    public Video(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
     @Override
     public String getContent() {
         return videoUrl;
@@ -18,4 +22,8 @@ public class Video extends ContentType {
         return Objects.equals(this.videoUrl, video.videoUrl);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(videoUrl);
+    }
 }

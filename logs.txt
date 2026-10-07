@@ -1,0 +1,7 @@
+
+Oct 07, 2026 10:18:26 AM Main main
+WARNING: This is a warning!
+Oct 07, 2026 10:18:27 AM Main main
+INFO: This is an info message
+Oct 07, 2026 10:18:28 AM Main main
+WARNING: This is an error!

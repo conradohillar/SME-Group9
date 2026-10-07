@@ -1,14 +1,17 @@
 package model.exercise;
 
+import model.Boolean;
 import model.ContentType;
 
 public class TrueFalseExercise extends Exercise {
-    private boolean isTrue;
+    private final Boolean isTrue;
+
+    public TrueFalseExercise(String prompt, boolean isTrue) {
+        super(prompt);
+        this.isTrue = new Boolean(isTrue);
+    }
 
     public boolean checkAnswer(ContentType userAnswer) {
-        if (!Object.equals(userAnswer.getClass(), Boolean.class)) { // TODO: fix this
-            throw new IllegalArgumentException("Unacceptable answer type, must be Boolean type");
-        }
-        return (Boolean) userAnswer.getContent() == isTrue;
+        return userAnswer.equals(isTrue);
     }
 }

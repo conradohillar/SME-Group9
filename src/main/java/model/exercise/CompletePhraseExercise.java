@@ -3,21 +3,24 @@ package model.exercise;
 import model.ContentType;
 import model.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompletePhraseExercise extends Exercise {
-    private final List<String> phrases; // Between strings is an option for
-    private final List<String> acceptedAnswers; // some questions may have more than one valid answer
+    private final List<String> phrases; // Between strings is an "empty space" that should be completed by the user
+    private final Text acceptedAnswer; // mocked for now (requires exact answer)
 
-    public CompletePhraseExercise(List<String> phrases, List<String> acceptedAnswers) {
-        this.acceptedAnswers = acceptedAnswers;
+    public CompletePhraseExercise(String prompt, List<String> phrases, String acceptedAnswer) {
+        super(prompt);
         this.phrases = phrases;
+        this.acceptedAnswer = new Text(acceptedAnswer);
+    }
+
+    public List<String> getPhrases() {
+        return phrases;
     }
 
     public boolean checkAnswer(ContentType userAnswer) {
-        if (userAnswer.getClass() != Text.class){
-            throw new IllegalArgumentException("Unacceptable answer type, must be Text type");
-        }
-        return acceptedAnswers.contains(userAnswer.getContent());
+        return userAnswer.equals(acceptedAnswer);
     }
 }
