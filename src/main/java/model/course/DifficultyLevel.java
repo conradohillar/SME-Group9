@@ -3,11 +3,11 @@ package model.course;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level {
+public class DifficultyLevel {
     private List<Lesson> lessons;
     private Exam levelExam;
 
-    public Level() {
+    public DifficultyLevel() {
         this.lessons = new ArrayList<>();
     }
 

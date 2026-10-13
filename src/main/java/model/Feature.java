@@ -5,16 +5,17 @@ package model;
 import utils.SystemLogger;
 import java.util.logging.Logger;
 
-/**
-    Every feature has to implement this interface to work properly with the controller.
-    Only features that make sense to be deactivated can be deactivated (e.g. Course can't be deactivated)
+/*
+    Every feature has to extend this class to work properly with the controller.
+    Only features that make sense to be deactivated can be deactivated (e.g. Course can't be deactivated).
+    The design is so that features are default-activated, methods need to override activate() and deactivate()
+    to truly do something.
 */
-public interface FeatureInterface {
+public abstract class Feature {
 
-    boolean active = true;
+    private boolean active = true;
 
-
-    default void activate() {
+    public void activate() {
         Logger logger = SystemLogger.getLogger();
         if (active) {
             logger.warning("Feature is already active");
@@ -26,12 +27,12 @@ public interface FeatureInterface {
     }
 
     // by default, features are considered "core" and can not be deactivated
-    default void deactivate() {
+    public void deactivate() {
         Logger logger = SystemLogger.getLogger();
         if(!active) {
             logger.warning("Feature is already deactivated");
             return;
         }
-        logger.severe("This feature cannot be deactivated");
+        logger.info("This feature cannot be deactivated");
     }
 }
