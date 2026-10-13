@@ -1,13 +1,14 @@
 package model;
 
-/*
-TODO: every feature has to implement this interface to work properly with the controller.
-      Only features that make sense to be deactivated can be deactivated (e.g. Course can't be deactivated)
-*/
+
 
 import utils.SystemLogger;
 import java.util.logging.Logger;
 
+/**
+    Every feature has to implement this interface to work properly with the controller.
+    Only features that make sense to be deactivated can be deactivated (e.g. Course can't be deactivated)
+*/
 public interface FeatureInterface {
 
     boolean active = true;
