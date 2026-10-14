@@ -3,6 +3,8 @@ package model.course;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// TODO: fix in the docs, progression level is now difficulty level (beginner, intermediate, advanced, etc.)
 public class DifficultyLevel {
     private List<Lesson> lessons;
     private Exam levelExam;
