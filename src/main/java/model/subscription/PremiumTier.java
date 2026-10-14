@@ -4,7 +4,8 @@ public class PremiumTier extends Subscription {
     private double monthlyPrice = 20.0;
 
     public PremiumTier() {
-        this.setTier(SubscriptionTier.PREMIUM);
+        setTier(SubscriptionTier.PREMIUM);
+        setActive(true);
     }
 
     @Override

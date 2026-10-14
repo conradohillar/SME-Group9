@@ -4,6 +4,10 @@ public abstract class Subscription {
     private SubscriptionTier tier;
     private boolean isActive;
 
+    protected void setActive(boolean value) {
+        isActive = value;
+    }
+
     public SubscriptionTier getTier() {
         return tier;
     }
@@ -26,9 +30,5 @@ public abstract class Subscription {
 
     public boolean isActive() {
         return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 }

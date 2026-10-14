@@ -1,29 +1,13 @@
 package model;
 
-import java.util.Objects;
-
-public class Text extends ContentType {
-    private String content;
-
-    public Text(String content) {
-        this.content = content;
-    }
-
+public record Text(String content) implements LearningMaterial {
     @Override
     public String getContent() {
         return content;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Text text = (Text) o;
-        return Objects.equals(this.content, text.content);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(content);
+    public String getLearningMaterialName() {
+        return "Text";
     }
 }

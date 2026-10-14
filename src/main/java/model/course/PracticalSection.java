@@ -3,12 +3,21 @@ package model.course;
 import model.exercise.Exercise;
 
 import java.util.List;
+import java.util.Set;
 
-public class PracticalSection implements Section {
-    List<Exercise> exercises;
+public class PracticalSection extends Section {
+    private final List<Exercise> exercises;
 
-    public PracticalSection(List<Exercise> exercises) {
-        this.exercises = exercises;
+    public PracticalSection(String title, List<Exercise> exercises) {
+        super(title);
+        this.exercises = List.copyOf(exercises);
+    }
+
+    @Override
+    public List<Exercise> visibleExercises(Set<String> activeFeatures) {
+        return exercises.stream()
+                .filter(exercise -> activeFeatures.contains(exercise.getType().getFeatureName()))
+                .toList();
     }
 }
 

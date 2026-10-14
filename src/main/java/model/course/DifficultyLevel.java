@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO: fix in the docs, progression level is now difficulty level (beginner, intermediate, advanced, etc.)
 public class DifficultyLevel {
+    private final Difficulty difficulty;
     private List<Lesson> lessons;
     private Exam levelExam;
 
-    public DifficultyLevel() {
+
+    public DifficultyLevel(Difficulty difficulty) {
+        this.difficulty = difficulty;
         this.lessons = new ArrayList<>();
+        // this.levelExam = new Exam(); // TODO: complete
+    }
+
+    public String getDifficulty() {
+        return difficulty.getFeatureName();
     }
 
     public List<Lesson> getLessons() {
@@ -18,7 +25,7 @@ public class DifficultyLevel {
     }
 
     public void addLesson() {
-        lessons.add(new Lesson());
+        lessons.add(new Lesson(this.difficulty));
     }
 
     public void removeLesson(Lesson lesson) {

@@ -1,5 +1,23 @@
 package model.course;
 
-public interface Section {
-    // TODO: see if this should be a class or interface
+
+import model.LearningMaterial;
+import model.exercise.Exercise;
+import java.util.List;
+import java.util.Set;
+
+public abstract class Section {
+    private final String title;
+    protected Section(String title) {
+        this.title = title;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public List<LearningMaterial> visibleMaterials(Set<String> activeFeatures) {
+        return List.of();
+    }
+    public List<Exercise> visibleExercises(Set<String> activeFeatures) {
+        return List.of();
+    }
 }

@@ -1,5 +1,5 @@
 package model;
 
-public abstract class ContentType {
-    public abstract Object getContent();
+public interface ContentType {
+    Object getContent();
 }

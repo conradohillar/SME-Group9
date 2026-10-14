@@ -2,24 +2,29 @@ package model.exercise;
 
 import model.ContentType;
 
-import java.util.Set;
+import java.util.List;
 
 public class MultipleChoiceExercise extends Exercise {
-    private Set<ContentType> options;
-    private ContentType expectedAnswer;
+    private List<ContentType> options;
+    private ContentType correctAnswer;
 
-    public MultipleChoiceExercise(String prompt, Set<ContentType> options, ContentType correctAnswer) {
+    public MultipleChoiceExercise(String prompt, List<ContentType> options, ContentType correctAnswer) {
         super(prompt);
-        this.options = options;
-        this.expectedAnswer = correctAnswer;
+        this.options = List.copyOf(options);
+        this.correctAnswer = correctAnswer;
     }
 
-    public Set<ContentType> getOptions() {
+    public List<ContentType> getOptions() {
         return options;
     }
 
     @Override
+    public ExerciseType getType() {
+        return ExerciseType.MULTIPLE_CHOICE;
+    }
+
+    @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return userAnswer.equals(expectedAnswer);
+        return correctAnswer.equals(userAnswer);
     }
 }

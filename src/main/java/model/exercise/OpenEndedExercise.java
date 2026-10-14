@@ -4,15 +4,20 @@ import model.ContentType;
 import model.Text;
 
 public class OpenEndedExercise extends Exercise {
-    private Text expectedAnswer; // mocked for now (requires exact answer)
+    private Text correctAnswer; // mocked for now (requires exact answer)
 
-    public OpenEndedExercise(String prompt, String expectedAnswer) {
+    public OpenEndedExercise(String prompt, String correctAnswer) {
         super(prompt);
-        this.expectedAnswer = new Text(expectedAnswer);
+        this.correctAnswer = new Text(correctAnswer);
+    }
+
+    @Override
+    public ExerciseType getType() {
+        return ExerciseType.OPEN_ENDED;
     }
 
     @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return userAnswer.equals(expectedAnswer);
+        return correctAnswer.equals(userAnswer);
     }
 }

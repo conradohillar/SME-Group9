@@ -12,7 +12,7 @@ public class CompletePhraseExercise extends Exercise {
 
     public CompletePhraseExercise(String prompt, List<String> phrases, String acceptedAnswer) {
         super(prompt);
-        this.phrases = phrases;
+        this.phrases = List.copyOf(phrases);;
         this.acceptedAnswer = new Text(acceptedAnswer);
     }
 
@@ -20,7 +20,12 @@ public class CompletePhraseExercise extends Exercise {
         return phrases;
     }
 
+    @Override
+    public ExerciseType getType() {
+        return ExerciseType.COMPLETE_PHRASE;
+    }
+
     public boolean checkAnswer(ContentType userAnswer) {
-        return userAnswer.equals(acceptedAnswer);
+        return acceptedAnswer.equals(userAnswer);
     }
 }

@@ -5,14 +5,14 @@ import model.Feature;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Course extends Feature {
-    private CourseTopic courseTopic;
+public abstract class Course {
+    private CourseType courseType;
     private String title;
     private String description;
-    private List<DifficultyLevel> levels;
+    private List<DifficultyLevel> levels; // must be ordered (elementary, begginer, intermediate, advanced)
 
-    public Course(CourseTopic courseTopic, String title, String description) {
-        this.courseTopic = courseTopic;
+    public Course(CourseType courseType, String title, String description) {
+        this.courseType = courseType;
         this.title = title;
         this.description = description;
         this.levels = new ArrayList<>();

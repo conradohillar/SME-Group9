@@ -1,7 +1,9 @@
 package model.exercise;
 
 import model.ContentType;
+import model.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO: see if we would also need a factory here or not
@@ -10,8 +12,8 @@ public abstract class Exercise {
     private static int HINT_PRICE = 3; // TODO: se if we can make it increase per hint detail
 
     private String prompt;
-    private List<String> hints; // hints are ordered ascending by difficulty
-    private List<ContentType> explanations;
+    private List<String> hints = new ArrayList<>(); // hints are ordered ascending by difficulty
+    private List<ContentType> explanations = new ArrayList<>();
 
     public Exercise(String prompt) {
         this.prompt = prompt;
@@ -21,6 +23,34 @@ public abstract class Exercise {
         return prompt;
     }
 
+    public abstract ExerciseType getType();
+
     public abstract boolean checkAnswer(ContentType userAnswer);
+
+    public ContentType parseAnswer(String input) {
+        return new Text(input.trim());
+    }
+
+    public Exercise addHint(String hint) {
+        hints.add(hint);
+        return this;
+    }
+
+    public Exercise addExplanation(ContentType explanation) {
+        explanations.add(explanation);
+        return this;
+    }
+
+    public int getHintCount() {
+        return hints.size();
+    }
+
+    public String getHint(int index) {
+        return hints.get(index);
+    }
+
+    public List<ContentType> getExplanations() {
+        return List.copyOf(explanations);
+    }
 
 }

@@ -6,8 +6,8 @@ public class FreeTier extends Subscription {
     private static int MAX_HINTS_PER_WEEK = 3;
 
     public FreeTier() {
-        super();
-        this.setTier(SubscriptionTier.FREE);
+        setTier(SubscriptionTier.FREE);
+        setActive(true);
     }
 
     @Override
