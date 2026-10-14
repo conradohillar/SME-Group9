@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 */
 public interface FeatureInterface {
 
-    public default void activate() {
+    public default void activate(boolean active) {
         Logger logger = SystemLogger.getLogger();
 //        Boolean active = featureActivationMap.get(feature);
 //        if(active == null) {
@@ -33,7 +33,7 @@ public interface FeatureInterface {
     }
 
     // by default, features are considered "core" and can not be deactivated
-    public default void deactivate() {
+    public default void deactivate(boolean active) {
         Logger logger = SystemLogger.getLogger();
 //        Boolean active = featureActivationMap.get(feature);
 //        if(active == null) {
