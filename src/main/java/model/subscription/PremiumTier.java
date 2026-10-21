@@ -14,7 +14,7 @@ public class PremiumTier extends Subscription {
     }
 
     @Override
-    public int getMaxLevelsPerWeek() {
+    public int getMaxUnitsPerWeek() {
         return -1; // negative value represents no limit
     }
 
@@ -22,7 +22,4 @@ public class PremiumTier extends Subscription {
         return monthlyPrice;
     }
 
-    public void setMonthlyPrice(double monthlyPrice) {
-        this.monthlyPrice = monthlyPrice;
-    }
 }

@@ -3,7 +3,6 @@ package model.exercise;
 import model.ContentType;
 import model.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CompletePhraseExercise extends Exercise {

@@ -1,13 +1,13 @@
 package model.course;
 
-public enum CourseType {
+public enum Topic {
     HEALTHY_HABITS("Healthy Habits"),
     GREEN_LIVING("Green Living"),
     MATH("Math");
 
     private final String featureName;
 
-    CourseType(String featureName) {
+    Topic(String featureName) {
         this.featureName = featureName;
     }
 
@@ -15,4 +15,8 @@ public enum CourseType {
         return featureName;
     }
 
+    @Override
+    public String toString() {
+        return featureName;
+    }
 }

@@ -15,4 +15,19 @@ public enum Difficulty {
     public String getFeatureName() {
         return featureName;
     }
+
+    public Difficulty getNextDifficulty() {
+        return switch (this) {
+            case ELEMENTARY -> Difficulty.BEGINNER;
+            case BEGINNER -> Difficulty.INTERMEDIATE;
+            case INTERMEDIATE -> Difficulty.ADVANCED;
+            case ADVANCED -> Difficulty.ADVANCED; // No next difficulty after ADVANCED
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        };
+    }
+
+    @Override
+    public String toString() {
+        return featureName;
+    }
 }

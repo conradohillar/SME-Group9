@@ -16,7 +16,7 @@ public abstract class Subscription {
      * Amount of levels user can progress per week with the given tier.
      * @return Negative values represent unlimited levels.
      * */
-    public abstract int getMaxLevelsPerWeek();
+    public abstract int getMaxUnitsPerWeek();
 
     /**
      * Amount of hints user can use per week with the given tier.

@@ -10,4 +10,12 @@ public record Video(String videoUrl) implements LearningMaterial {
     public String getLearningMaterialName() {
         return "Video";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Video video = (Video) o;
+        return videoUrl.equals(video.videoUrl);
+    }
 }

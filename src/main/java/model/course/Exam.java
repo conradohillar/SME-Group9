@@ -1,11 +1,9 @@
 package model.course;
 
 import model.exercise.Exercise;
-import model.ContentType;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class Exam {

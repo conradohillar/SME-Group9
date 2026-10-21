@@ -6,13 +6,11 @@ import model.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: see if we would also need a factory here or not
-
 public abstract class Exercise {
-    private static int HINT_PRICE = 3; // TODO: se if we can make it increase per hint detail
+    private static int HINT_PRICE = 3;
 
     private String prompt;
-    private List<String> hints = new ArrayList<>(); // hints are ordered ascending by difficulty
+    private List<String> hints = new ArrayList<>(); // hints (should be) inserted ascending by difficulty
     private List<ContentType> explanations = new ArrayList<>();
 
     public Exercise(String prompt) {
