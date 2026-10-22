@@ -1,5 +1,7 @@
 package model.course;
 
+import model.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,10 @@ public class Unit {
 
     public Exam getUnitExam() {
         return unitExam;
+    }
+
+    public boolean isCompletedByUser(User user) {
+        return unitExam.isPassedByUser(user);
     }
 
 }

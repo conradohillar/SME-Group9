@@ -1,25 +1,27 @@
 package model.course;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import model.Feature;
+import model.user.User;
 
-public class Course {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Course extends Feature {
     private final Topic topic;
     private final String title;
     private final String description;
-    private Map<Difficulty, List<Unit>> unitsByDifficulty;
+    private final List<DifficultyLevel> difficultyLevels;
 
     public Course(Topic topic, String title, String description) {
+        super(false, "COURSE");
         this.topic = topic;
         this.title = title;
         this.description = description;
-        this.unitsByDifficulty = new HashMap<>();
-        unitsByDifficulty.put(Difficulty.ELEMENTARY, new ArrayList<>());
-        unitsByDifficulty.put(Difficulty.BEGINNER, new ArrayList<>());
-        unitsByDifficulty.put(Difficulty.INTERMEDIATE, new ArrayList<>());
-        unitsByDifficulty.put(Difficulty.ADVANCED, new ArrayList<>());
+        this.difficultyLevels = new ArrayList<>();
+        difficultyLevels.add(new DifficultyLevel(Difficulty.ELEMENTARY));
+        difficultyLevels.add(new DifficultyLevel(Difficulty.BEGINNER));
+        difficultyLevels.add(new DifficultyLevel(Difficulty.INTERMEDIATE));
+        difficultyLevels.add(new DifficultyLevel(Difficulty.ADVANCED));
     }
 
     public Topic getTopic() {
@@ -34,19 +36,51 @@ public class Course {
         return description;
     }
 
-    public Map<Difficulty, List<Unit>> getCourseMap() {
-        return Map.copyOf(unitsByDifficulty);
-    }
-
     public List<Unit> getUnitsByDifficulty(Difficulty difficulty) {
-        return List.copyOf(unitsByDifficulty.get(difficulty));
+        return difficultyLevels.stream()
+                .filter(dl -> dl.getDifficulty() == difficulty)
+                .findFirst()
+                .map(DifficultyLevel::getUnits)
+                .orElse(new ArrayList<>());
     }
 
     public void addUnit(Unit unit) {
-        this.unitsByDifficulty.get(unit.getDifficulty()).add(unit);
+        difficultyLevels.get(unit.getDifficulty().ordinal()).addUnit(unit);
     }
 
     public void removeUnit(Unit unit) {
-        this.unitsByDifficulty.get(unit.getDifficulty()).remove(unit);
+        difficultyLevels.get(unit.getDifficulty().ordinal()).removeUnit(unit);
     }
+
+    public boolean canDoUnitByUser(User user, Unit unit) {
+        // TODO: check if user is properly enrolled in the course and difficulty (database)
+        List<Unit> units = getUnitsByDifficulty(unit.getDifficulty());
+        int idx = units.indexOf(unit);
+
+        if (idx > 0) {
+            Unit previousUnit = units.get(idx - 1);
+            return previousUnit.isCompletedByUser(user);
+        }
+
+        // This is the first unit in this difficulty.
+        // Check the last unit of the previous difficulty, if one exists.
+        // TODO: chequear que las difficulties como features esten habilitadas (difficulty y esta y la anterior)
+        Difficulty previousDifficulty = getPreviousDifficulty(unit.getDifficulty());
+        if (previousDifficulty == null) {
+            return true;
+        }
+        List<Unit> previousUnits = getUnitsByDifficulty(previousDifficulty);
+        Unit lastUnit = previousUnits.getLast();
+        return lastUnit.isCompletedByUser(user);
+    }
+
+    private Difficulty getPreviousDifficulty(Difficulty difficulty) {
+        return switch (difficulty) {
+            case ELEMENTARY -> null;
+            case BEGINNER -> Difficulty.ELEMENTARY;
+            case INTERMEDIATE -> Difficulty.BEGINNER;
+            case ADVANCED -> Difficulty.INTERMEDIATE;
+        };
+    }
+
 }

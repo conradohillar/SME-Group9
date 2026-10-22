@@ -1,22 +1,15 @@
 package model.user;
 
-import model.course.Course;
-import model.course.Difficulty;
 import model.subscription.Subscription;
 import model.subscription.SubscriptionFactory;
 import model.subscription.SubscriptionTier;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class Student extends User {
     private int streak = 0;
     private int coins = 0;
-    private final Map<Course, Enrollment> enrollments = new LinkedHashMap<>(); // 1 enrollment per course
 
     private LocalDateTime lastActivityDate; // needed for the streak calculation, if the user has not been active for a day, the streak should reset to 0
     private LocalDateTime lastResetDate;
@@ -52,30 +45,6 @@ public class Student extends User {
             throw new IllegalArgumentException("Not enough coins to spend.");
         }
         this.coins -= coins;
-    }
-
-    public Enrollment enroll(Course course, Difficulty difficulty) {
-        // just started the course
-        if (!enrollments.containsKey(course)) {
-            enrollments.put(course, new Enrollment(course, difficulty));
-        }
-        // is already enrolled in the course in that difficulty
-        else if (enrollments.get(course).getDifficulty() == difficulty) {
-            throw new IllegalArgumentException("Already enrolled in this course with the same difficulty.");
-        }
-        // is enrolled in the course but not in that difficulty
-        else {
-            enrollments.get(course).advanceToNextDifficulty(); // this function checks that they completed the previous difficulty
-        }
-        return enrollments.get(course);
-    }
-
-    public Optional<Enrollment> getEnrollment(Course course) {
-        return Optional.ofNullable(enrollments.get(course));
-    }
-
-    public List<Enrollment> getEnrollments() {
-        return List.copyOf(enrollments.values());
     }
 
     public boolean recordActivity(LocalDateTime day) {

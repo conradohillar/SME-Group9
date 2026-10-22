@@ -4,8 +4,6 @@ package model;
 
 import utils.SystemLogger;
 
-import java.lang.Boolean;
-import java.util.HashMap;
 import java.util.Map;
 
 import java.util.logging.Logger;
@@ -16,24 +14,27 @@ import java.util.logging.Logger;
     The design is so that features are default-activated, methods need to override activate() and deactivate()
     to truly do something.
 */
-public interface FeatureInterface {
+public abstract class Feature {
 
-    public default void activate(boolean active) {
+    private final boolean canBeDeactivated;
+    // the name is used to identify the feature in the featureActivationMap
+    // name should be in all caps
+    private final String name;
+
+    protected Feature(boolean canBeDeactivated, String name) {
+        this.canBeDeactivated = canBeDeactivated;
+        this.name = name;
+    }
+
+    public void activate() {
         Logger logger = SystemLogger.getLogger();
-//        Boolean active = featureActivationMap.get(feature);
-//        if(active == null) {
-//            logger.warning("Unknown feature: " + feature);
-//            return;
-//        }
-//        if (active) {
-//            logger.warning("Feature is already active");
-//            return;
-//        }
-        logger.info("Feature is always active by default");
+        if (canBeDeactivated) {
+
+        } else throw new IllegalArgumentException("This feature cannot be deactivated!");
     }
 
     // by default, features are considered "core" and can not be deactivated
-    public default void deactivate(boolean active) {
+    public void deactivate() {
         Logger logger = SystemLogger.getLogger();
 //        Boolean active = featureActivationMap.get(feature);
 //        if(active == null) {

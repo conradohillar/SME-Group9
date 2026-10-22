@@ -16,11 +16,11 @@ public abstract class Section {
         return title;
     }
 
-    public List<LearningMaterial> visibleMaterials(Set<String> activeFeatures) {
+    public List<LearningMaterial> getVisibleMaterials(Set<String> activeFeatures) {
         return List.of();
     }
 
-    public List<Exercise> visibleExercises(Set<String> activeFeatures) {
+    public List<Exercise> getVisibleExercises(Set<String> activeFeatures) {
         return List.of();
     }
 }

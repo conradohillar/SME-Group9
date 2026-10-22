@@ -14,7 +14,7 @@ public class TheoreticalSection extends Section {
     }
 
     @Override
-    public List<LearningMaterial> visibleMaterials(Set<String> activeFeatures) {
+    public List<LearningMaterial> getVisibleMaterials(Set<String> activeFeatures) {
         return materials.stream()
                 .filter(material -> activeFeatures.contains(material.getLearningMaterialName()))
                 .toList();

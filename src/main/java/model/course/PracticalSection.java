@@ -14,7 +14,7 @@ public class PracticalSection extends Section {
     }
 
     @Override
-    public List<Exercise> visibleExercises(Set<String> activeFeatures) {
+    public List<Exercise> getVisibleExercises(Set<String> activeFeatures) {
         return exercises.stream()
                 .filter(exercise -> activeFeatures.contains(exercise.getType().getFeatureName()))
                 .toList();
