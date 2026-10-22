@@ -4,6 +4,7 @@ package model;
 
 import utils.SystemLogger;
 
+import java.lang.Boolean;
 import java.util.Map;
 
 import java.util.logging.Logger;
@@ -17,34 +18,33 @@ import java.util.logging.Logger;
 public abstract class Feature {
 
     private final boolean canBeDeactivated;
-    // the name is used to identify the feature in the featureActivationMap
-    // name should be in all caps
+    // the name is used to identify the feature in the Controller's featureActivationMap
+    // name should be in all caps (e.g. COURSE instead of course)
     private final String name;
 
-    protected Feature(boolean canBeDeactivated, String name) {
+
+    // To avoid having to manually populate the featureActivationMap
+    // with every feature, each feature just adds itself to the map
+    protected Feature(boolean canBeDeactivated, String name, Map<String, Boolean> featureActivationMap) {
         this.canBeDeactivated = canBeDeactivated;
         this.name = name;
+        // some features may have more than one instance, so we avoid overriding the current activation status this way
+        // by default, all features are initialized as active
+        // TODO: se how we can call activate() and deactivate() from the controller if we don't know the specific Feature class/instance
+        featureActivationMap.putIfAbsent(name, true);
     }
 
-    public void activate() {
-        Logger logger = SystemLogger.getLogger();
-        if (canBeDeactivated) {
-
-        } else throw new IllegalArgumentException("This feature cannot be deactivated!");
+    // by default, activating/deactivating a feature is just setting the corresponding entry in the Controller's
+    // featureActivationMap. If a feature needs to do more logic, it should override these methods
+    public void activate(Map<String, Boolean> featureActivationMap) {
+        featureActivationMap.put(name, true);
     }
 
-    // by default, features are considered "core" and can not be deactivated
-    public void deactivate() {
-        Logger logger = SystemLogger.getLogger();
-//        Boolean active = featureActivationMap.get(feature);
-//        if(active == null) {
-//            logger.warning("Unknown feature: " + feature);
-//            return;
-//        }
-//        if(!active) {
-//            logger.warning("Feature is already deactivated");
-//            return;
-//        }
-        logger.info("This feature cannot be deactivated by default");
+    public void deactivate(Map<String, Boolean> featureActivationMap) {
+        if (!canBeDeactivated) {
+            throw new IllegalArgumentException("This feature cannot be deactivated!");
+        } else {
+            featureActivationMap.put(name, false);
+        }
     }
 }
