@@ -1,13 +1,9 @@
-package model;
+package model.feature;
 
 
-
-import utils.SystemLogger;
 
 import java.lang.Boolean;
 import java.util.Map;
-
-import java.util.logging.Logger;
 
 /*
     Every feature has to implement this class to work properly with the controller.
@@ -15,6 +11,7 @@ import java.util.logging.Logger;
     The design is so that features are default-activated, methods need to override activate() and deactivate()
     to truly do something.
 */
+@Deprecated
 public abstract class Feature {
 
     private final boolean canBeDeactivated;

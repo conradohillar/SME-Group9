@@ -1,19 +1,17 @@
 package model.course;
 
-import model.Feature;
 import model.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course extends Feature {
+public class Course {
     private final Topic topic;
     private final String title;
     private final String description;
     private final List<DifficultyLevel> difficultyLevels;
 
     public Course(Topic topic, String title, String description) {
-        super(false, "COURSE");
         this.topic = topic;
         this.title = title;
         this.description = description;

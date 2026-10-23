@@ -1,18 +1,15 @@
 package controller;
 
-import model.Feature;
-import model.FeatureType;
-import utils.SystemLogger;
+import model.feature.FeatureManager;
+import model.feature.FeatureType;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.logging.Logger;
 
 
 public class Controller implements ControllerInterface {
 
     private static Controller instance;
-    private final Map<String, Boolean> featureActivationMap = new HashMap<>();
+    private final FeatureManager featureManager = new FeatureManager();
 
     private Controller() {
     }
@@ -24,38 +21,27 @@ public class Controller implements ControllerInterface {
         return instance;
     }
 
-    public Map<String, Boolean> getFeatureActivationMap() {
-        return featureActivationMap;
-    }
+    public void run() {
+        System.out.println("Hello world!");
+        Scanner scanner = new Scanner(System.in);
 
-//    public void run() {
-//        System.out.println("Hello world!");
-//        Logger logger = SystemLogger.getLogger();
-//        Scanner scanner = new Scanner(System.in);
-//
-//        while(true) {
-//            System.out.println("Enter the next prompt: ");
-//            String prompt = scanner.nextLine();
-//            String[] tokens = prompt.split(" ");
-//            switch (tokens[0]) {
-//                case "activate":
-//                    activate(new String[]{}, Arrays.copyOfRange(tokens, 1, tokens.length));
-//                    break;
-//                case "deactivate":
-//                    activate(Arrays.copyOfRange(tokens, 1, tokens.length), new String[]{});
-//                    break;
-//                case "warn":
-//                    logger.warning("This is a warning!");
-//                    break;
-//                case "error":
-//                    logger.severe("This is an error!");
-//                    break;
-//                default:
-//                    System.out.println(prompt);
-//                    break;
-//            }
-//        }
-//    }
+        while(true) {
+            System.out.println("Enter the next prompt: ");
+            String prompt = scanner.nextLine();
+            String[] tokens = prompt.split(" ");
+            switch (tokens[0]) {
+                case "activate":
+                    activate(new String[]{}, Arrays.copyOfRange(tokens, 1, tokens.length));
+                    break;
+                case "deactivate":
+                    activate(Arrays.copyOfRange(tokens, 1, tokens.length), new String[]{});
+                    break;
+                default:
+                    System.out.println(prompt);
+                    break;
+            }
+        }
+    }
 
     @Override
     public int activate(String[] deactivations, String[] activations) {
@@ -63,28 +49,17 @@ public class Controller implements ControllerInterface {
         List<String> deactivationsList = Arrays.asList(deactivations);
 
         for (String deactivation : deactivationsList) {
-            if (!featureActivationMap.containsKey(deactivation)) {
-                // feature not present in feature model
-                return -1;
-            }
             // If a feature is present in deactivations and activations it's silently ignored instead of returning an error
             if (activationsList.contains(deactivation)) {
                  activationsList.remove(deactivation);
                  deactivationsList.remove(deactivation);
                  continue;
             }
-
-            featureActivationMap.put(deactivation, false);
+            featureManager.deactivate(FeatureType.valueOf(deactivation));
         }
 
         for (String activation : activationsList) {
-            String activationUpper = activation.toUpperCase();
-            if (!featureActivationMap.containsKey(FeatureType.valueOf(activationUpper))) {
-                // feature not present in feature model
-                return -1;
-            }
-
-            featureActivationMap.put(FeatureType.valueOf(activationUpper), true);
+            featureManager.activate(FeatureType.valueOf(activation));
         }
 
         return 0;
