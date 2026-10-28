@@ -5,18 +5,18 @@ public enum Topic {
     GREEN_LIVING("Green Living"),
     MATH("Math");
 
-    private final String featureName;
+    private final String name;
 
     Topic(String featureName) {
-        this.featureName = featureName;
+        this.name = featureName;
     }
 
-    public String getFeatureName() {
-        return featureName;
+    public String getName() {
+        return name;
     }
 
     @Override
     public String toString() {
-        return featureName;
+        return name;
     }
 }

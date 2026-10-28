@@ -1,6 +1,13 @@
 package model;
 
+import java.util.Objects;
+
+// java records automatically implement equals and hashcode methods
 public record Video(String videoUrl) implements LearningMaterial {
+    public Video {
+        Objects.requireNonNull(videoUrl, "Video url cannot be null");
+    }
+
     @Override
     public String getContent() {
         return videoUrl;
@@ -9,13 +16,5 @@ public record Video(String videoUrl) implements LearningMaterial {
     @Override
     public String getLearningMaterialName() {
         return "Video";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Video video = (Video) o;
-        return videoUrl.equals(video.videoUrl);
     }
 }

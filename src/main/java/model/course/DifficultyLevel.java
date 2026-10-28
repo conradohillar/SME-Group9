@@ -1,15 +1,16 @@
 package model.course;
 
-import java.util.ArrayList;
+import model.user.Student;
+import model.user.User;
 import java.util.List;
 
-public class DifficultyLevel {
+public class DifficultyLevel implements CompletableByStudent {
     private final Difficulty difficulty;
-    private List<Unit> units;
+    private final List<Unit> units;
 
-    public DifficultyLevel(Difficulty difficulty) {
+    public DifficultyLevel(Difficulty difficulty, List<Unit> units) {
         this.difficulty = difficulty;
-        this.units = new ArrayList<>();
+        this.units = units;
     }
 
     public Difficulty getDifficulty() {
@@ -20,12 +21,21 @@ public class DifficultyLevel {
         return List.copyOf(units);
     }
 
-    public void addUnit(Unit unit) {
-        // TODO: see if we had to check if the unit difficulty is the same as this difficulty
-        units.add(unit);
+    public boolean canStudentDoUnit(Student student, Unit unit) {
+        // TODO: check if the student is properly enrolled
+        student.canDoNextUnit();
+        int idx = units.indexOf(unit);
+
+        // if it's the first unit in the level, the student can do it. If not, the
+        // previous unit has to have been completed to be able to do this one
+        if (idx > 0) {
+            Unit previousUnit = units.get(idx - 1);
+            return previousUnit.isCompletedByStudent(student);
+        }
+        return true;
     }
 
-    public void removeUnit(Unit unit) {
-        units.remove(unit);
+    public boolean isCompletedByStudent(Student student) {
+        return units.stream().allMatch(u -> u.isCompletedByStudent(student));
     }
 }

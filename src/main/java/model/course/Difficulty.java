@@ -6,14 +6,23 @@ public enum Difficulty {
     INTERMEDIATE("Intermediate"),
     ADVANCED("Advanced");
 
-    private final String featureName;
+    private final String name;
 
     Difficulty(String featureName) {
-        this.featureName = featureName;
+        this.name = featureName;
     }
 
     public String getFeatureName() {
-        return featureName;
+        return name;
+    }
+
+    public Difficulty getPreviousDifficulty() {
+        return switch (this) {
+            case ELEMENTARY -> null;
+            case BEGINNER -> Difficulty.ELEMENTARY;
+            case INTERMEDIATE -> Difficulty.BEGINNER;
+            case ADVANCED -> Difficulty.INTERMEDIATE;
+        };
     }
 
     public Difficulty getNextDifficulty() {
@@ -21,13 +30,12 @@ public enum Difficulty {
             case ELEMENTARY -> Difficulty.BEGINNER;
             case BEGINNER -> Difficulty.INTERMEDIATE;
             case INTERMEDIATE -> Difficulty.ADVANCED;
-            case ADVANCED -> Difficulty.ADVANCED; // No next difficulty after ADVANCED
-            default -> throw new IllegalStateException("Unexpected value: " + this);
+            case ADVANCED -> null;
         };
     }
 
     @Override
     public String toString() {
-        return featureName;
+        return name;
     }
 }

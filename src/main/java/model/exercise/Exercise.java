@@ -7,17 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Exercise {
-    private static int HINT_PRICE = 3;
+    private static final int HINT_PRICE = 3;
 
-    private String prompt;
+    private final String prompt;
     private List<String> hints = new ArrayList<>(); // hints (should be) inserted ascending by difficulty
     private List<ContentType> explanations = new ArrayList<>();
 
-    public Exercise(String prompt) {
-        if (prompt == null) {
-            throw new IllegalArgumentException("Prompt must not be null.");
+    protected Exercise(String prompt, List<String> hints, List<ContentType> explanations) {
+        if (prompt == null || prompt.isBlank()) {
+            throw new IllegalArgumentException("Prompt must not be blank.");
         }
         this.prompt = prompt;
+        this.hints = hints;
+        this.explanations = explanations;
     }
 
     public String getPrompt() {
@@ -29,6 +31,9 @@ public abstract class Exercise {
     public abstract boolean checkAnswer(ContentType userAnswer);
 
     public ContentType parseAnswer(String input) {
+        if (input == null) {
+            throw new IllegalArgumentException("Answer must not be null.");
+        }
         return new Text(input.trim());
     }
 

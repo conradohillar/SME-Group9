@@ -3,10 +3,12 @@ package model.exercise;
 import model.ContentType;
 import model.Image;
 
+import java.util.List;
+
 public class UploadImageExercise extends Exercise {
 
-    public UploadImageExercise(String prompt) {
-        super(prompt);
+    public UploadImageExercise(String prompt, List<String> hints, List<ContentType> explanations) {
+        super(prompt, hints, explanations);
     }
 
     @Override

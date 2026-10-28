@@ -1,0 +1,85 @@
+{
+  "students": [
+    {
+      "name": "Josefina Gonzalez Cornet",
+      "username": "jgonzalezcornet",
+      "password": "123456",
+      "email": "josefina.gonzalez@student.uclouvain.be"
+    },
+    {
+      "name": "Conrado Hillar",
+      "username": "chillar",
+      "password": "123456",
+      "email": "conrado.hillar@student.uclouvain.be"
+    }
+  ],
+  "courses": [
+    {
+      "topic": "MATH",
+      "title": "An introduction to Mathematics",
+      "description": "This is a course on school-level mathematics, you'll learn from basic arithmetic to calculus",
+      "difficultyLevels": [
+        {
+          "difficulty": "ELEMENTARY",
+          "units": [
+            {
+              "title": "Basic arithmetic",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "learningMaterials": [
+                    {
+
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Fractions, decimals and percentages"
+            }
+          ]
+        },
+        {
+          "difficulty": "BEGINNER",
+          "units": [
+            {
+              "title": "Pre-algebra"
+            },
+            {
+              "title": "Basic algebra"
+            },
+            {
+              "title": "Intermediate algebra"
+            }
+          ]
+        },
+        {
+          "difficulty": "INTERMEDIATE",
+          "units": [
+            {
+              "title": "Functions and precalculus"
+            },
+            {
+              "title": "Trigonometry"
+            }
+          ]
+        },
+        {
+          "difficulty": "ADVANCED",
+          "units": [
+            {
+              "title": "Limits and continuity"
+            },
+            {
+              "title": "Differential calculus"
+            },
+            {
+              "title": "Integral calculus"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -4,109 +4,151 @@ import model.subscription.Subscription;
 import model.subscription.SubscriptionFactory;
 import model.subscription.SubscriptionTier;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Student extends User {
     private int streak = 0;
     private int coins = 0;
 
-    private LocalDateTime lastActivityDate; // needed for the streak calculation, if the user has not been active for a day, the streak should reset to 0
-    private LocalDateTime lastResetDate;
+    private LocalDate lastActivityDate;
+    private LocalDate lastResetDate;
     private int weeklyUnitsProgressed = 0;
     private int weeklyHintsUsed = 0;
 
-    private Subscription subscription = null;
-    private StudentPreferences studentPreferences = null;
+    private Subscription subscription;
+    private StudentPreferences studentPreferences;
 
     public Student(String firstName, String lastName, String email, String password, SubscriptionTier tier) {
         super(firstName, lastName, email, password);
         this.subscription = SubscriptionFactory.createSubscription(tier);
-        this.lastActivityDate = LocalDateTime.now();
-        this.lastResetDate = LocalDateTime.now();
+        this.lastResetDate = LocalDate.now();
         this.studentPreferences = new StudentPreferences(true, true ,true); // by default everything is enabled
     }
 
-    public int getStreak() {
-        return streak;
-    }
+    /* --------- coins --------- */
 
     public int getCoins() {
         return coins;
     }
 
     public void addCoins(int coins) {
+        if (coins < 0) {
+            throw new IllegalArgumentException("Coins to add cannot be negative.");
+        }
         this.coins += coins;
     }
 
-    // TODO: check if throwing exceptions in this classes would be okay or if it has to be done in the controller
     public void spendCoins(int coins) {
+        if (coins < 0) {
+            throw new IllegalArgumentException("Coins to spend cannot be negative.");
+        }
         if (coins > this.coins) {
             throw new IllegalArgumentException("Not enough coins to spend.");
         }
         this.coins -= coins;
     }
 
-    public boolean recordActivity(LocalDateTime day) {
+    /* --------- activity --------- */
+
+    public void recordActivity(LocalDate day) {
         if (day.equals(lastActivityDate)) {
-            return false;
+            return; // already recorded activity today
         }
+        if (lastActivityDate == null) {
+            streak = 1;
+        } else if (lastActivityDate.plusDays(1).equals(day)) {
+            streak++;
+        } else if (lastActivityDate.isBefore(day)) {
+            streak = 1;
+        } else {
+            return; // reject activity for an earlier date
+        }
+
         lastActivityDate = day;
-        updateStreak(day);
-        return true;
     }
 
-    // TODO: call always (at the beginning of the code)
-    public void updateStreak(LocalDateTime today) {
-        if (lastActivityDate != null && lastActivityDate.isBefore(today.minusDays(1))) {
-            streak = 0;
+    public void resetWeeklyCounters() {
+        LocalDate today = LocalDate.now();
+
+        if (lastResetDate == null || !today.isBefore(lastResetDate.plusDays(7))) {
+            weeklyHintsUsed = 0;
+            weeklyUnitsProgressed = 0;
+            lastResetDate = today;
         }
+    }
+
+    /* --------- streak --------- */
+
+    public int getStreak() {
+        if (lastActivityDate == null || lastActivityDate.isBefore(LocalDate.now().minusDays(1))) {
+            return 0;
+        }
+        return streak;
+    }
+
+    /* --------- hints --------- */
+
+    public int getWeeklyHintsUsed() {
+        return weeklyHintsUsed;
+    }
+
+    public void useHint() {
+        resetWeeklyCounters();
+        if (!canUseHint()) {
+            throw new IllegalStateException("Student cannot use hint.");
+        }
+        weeklyHintsUsed++;
+    }
+
+    public boolean canUseHint() {
+        if (!subscription.isActive() || !studentPreferences.wantsHints()) {
+            return false;
+        }
+        int limit = subscription.getMaxHintsPerWeek();
+        // premium tier vs free tier
+        return limit < 0 || weeklyHintsUsed < limit;
+    }
+
+    /* --------- units --------- */
+
+    public void progressUnit() {
+        resetWeeklyCounters();
+        if (!canDoNextUnit()) {
+            throw new IllegalStateException("Student cannot complete another unit this week.");
+        }
+        weeklyUnitsProgressed++;
     }
 
     public int getWeeklyUnitsProgressed() {
         return weeklyUnitsProgressed;
     }
 
-    public void incrementWeeklyUnitsProgressed() {
-        weeklyUnitsProgressed++;
-    }
-
-    public int getWeeklyHintsUsed() {
-        return weeklyHintsUsed;
-    }
-
-    public void incrementWeeklyHintsUsed() {
-        weeklyHintsUsed++;
-    }
-
-    // TODO: call it always
-    public void resetWeeklyCounters() {
-        if (Duration.between(lastResetDate, LocalDateTime.now()).compareTo(Duration.ofDays(7)) >= 0) {
-            weeklyHintsUsed = 0;
-            weeklyUnitsProgressed = 0;
-            lastResetDate = LocalDateTime.now();
+    // called by method canStudentDoUnit(Student student, Unit unit) in DifficultyLevel
+    public boolean canDoNextUnit() {
+        if (!subscription.isActive()) {
+            return false;
         }
+        int limit = subscription.getMaxUnitsPerWeek();
+        // premium tier vs free tier
+        return limit < 0 || weeklyUnitsProgressed < limit;
     }
+
+    /* --------- subscription --------- */
 
     public SubscriptionTier getSubscriptionTier() {
         return subscription.getTier();
     }
 
+    public void changeSubscription(SubscriptionTier newTier) {
+        this.subscription = SubscriptionFactory.createSubscription(newTier);
+    }
+
+    /* --------- preferences --------- */
+
     public StudentPreferences getUserPreferences() {
         return studentPreferences;
     }
 
-    public boolean canUseHint() {
-        if (subscription.isActive() && studentPreferences.wantsHints() && subscription.getMaxHintsPerWeek() > 0) {
-            return weeklyHintsUsed < subscription.getMaxHintsPerWeek();
-        }
-        return true;
-    }
 
-    public boolean canDoNextUnit() { // TODO: missing: check if they completed the previous unit
-        if (subscription.isActive() && subscription.getMaxUnitsPerWeek() > 0) {
-            return weeklyUnitsProgressed < subscription.getMaxUnitsPerWeek();
-        }
-        return true;
-    }
+
 }

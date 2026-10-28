@@ -3,15 +3,15 @@ package model.exercise;
 import model.ContentType;
 import model.Text;
 
-public class OpenEndedExercise extends Exercise {
-    private Text correctAnswer; // mocked for now (requires exact answer)
+import java.util.List;
+import java.util.Objects;
 
-    public OpenEndedExercise(String prompt, String correctAnswer) {
-        super(prompt);
-        if (correctAnswer == null) {
-            throw new IllegalArgumentException("Correct answer must not be null.");
-        }
-        this.correctAnswer = new Text(correctAnswer);
+public class OpenEndedExercise extends Exercise {
+    private final Text correctAnswer; // mocked for now (requires exact answer)
+
+    public OpenEndedExercise(String prompt, String correctAnswer, List<String> hints, List<ContentType> explanations) {
+        super(prompt, hints, explanations);
+        this.correctAnswer = new Text(Objects.requireNonNull(correctAnswer));
     }
 
     @Override
@@ -21,6 +21,6 @@ public class OpenEndedExercise extends Exercise {
 
     @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return correctAnswer.equals(userAnswer);
+        return correctAnswer.getContent().equals(userAnswer.getContent());
     }
 }

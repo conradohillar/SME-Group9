@@ -10,9 +10,6 @@ public enum ExerciseType {
     private final String featureName;
 
      ExerciseType(String featureName) {
-         if (featureName == null) {
-             throw new IllegalArgumentException("Feature name must not be null.");
-         }
         this.featureName = featureName;
     }
 

@@ -1,22 +1,19 @@
 package model.user;
 
-public class User {
-    private String name = null;
-    private String username = null;
+import java.util.Objects;
 
-    private String email = null;
-    private String password = null;
+public class User {
+    private String name;
+    private String username;
+
+    private String email;
+    private String password;
 
     public User(String name, String username, String email, String password) {
-        if (name == null || username == null || email == null || password == null) {
-            throw new IllegalArgumentException("All parameters must be non-null");
-        }
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-
-        // TODO: write state in a JSON file
+        this.name = Objects.requireNonNull(name);
+        this.username = Objects.requireNonNull(username);
+        this.email = Objects.requireNonNull(email);
+        this.password = Objects.requireNonNull(password);
     }
 
     public String getName() {
@@ -28,7 +25,6 @@ public class User {
     }
 
     public boolean checkPassword(String password) {
-        // TODO compare to saved password in JSON file
-        return true;
+        return password.equals(this.password);
     }
 }

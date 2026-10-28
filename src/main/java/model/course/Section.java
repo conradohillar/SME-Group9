@@ -1,26 +1,29 @@
 package model.course;
 
-import model.LearningMaterial;
-import model.exercise.Exercise;
-import java.util.List;
-import java.util.Set;
+import model.user.Student;
+import model.user.User;
+
+import java.util.Objects;
 
 public abstract class Section {
     private final String title;
+    private final String description;
 
-    protected Section(String title) {
-        this.title = title;
+    protected Section(String title, String description) {
+        this.title = Objects.requireNonNull(title);
+        this.description = Objects.requireNonNull(description);
     }
 
     public String getTitle() {
         return title;
     }
 
-    public List<LearningMaterial> getVisibleMaterials(Set<String> activeFeatures) {
-        return List.of();
+    public String getDescription() {
+        return description;
     }
 
-    public List<Exercise> getVisibleExercises(Set<String> activeFeatures) {
-        return List.of();
+    public boolean isCompletedByStudent(Student student) {
+        //By defualt, the sections don't have to necessarily be completed (only the unit's exam), although they could in the future.
+        return true;
     }
 }

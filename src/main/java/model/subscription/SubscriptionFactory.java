@@ -9,7 +9,6 @@ public class SubscriptionFactory {
         return switch (tier) {
             case FREE -> new FreeTier();
             case PREMIUM -> new PremiumTier();
-            default -> throw new IllegalArgumentException("Unknown subscription tier: " + tier);
         };
     }
 }

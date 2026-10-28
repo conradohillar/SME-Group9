@@ -1,11 +1,10 @@
 package model.subscription;
 
 public class PremiumTier extends Subscription {
-    private double monthlyPrice = 20.0;
+    private static final double MONTHLY_PRICE = 20.0;
 
     public PremiumTier() {
-        setTier(SubscriptionTier.PREMIUM);
-        setActive(true);
+        super(SubscriptionTier.PREMIUM, true);
     }
 
     @Override
@@ -18,8 +17,9 @@ public class PremiumTier extends Subscription {
         return -1; // negative value represents no limit
     }
 
+    @Override
     public double getMonthlyPrice() {
-        return monthlyPrice;
+        return MONTHLY_PRICE;
     }
 
 }

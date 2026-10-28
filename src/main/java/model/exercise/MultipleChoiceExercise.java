@@ -3,21 +3,22 @@ package model.exercise;
 import model.ContentType;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MultipleChoiceExercise extends Exercise {
-    private List<ContentType> options;
-    private ContentType correctAnswer;
+    private final List<ContentType> options;
+    private final ContentType correctAnswer;
 
-    public MultipleChoiceExercise(String prompt, List<ContentType> options, ContentType correctAnswer) {
-        super(prompt);
-        if (options.isEmpty()) {
-            throw new IllegalArgumentException("No options provided");
+    public MultipleChoiceExercise(String prompt, List<ContentType> options, ContentType correctAnswer, List<String> hints, List<ContentType> explanations) {
+        super(prompt, hints, explanations);
+        if (options == null || options.isEmpty()) {
+            throw new IllegalArgumentException("Options must not be empty.");
         }
         this.options = List.copyOf(options);
-        if (correctAnswer == null) {
-            throw new IllegalArgumentException("Correct answer must not be null.");
+        if (!this.options.contains(correctAnswer)) {
+            throw new IllegalArgumentException("Correct answer must be one of the options.");
         }
-        this.correctAnswer = correctAnswer;
+        this.correctAnswer = Objects.requireNonNull(correctAnswer);
     }
 
     public List<ContentType> getOptions() {
@@ -31,6 +32,6 @@ public class MultipleChoiceExercise extends Exercise {
 
     @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return correctAnswer.equals(userAnswer);
+        return correctAnswer.getContent().equals(userAnswer.getContent());
     }
 }

@@ -4,6 +4,16 @@ public abstract class Subscription {
     private SubscriptionTier tier;
     private boolean isActive;
 
+    protected Subscription(SubscriptionTier tier, boolean active) {
+        this.tier = tier;
+        this.isActive = active;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    // TODO: missing deactivate subscription in corresponding cases, etc
     protected void setActive(boolean value) {
         isActive = value;
     }
@@ -24,11 +34,9 @@ public abstract class Subscription {
      * */
     public abstract int getMaxHintsPerWeek();
 
-    public void setTier(SubscriptionTier tier) {
-        this.tier = tier;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
+    /**
+     * Price per month of the subscription.
+     * @return Double value representing price. A value of 0 implies a free tier subscription.
+     * */
+    public abstract double getMonthlyPrice();
 }

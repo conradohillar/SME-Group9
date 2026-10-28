@@ -48,7 +48,7 @@ public class Controller implements ControllerInterface {
     }
 
     @Override
-    public int activate(String[] deactivations, String[] activations) {
+    public int activate(String[] deactivations, String[] activations){
         List<String> activationsList = Arrays.asList(activations);
         List<String> deactivationsList = Arrays.asList(deactivations);
 
@@ -59,7 +59,11 @@ public class Controller implements ControllerInterface {
                  deactivationsList.remove(deactivation);
                  continue;
             }
-            featureManager.deactivate(FeatureType.valueOf(deactivation));
+            try {
+                featureManager.deactivate(FeatureType.valueOf(deactivation));
+            } catch (Exception e) {
+                // TODO: command line print "Cannot deactivate this feature"
+            }
         }
 
         for (String activation : activationsList) {

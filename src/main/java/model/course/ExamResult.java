@@ -1,9 +1,9 @@
 package model.course;
 
 public class ExamResult {
-    private Course course;
-    private Difficulty difficulty;
-    private Unit unit;
+    private final Course course;
+    private final Difficulty difficulty;
+    private final Unit unit;
     private double score;
     private boolean passed;
 

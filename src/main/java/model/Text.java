@@ -1,6 +1,13 @@
 package model;
 
+import java.util.Objects;
+
+// java records automatically implement equals and hashcode methods
 public record Text(String content) implements LearningMaterial {
+    public Text {
+        Objects.requireNonNull(content, "Text content cannot be null");
+    }
+
     @Override
     public String getContent() {
         return content;
@@ -9,13 +16,5 @@ public record Text(String content) implements LearningMaterial {
     @Override
     public String getLearningMaterialName() {
         return "Text";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Text text = (Text) o;
-        return content.equals(text.content);
     }
 }
