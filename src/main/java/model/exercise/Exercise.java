@@ -14,6 +14,9 @@ public abstract class Exercise {
     private List<ContentType> explanations = new ArrayList<>();
 
     public Exercise(String prompt) {
+        if (prompt == null) {
+            throw new IllegalArgumentException("Prompt must not be null.");
+        }
         this.prompt = prompt;
     }
 

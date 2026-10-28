@@ -10,7 +10,13 @@ public class MultipleChoiceExercise extends Exercise {
 
     public MultipleChoiceExercise(String prompt, List<ContentType> options, ContentType correctAnswer) {
         super(prompt);
+        if (options.isEmpty()) {
+            throw new IllegalArgumentException("No options provided");
+        }
         this.options = List.copyOf(options);
+        if (correctAnswer == null) {
+            throw new IllegalArgumentException("Correct answer must not be null.");
+        }
         this.correctAnswer = correctAnswer;
     }
 

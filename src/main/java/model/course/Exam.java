@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Exam {
-    private List<Exercise> exercises;
+    private final List<Exercise> exercises;
     private final double passingPercentage;
     private final Duration timeLimit;
 

@@ -25,6 +25,7 @@ public class Controller implements ControllerInterface {
         System.out.println("Hello world!");
         Scanner scanner = new Scanner(System.in);
 
+
         while(true) {
             System.out.println("Enter the next prompt: ");
             String prompt = scanner.nextLine();
@@ -36,7 +37,10 @@ public class Controller implements ControllerInterface {
                 case "deactivate":
                     activate(Arrays.copyOfRange(tokens, 1, tokens.length), new String[]{});
                     break;
-                default:
+                case "exit":
+                    System.exit(0);
+                    break;
+                    default:
                     System.out.println(prompt);
                     break;
             }

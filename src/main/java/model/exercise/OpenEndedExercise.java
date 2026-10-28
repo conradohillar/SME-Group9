@@ -8,6 +8,9 @@ public class OpenEndedExercise extends Exercise {
 
     public OpenEndedExercise(String prompt, String correctAnswer) {
         super(prompt);
+        if (correctAnswer == null) {
+            throw new IllegalArgumentException("Correct answer must not be null.");
+        }
         this.correctAnswer = new Text(correctAnswer);
     }
 

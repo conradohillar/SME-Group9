@@ -8,6 +8,9 @@ public class User {
     private String password = null;
 
     public User(String name, String username, String email, String password) {
+        if (name == null || username == null || email == null || password == null) {
+            throw new IllegalArgumentException("All parameters must be non-null");
+        }
         this.name = name;
         this.username = username;
         this.email = email;

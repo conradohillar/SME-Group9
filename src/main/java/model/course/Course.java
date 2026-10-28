@@ -50,7 +50,7 @@ public class Course {
         difficultyLevels.get(unit.getDifficulty().ordinal()).removeUnit(unit);
     }
 
-    public boolean canDoUnitByUser(User user, Unit unit) {
+    public boolean canUserDoUnit(User user, Unit unit) {
         // TODO: check if user is properly enrolled in the course and difficulty (database)
         List<Unit> units = getUnitsByDifficulty(unit.getDifficulty());
         int idx = units.indexOf(unit);
@@ -71,6 +71,7 @@ public class Course {
         Unit lastUnit = previousUnits.getLast();
         return lastUnit.isCompletedByUser(user);
     }
+
 
     private Difficulty getPreviousDifficulty(Difficulty difficulty) {
         return switch (difficulty) {
