@@ -18,7 +18,7 @@ public interface ControllerInterface {
     public boolean enableUIView();
 
     /** The "disableUIView" method makes the UI invisible and unusable.
-     * Important: the Controller methods should be non-blocking when the UI View is disabled,
+     * Important: the AppController methods should be non-blocking when the UI View is disabled,
      * i.e. no interaction from the user is needed for it to (de)activate features.
      * @return: 0 if the UI View was successfully established, or if it was already established, else returns another integer indicating which problem occurred (your choice).
      */

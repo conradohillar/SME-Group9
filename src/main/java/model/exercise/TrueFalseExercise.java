@@ -8,7 +8,7 @@ import java.util.List;
 public class TrueFalseExercise extends Exercise {
     private final Boolean correctAnswer;
 
-    public TrueFalseExercise(String prompt, boolean isTrue, List<String> hints, List<ContentType> explanations) {
+    public TrueFalseExercise(String prompt, boolean isTrue, List<String> hints, List<String> explanations) {
         super(prompt, hints, explanations);
         this.correctAnswer = new Boolean(isTrue);
     }

@@ -1,4 +1,4 @@
-package view.components;
+package view.components.section;
 
 public class PracticalSectionPanel {
 }

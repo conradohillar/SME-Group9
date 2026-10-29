@@ -15,7 +15,7 @@ import java.util.Map;
 public abstract class Feature {
 
     private final boolean canBeDeactivated;
-    // the name is used to identify the feature in the Controller's featureActivationMap
+    // the name is used to identify the feature in the AppController's featureActivationMap
     // name should be in all caps (e.g. COURSE instead of course)
     private final String name;
 
@@ -31,7 +31,7 @@ public abstract class Feature {
         featureActivationMap.putIfAbsent(name, true);
     }
 
-    // by default, activating/deactivating a feature is just setting the corresponding entry in the Controller's
+    // by default, activating/deactivating a feature is just setting the corresponding entry in the AppController's
     // featureActivationMap. If a feature needs to do more logic, it should override these methods
     public void activate(Map<String, Boolean> featureActivationMap) {
         featureActivationMap.put(name, true);

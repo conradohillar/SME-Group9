@@ -5,7 +5,7 @@ import model.user.User;
 
 import java.util.Objects;
 
-public abstract class Section {
+public abstract class Section implements CompletableByStudent {
     private final String title;
     private final String description;
 

@@ -6,17 +6,17 @@ import model.feature.FeatureType;
 import java.util.*;
 
 
-public class Controller implements ControllerInterface {
+public class AppController implements ControllerInterface {
 
-    private static Controller instance;
+    private static AppController instance;
     private final FeatureManager featureManager = new FeatureManager();
 
-    private Controller() {
+    private AppController() {
     }
 
-    public static Controller getInstance() {
+    public static AppController getInstance() {
         if (instance == null) {
-            instance = new Controller();
+            instance = new AppController();
         }
         return instance;
     }

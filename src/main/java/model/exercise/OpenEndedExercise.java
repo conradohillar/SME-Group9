@@ -9,7 +9,7 @@ import java.util.Objects;
 public class OpenEndedExercise extends Exercise {
     private final Text correctAnswer; // mocked for now (requires exact answer)
 
-    public OpenEndedExercise(String prompt, String correctAnswer, List<String> hints, List<ContentType> explanations) {
+    public OpenEndedExercise(String prompt, String correctAnswer, List<String> hints, List<String> explanations) {
         super(prompt, hints, explanations);
         this.correctAnswer = new Text(Objects.requireNonNull(correctAnswer));
     }

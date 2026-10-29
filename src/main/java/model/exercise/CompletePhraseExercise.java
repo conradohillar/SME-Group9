@@ -10,7 +10,7 @@ public class CompletePhraseExercise extends Exercise {
     private final List<String> phrases; // Between strings is an "empty space" that should be completed by the user
     private final Text correctAnswer; // mocked for now (requires exact answer)
 
-    public CompletePhraseExercise(String prompt, List<String> phrases, String correctAnswer, List<String> hints, List<ContentType> explanations) {
+    public CompletePhraseExercise(String prompt, List<String> phrases, String correctAnswer, List<String> hints, List<String> explanations) {
         super(prompt, hints, explanations);
         if (phrases == null || phrases.size() != 2) {
             throw new IllegalArgumentException("Phrases must contain exactly 2 strings.");

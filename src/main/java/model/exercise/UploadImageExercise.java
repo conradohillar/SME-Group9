@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UploadImageExercise extends Exercise {
 
-    public UploadImageExercise(String prompt, List<String> hints, List<ContentType> explanations) {
+    public UploadImageExercise(String prompt, List<String> hints, List<String> explanations) {
         super(prompt, hints, explanations);
     }
 

@@ -11,9 +11,9 @@ public abstract class Exercise {
 
     private final String prompt;
     private List<String> hints = new ArrayList<>(); // hints (should be) inserted ascending by difficulty
-    private List<ContentType> explanations = new ArrayList<>();
+    private List<String> explanations = new ArrayList<>();
 
-    protected Exercise(String prompt, List<String> hints, List<ContentType> explanations) {
+    protected Exercise(String prompt, List<String> hints, List<String> explanations) {
         if (prompt == null || prompt.isBlank()) {
             throw new IllegalArgumentException("Prompt must not be blank.");
         }
@@ -42,7 +42,7 @@ public abstract class Exercise {
         return this;
     }
 
-    public Exercise addExplanation(ContentType explanation) {
+    public Exercise addExplanation(String explanation) {
         explanations.add(explanation);
         return this;
     }
@@ -55,7 +55,7 @@ public abstract class Exercise {
         return hints.get(index);
     }
 
-    public List<ContentType> getExplanations() {
+    public List<String> getExplanations() {
         return List.copyOf(explanations);
     }
 
