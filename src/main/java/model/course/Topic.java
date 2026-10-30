@@ -7,8 +7,8 @@ public enum Topic {
 
     private final String name;
 
-    Topic(String featureName) {
-        this.name = featureName;
+    Topic(String name) {
+        this.name = name;
     }
 
     public String getName() {

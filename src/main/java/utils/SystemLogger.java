@@ -9,8 +9,8 @@ public class SystemLogger {
 
     private static Logger systemLogger = null;
 
-    // avoid unnecessary instantiation of SystemLogger
-    private SystemLogger() {}
+    private SystemLogger() {
+    }
 
     public static Logger getLogger() {
         if (systemLogger != null) {

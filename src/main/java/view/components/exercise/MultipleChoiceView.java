@@ -8,32 +8,21 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultipleChoiceView implements ExerciseView {
-    private final JPanel panel;
+public class MultipleChoiceView extends ExerciseView {
     private final ButtonGroup group;
     private final List<JRadioButton> options;
 
     public MultipleChoiceView(List<String> options) {
-        panel = new JPanel();
-        panel.setLayout(
-                new BoxLayout(panel, BoxLayout.Y_AXIS)
-        );
-
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         group = new ButtonGroup();
         this.options = new ArrayList<>();
 
         for (String option : options) {
             JRadioButton optionButton = new JRadioButton(option);
-
             group.add(optionButton);
             this.options.add(optionButton);
-            panel.add(optionButton);
+            this.add(optionButton);
         }
-    }
-
-    @Override
-    public Component getComponent() {
-        return panel;
     }
 
     @Override
@@ -47,7 +36,9 @@ public class MultipleChoiceView implements ExerciseView {
     }
 
     @Override
-    public void clearAnswer() {
-        group.clearSelection();
+    public void setAnswerEnabled(boolean enabled) {
+        for (JRadioButton option : options) {
+            option.setEnabled(enabled);
+        }
     }
 }

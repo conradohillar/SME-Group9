@@ -1,26 +1,21 @@
-import model.exercise.Exercise;
-import model.exercise.MultipleChoiceExercise;
-import view.MainFrame;
-
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import controller.AppController;
 
 import javax.swing.*;
 
-public class Main {
-    public static void main(String[] args) {
+public static void main(String[] args) {
+    SwingUtilities.invokeLater(() -> {
+        AppController appController = AppController.getInstance();
 
-        SwingUtilities.invokeLater(() -> {
-            MainFrame frame = new MainFrame();
+        appController.initializeApp();
+        appController.enableUIView();
 
-
-            Exercise exercise = new MultipleChoiceExercise("What is 2+2?", List.of("1", "2", "3", "4"), "4", List.of("It's the same as 2x2!"), List.of("come on man it's easy"));
-
-            frame.setVisible(true);
-            frame.showExercise(exercise);
-        });
+        // this has to be a different thread or else it doesn't work because Scanner.nextLine() is blocking
+        new Thread(
+                appController::runConsoleLoop,
+                "Console-Thread"
+        ).start();
+    });
+}
 
 //        // Create window with title "application" that stop the program when closed
 //        JFrame frame = new JFrame("Application");
@@ -92,5 +87,5 @@ public class Main {
 //             */
 //            frame.repaint();
 //            frame.revalidate();
-        }
-    }
+
+

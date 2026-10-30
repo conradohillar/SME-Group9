@@ -1,15 +1,31 @@
 package model.course;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import model.exam.Exam;
 import model.user.Student;
 import model.user.User;
 
 import java.util.Objects;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = TheoreticalSection.class, name = "THEORETICAL"),
+        @JsonSubTypes.Type(value = PracticalSection.class, name = "PRACTICAL"),
+        @JsonSubTypes.Type(value = Exam.class, name = "EXAM")
+})
 public abstract class Section implements CompletableByStudent {
     private final String title;
     private final String description;
 
-    protected Section(String title, String description) {
+    @JsonCreator
+    protected Section(@JsonProperty("title") String title, @JsonProperty("description") String description) {
         this.title = Objects.requireNonNull(title);
         this.description = Objects.requireNonNull(description);
     }

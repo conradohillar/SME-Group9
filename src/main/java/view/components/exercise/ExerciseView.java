@@ -2,12 +2,12 @@ package view.components.exercise;
 
 import model.ContentType;
 
-import java.awt.*;
+import javax.swing.*;
 
-public interface ExerciseView {
-    Component getComponent();
+public abstract class ExerciseView extends JPanel {
 
-    ContentType getAnswer();
+    abstract ContentType getAnswer();
 
-    void clearAnswer();
+    public abstract void setAnswerEnabled(boolean enabled);
+
 }

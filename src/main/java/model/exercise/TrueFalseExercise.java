@@ -1,21 +1,27 @@
 package model.exercise;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.Boolean;
 import model.ContentType;
-
-import java.util.List;
 
 public class TrueFalseExercise extends Exercise {
     private final Boolean correctAnswer;
 
-    public TrueFalseExercise(String prompt, boolean isTrue, List<String> hints, List<String> explanations) {
-        super(prompt, hints, explanations);
+    @JsonCreator
+    public TrueFalseExercise(@JsonProperty("prompt") String prompt, @JsonProperty("correctAnswer") boolean isTrue, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
+        super(prompt, hint, explanation);
         this.correctAnswer = new Boolean(isTrue);
     }
 
     @Override
     public ExerciseType getType() {
         return ExerciseType.TRUE_FALSE;
+    }
+
+    @Override
+    public String getCorrectAnswer() {
+        return correctAnswer.getContent().toString();
     }
 
     @Override

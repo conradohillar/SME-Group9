@@ -1,14 +1,15 @@
 package model.exercise;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
 import model.Image;
 
-import java.util.List;
-
 public class UploadImageExercise extends Exercise {
 
-    public UploadImageExercise(String prompt, List<String> hints, List<String> explanations) {
-        super(prompt, hints, explanations);
+    @JsonCreator
+    public UploadImageExercise(@JsonProperty("prompt") String prompt, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
+        super(prompt, hint, explanation);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package model.course;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.user.Student;
 
 import java.util.ArrayList;
@@ -12,7 +14,8 @@ public class Course implements CompletableByStudent {
     private final String description;
     private final List<DifficultyLevel> difficultyLevels;
 
-    public Course(Topic topic, String title, String description, List<DifficultyLevel> difficultyLevels) {
+    @JsonCreator
+    public Course(@JsonProperty("topic") Topic topic, @JsonProperty ("title") String title, @JsonProperty ("description") String description, @JsonProperty ("difficultyLevels") List<DifficultyLevel> difficultyLevels) {
         this.topic = Objects.requireNonNull(topic);
         this.title = Objects.requireNonNull(title);
         this.description = description;
@@ -33,6 +36,16 @@ public class Course implements CompletableByStudent {
 
     public List<DifficultyLevel> getDifficultyLevels() {
         return difficultyLevels;
+    }
+
+    public Difficulty getDifficultyOfUnit(Unit unit) {
+        return difficultyLevels.stream()
+                .filter(dl -> dl.getUnits().contains(unit))
+                .map(DifficultyLevel::getDifficulty)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Unit does not belong to this course."
+                ));
     }
 
     public List<Unit> getUnitsByDifficulty(Difficulty difficulty) {

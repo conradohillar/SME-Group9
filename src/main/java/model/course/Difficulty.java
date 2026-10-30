@@ -1,5 +1,7 @@
 package model.course;
 
+import controller.AuthController;
+
 public enum Difficulty {
     ELEMENTARY("Elementary"),
     BEGINNER("Beginner"),
@@ -32,6 +34,10 @@ public enum Difficulty {
             case INTERMEDIATE -> Difficulty.ADVANCED;
             case ADVANCED -> null;
         };
+    }
+
+    public static Difficulty getLastDifficulty() {
+        return ADVANCED;
     }
 
     @Override

@@ -39,4 +39,8 @@ public abstract class Subscription {
      * @return Double value representing price. A value of 0 implies a free tier subscription.
      * */
     public abstract double getMonthlyPrice();
+
+    public abstract int getHintPrice();
+
+    public abstract int getUnitPrice();
 }

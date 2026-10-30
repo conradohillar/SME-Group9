@@ -1,5 +1,7 @@
 package model.user;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.subscription.Subscription;
 import model.subscription.SubscriptionFactory;
 import model.subscription.SubscriptionTier;
@@ -8,18 +10,22 @@ import java.time.LocalDate;
 
 public class Student extends User {
     private int streak = 0;
-    private int coins = 0;
+    private int coins = 5;
 
     private LocalDate lastActivityDate;
     private LocalDate lastResetDate;
+
     private int weeklyUnitsProgressed = 0;
     private int weeklyHintsUsed = 0;
+    private int weeklyHintsPurchased = 0;
+    private int weeklyUnitsPurchased = 0;
 
     private Subscription subscription;
-    private StudentPreferences studentPreferences;
+    private final StudentPreferences studentPreferences;
 
-    public Student(String firstName, String lastName, String email, String password, SubscriptionTier tier) {
-        super(firstName, lastName, email, password);
+    @JsonCreator
+    public Student(@JsonProperty("firstName")String firstName, @JsonProperty("username")String lastName, @JsonProperty("password")String password, @JsonProperty("subscriptionTier")SubscriptionTier tier) {
+        super(firstName, lastName, password);
         this.subscription = SubscriptionFactory.createSubscription(tier);
         this.lastResetDate = LocalDate.now();
         this.studentPreferences = new StudentPreferences(true, true ,true); // by default everything is enabled
@@ -73,6 +79,8 @@ public class Student extends User {
         if (lastResetDate == null || !today.isBefore(lastResetDate.plusDays(7))) {
             weeklyHintsUsed = 0;
             weeklyUnitsProgressed = 0;
+            weeklyHintsPurchased = 0;
+            weeklyUnitsPurchased = 0;
             lastResetDate = today;
         }
     }
@@ -94,28 +102,29 @@ public class Student extends User {
 
     public void useHint() {
         resetWeeklyCounters();
-        if (!canUseHint()) {
-            throw new IllegalStateException("Student cannot use hint.");
-        }
         weeklyHintsUsed++;
     }
 
-    public boolean canUseHint() {
-        if (!subscription.isActive() || !studentPreferences.wantsHints()) {
-            return false;
-        }
+    public int getRemainingHints() {
+        resetWeeklyCounters();
         int limit = subscription.getMaxHintsPerWeek();
-        // premium tier vs free tier
-        return limit < 0 || weeklyHintsUsed < limit;
+        if (limit < 0) return -1;
+        return Math.max(0, limit + weeklyHintsPurchased - weeklyHintsUsed);
+    }
+
+    public void buyHint() {
+        resetWeeklyCounters();
+        if (subscription.getMaxHintsPerWeek() < 0) {
+            throw new IllegalStateException("Hints are unlimited.");
+        }
+        spendCoins(subscription.getHintPrice());
+        weeklyHintsPurchased++;
     }
 
     /* --------- units --------- */
 
     public void progressUnit() {
         resetWeeklyCounters();
-        if (!canDoNextUnit()) {
-            throw new IllegalStateException("Student cannot complete another unit this week.");
-        }
         weeklyUnitsProgressed++;
     }
 
@@ -123,20 +132,27 @@ public class Student extends User {
         return weeklyUnitsProgressed;
     }
 
-    // called by method canStudentDoUnit(Student student, Unit unit) in DifficultyLevel
-    public boolean canDoNextUnit() {
-        if (!subscription.isActive()) {
-            return false;
+    public void buyUnit() {
+        resetWeeklyCounters();
+        if (subscription.getMaxUnitsPerWeek() < 0) {
+            throw new IllegalStateException("Units are unlimited.");
         }
-        int limit = subscription.getMaxUnitsPerWeek();
-        // premium tier vs free tier
-        return limit < 0 || weeklyUnitsProgressed < limit;
+        spendCoins(subscription.getUnitPrice());
+        weeklyUnitsPurchased++;
     }
+
+    public int getRemainingUnits() {
+        resetWeeklyCounters();
+        int limit = subscription.getMaxUnitsPerWeek();
+        if (limit < 0) return -1;
+        return Math.max(0, limit + weeklyUnitsPurchased - weeklyUnitsProgressed);
+    }
+
 
     /* --------- subscription --------- */
 
-    public SubscriptionTier getSubscriptionTier() {
-        return subscription.getTier();
+    public Subscription getSubscription() {
+        return subscription;
     }
 
     public void changeSubscription(SubscriptionTier newTier) {

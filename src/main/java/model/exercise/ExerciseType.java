@@ -7,13 +7,13 @@ public enum ExerciseType {
     OPEN_ENDED("Open-ended question"),
     UPLOAD_IMAGE("Upload image");
 
-    private final String featureName;
+    private final String name;
 
      ExerciseType(String featureName) {
-        this.featureName = featureName;
+        this.name = featureName;
     }
 
-    public String getFeatureName() {
-        return featureName;
+    public String getName() {
+        return name;
     }
 }

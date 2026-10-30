@@ -1,16 +1,20 @@
 package model.exercise;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
 
 import java.util.List;
 import java.util.Objects;
 
 public class MultipleChoiceExercise extends Exercise {
+    // TODO: ver porque aca String y no Text. deberia ser text
     private final List<String> options;
     private final String correctAnswer;
 
-    public MultipleChoiceExercise(String prompt, List<String> options, String correctAnswer, List<String> hints, List<String> explanations) {
-        super(prompt, hints, explanations);
+    @JsonCreator
+    public MultipleChoiceExercise(@JsonProperty("prompt") String prompt, @JsonProperty("options") List<String> options, @JsonProperty("correctAnswer") String correctAnswer, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
+        super(prompt, hint, explanation);
         if (options == null || options.isEmpty()) {
             throw new IllegalArgumentException("Options must not be empty.");
         }
@@ -31,7 +35,12 @@ public class MultipleChoiceExercise extends Exercise {
     }
 
     @Override
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return correctAnswer.equals(userAnswer.toString());
+        return correctAnswer.equals(userAnswer.getContent());
     }
 }

@@ -22,4 +22,13 @@ public class PremiumTier extends Subscription {
         return MONTHLY_PRICE;
     }
 
+    @Override
+    public int getHintPrice() {
+        return 0;
+    }
+
+    @Override
+    public int getUnitPrice() {
+        return 0;
+    }
 }

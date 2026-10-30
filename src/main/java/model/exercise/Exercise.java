@@ -1,25 +1,39 @@
 package model.exercise;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import model.ContentType;
 import model.Text;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = CompletePhraseExercise.class, name = "COMPLETE_PHRASE"),
+        @JsonSubTypes.Type(value = MultipleChoiceExercise.class, name = "MULTIPLE_CHOICE"),
+        @JsonSubTypes.Type(value = OpenEndedExercise.class, name = "OPEN_ENDED"),
+        @JsonSubTypes.Type(value = TrueFalseExercise.class, name = "TRUE_FALSE"),
+        @JsonSubTypes.Type(value = UploadImageExercise.class, name = "UPLOAD_IMAGE"),
+})
 public abstract class Exercise {
     private static final int HINT_PRICE = 3;
 
     private final String prompt;
-    private List<String> hints = new ArrayList<>(); // hints (should be) inserted ascending by difficulty
-    private List<String> explanations = new ArrayList<>();
+    private final String hint;
+    private final String explanation;
 
-    protected Exercise(String prompt, List<String> hints, List<String> explanations) {
+    @JsonCreator
+    protected Exercise(@JsonProperty("prompt") String prompt, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
         if (prompt == null || prompt.isBlank()) {
             throw new IllegalArgumentException("Prompt must not be blank.");
         }
         this.prompt = prompt;
-        this.hints = hints;
-        this.explanations = explanations;
+        this.hint = hint;
+        this.explanation = explanation;
     }
 
     public String getPrompt() {
@@ -37,26 +51,16 @@ public abstract class Exercise {
         return new Text(input.trim());
     }
 
-    public Exercise addHint(String hint) {
-        hints.add(hint);
-        return this;
+    public String getCorrectAnswer() {
+        return null;
     }
 
-    public Exercise addExplanation(String explanation) {
-        explanations.add(explanation);
-        return this;
+    public String getHint() {
+        return hint;
     }
 
-    public int getHintCount() {
-        return hints.size();
-    }
-
-    public String getHint(int index) {
-        return hints.get(index);
-    }
-
-    public List<String> getExplanations() {
-        return List.copyOf(explanations);
+    public String getExplanation() {
+        return explanation;
     }
 
 }

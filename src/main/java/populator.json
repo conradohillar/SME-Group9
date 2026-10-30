@@ -1,18 +1,4 @@
 {
-  "students": [
-    {
-      "name": "Josefina Gonzalez Cornet",
-      "username": "jgonzalezcornet",
-      "password": "123456",
-      "email": "josefina.gonzalez@student.uclouvain.be"
-    },
-    {
-      "name": "Conrado Hillar",
-      "username": "chillar",
-      "password": "123456",
-      "email": "conrado.hillar@student.uclouvain.be"
-    }
-  ],
   "courses": [
     {
       "topic": "MATH",

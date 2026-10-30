@@ -1,5 +1,7 @@
 package model.exercise;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
 import model.Text;
 
@@ -10,8 +12,9 @@ public class CompletePhraseExercise extends Exercise {
     private final List<String> phrases; // Between strings is an "empty space" that should be completed by the user
     private final Text correctAnswer; // mocked for now (requires exact answer)
 
-    public CompletePhraseExercise(String prompt, List<String> phrases, String correctAnswer, List<String> hints, List<String> explanations) {
-        super(prompt, hints, explanations);
+    @JsonCreator
+    public CompletePhraseExercise(@JsonProperty("prompt") String prompt, @JsonProperty("phrases") List<String> phrases, @JsonProperty("correctAnswer") String correctAnswer, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
+        super(prompt, hint, explanation);
         if (phrases == null || phrases.size() != 2) {
             throw new IllegalArgumentException("Phrases must contain exactly 2 strings.");
         }
@@ -26,6 +29,11 @@ public class CompletePhraseExercise extends Exercise {
     @Override
     public ExerciseType getType() {
         return ExerciseType.COMPLETE_PHRASE;
+    }
+
+    @Override
+    public String getCorrectAnswer() {
+        return correctAnswer.getContent();
     }
 
     @Override

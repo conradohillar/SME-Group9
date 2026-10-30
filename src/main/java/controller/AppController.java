@@ -1,15 +1,26 @@
 package controller;
 
+import database.Database;
+import model.course.Course;
 import model.feature.FeatureManager;
 import model.feature.FeatureType;
+import model.user.Student;
+import utils.Populator;
+import view.MainFrame;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 
 public class AppController implements ControllerInterface {
-
     private static AppController instance;
     private final FeatureManager featureManager = new FeatureManager();
+    private MainFrame mainFrame;
+
+    private final AuthController authController = AuthController.getInstance();
+    private final ExerciseController exerciseController = ExerciseController.getInstance();
 
     private AppController() {
     }
@@ -21,28 +32,52 @@ public class AppController implements ControllerInterface {
         return instance;
     }
 
-    public void run() {
-        System.out.println("Hello world!");
+    public void runConsoleLoop() {
+        System.out.println("Starting console loop...");
+
         Scanner scanner = new Scanner(System.in);
 
-
         while(true) {
-            System.out.println("Enter the next prompt: ");
+            System.out.print("Enter a command: ");
             String prompt = scanner.nextLine();
             String[] tokens = prompt.split(" ");
             switch (tokens[0]) {
                 case "activate":
+                    if (tokens.length == 1) {
+                        System.out.println("Command usage: activate [feature_1] [feature_2] ... [feature_n]");
+                    }
                     activate(new String[]{}, Arrays.copyOfRange(tokens, 1, tokens.length));
                     break;
                 case "deactivate":
+                    if (tokens.length == 1) {
+                        System.out.println("Command usage: deactivate [feature_1] [feature_2] ... [feature_n]");
+                    }
                     activate(Arrays.copyOfRange(tokens, 1, tokens.length), new String[]{});
+                    break;
+                case "log":
+                    Arrays.stream(getStateAsLog()).forEach(System.out::println);
                     break;
                 case "exit":
                     System.exit(0);
                     break;
-                    default:
-                    System.out.println(prompt);
-                    break;
+            }
+        }
+    }
+
+    public void initializeApp() {
+        try {
+            Populator.populateUsers("src/main/resources/users.json");
+            Populator.populateCourses("src/main/resources/courses.json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // by default we enroll every student in every course ofr simplicity (for now)
+
+        Database database = Database.getInstance();
+        for (Course course : database.getCourses()) {
+            for (Student student : database.getStudents()) {
+                database.enrollStudent(student, course);
             }
         }
     }
@@ -62,12 +97,16 @@ public class AppController implements ControllerInterface {
             try {
                 featureManager.deactivate(FeatureType.valueOf(deactivation));
             } catch (Exception e) {
-                // TODO: command line print "Cannot deactivate this feature"
+                System.out.println(e.getMessage());
             }
         }
 
         for (String activation : activationsList) {
-            featureManager.activate(FeatureType.valueOf(activation));
+            try {
+                featureManager.activate(FeatureType.valueOf(activation));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         return 0;
@@ -75,6 +114,13 @@ public class AppController implements ControllerInterface {
 
     @Override
     public boolean enableUIView() {
+        if (mainFrame != null && mainFrame.isDisplayable()) {
+            mainFrame.setVisible(true);
+            return true;
+        }
+
+        mainFrame = new MainFrame();
+        mainFrame.setVisible(true);
         return false;
     }
 
@@ -85,6 +131,6 @@ public class AppController implements ControllerInterface {
 
     @Override
     public String[] getStateAsLog() {
-        return new String[0];
+        return new String[]{"hola", "chau", "como", "estas"};
     }
 }

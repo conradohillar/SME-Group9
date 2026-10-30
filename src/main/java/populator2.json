@@ -1,0 +1,1084 @@
+{
+  "students": [
+    {
+      "name": "Josefina Gonzalez Cornet",
+      "username": "jgonzalezcornet",
+      "password": "123456",
+      "subscriptionTier": "FREE"
+    },
+    {
+      "name": "Conrado Hillar",
+      "username": "chillar",
+      "password": "123456",
+      "subscriptionTier": "FREE"
+    }
+  ],
+  "courses": [
+    {
+      "topic": "HEALTHY_HABITS",
+      "title": "Healthy Habits",
+      "description": "Build healthy routines around sleep, nutrition, exercise and everyday well-being.",
+      "difficultyLevels": [
+        {
+          "difficulty": "ELEMENTARY",
+          "units": [
+            {
+              "title": "Everyday Healthy Choices",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "What Makes a Habit Healthy?",
+                  "description": "Learn the basics of healthy daily habits.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Healthy habits are small actions that support physical and mental well-being. Regular sleep, balanced meals, hydration and movement can make a difference over time."
+                    },
+                    {
+                      "type": "IMAGE",
+                      "content": "images/healthy-habits.png"
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Check Your Habits",
+                  "description": "Identify everyday choices that support well-being.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "Which habit can help you feel more rested?",
+                      "hint": "Think about consistency.",
+                      "explanation": "A regular sleep schedule helps support good sleep quality.",
+                      "correctAnswer": "Keeping a regular sleep schedule",
+                      "options": [
+                        "Keeping a regular sleep schedule",
+                        "Skipping sleep on weekdays",
+                        "Drinking coffee instead of sleeping"
+                      ]
+                    },
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "Drinking water regularly is part of maintaining healthy habits.",
+                      "hint": "Think about hydration.",
+                      "explanation": "Water supports normal body functions and hydration.",
+                      "correctAnswer": true
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 10,
+                "exercises": [
+                  {
+                    "type": "MULTIPLE_CHOICE",
+                    "prompt": "Which is an example of a healthy daily habit?",
+                    "hint": "Think about movement during the day.",
+                    "explanation": "Regular movement supports general health.",
+                    "correctAnswer": "Taking regular movement breaks",
+                    "options": [
+                      "Taking regular movement breaks",
+                      "Never drinking water",
+                      "Avoiding sleep"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "BEGINNER",
+          "units": [
+            {
+              "title": "Balanced Meals",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Building a Balanced Plate",
+                  "description": "Explore the role of variety and balance in everyday meals.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "A balanced diet includes a variety of foods. Fruits, vegetables, grains, protein sources and water can all contribute to a healthy eating pattern."
+                    },
+                    {
+                      "type": "IMAGE",
+                      "content": "images/balanced-plate.png"
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Food Choices",
+                  "description": "Practice identifying balanced food choices.",
+                  "exercises": [
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "Eating a variety of foods can help provide different nutrients.",
+                      "hint": "Different foods contain different nutrients.",
+                      "explanation": "Variety can help people obtain a wider range of nutrients.",
+                      "correctAnswer": true
+                    },
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "Name one type of food that can be part of a balanced meal.",
+                      "hint": "Think of a food group, such as fruit or vegetables.",
+                      "explanation": "Vegetables are one example; many other food groups can be part of a balanced meal.",
+                      "correctAnswer": "vegetables"
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 10,
+                "exercises": [
+                  {
+                    "type": "MULTIPLE_CHOICE",
+                    "prompt": "Which choice adds vegetables to a meal?",
+                    "hint": "Choose the option made primarily from vegetables.",
+                    "explanation": "A side salad is a simple way to include vegetables.",
+                    "correctAnswer": "A side salad",
+                    "options": [
+                      "A side salad",
+                      "A glass of soda",
+                      "A piece of candy"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "INTERMEDIATE",
+          "units": [
+            {
+              "title": "Sleep and Recovery",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Why Sleep Matters",
+                  "description": "Understand how sleep supports daily functioning.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Sleep supports memory, attention, mood and physical recovery. A consistent routine and a calm sleeping environment can help improve sleep habits."
+                    },
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Sleep Scenarios",
+                  "description": "Apply sleep-hygiene principles to common situations.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "Which is generally a helpful habit before bedtime?",
+                      "hint": "Choose the option that supports consistency and relaxation.",
+                      "explanation": "A consistent wind-down routine can help prepare the body for sleep.",
+                      "correctAnswer": "Following a consistent wind-down routine",
+                      "options": [
+                        "Following a consistent wind-down routine",
+                        "Drinking several energy drinks",
+                        "Changing bedtime dramatically every night"
+                      ]
+                    },
+                    {
+                      "type": "COMPLETE_PHRASE",
+                      "prompt": "Complete the sentence about sleep.",
+                      "hint": "Think about what the body needs after an active day.",
+                      "explanation": "Sleep is important for physical and mental recovery.",
+                      "correctAnswer": "A regular sleep schedule can support ",
+                      "options": "recovery",
+                      "phrases": [
+                        "A regular sleep schedule can support ",
+                        "."
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 12,
+                "exercises": [
+                  {
+                    "type": "TRUE_FALSE",
+                    "prompt": "Sleep can affect attention and memory.",
+                    "hint": "Think about how you feel after a poor night's sleep.",
+                    "explanation": "Sleep plays an important role in attention and memory.",
+                    "correctAnswer": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "ADVANCED",
+          "units": [
+            {
+              "title": "Building Sustainable Routines",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Habit Formation",
+                  "description": "Explore how cues, repetition and realistic goals can support lasting habits.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "A habit often develops through repetition in a consistent context. Small goals, reminders and tracking can make a new behavior easier to maintain, although individual experiences vary."
+                    },
+                    {
+                      "type": "IMAGE",
+                      "content": "images/habit-tracker.png"
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Design a Routine",
+                  "description": "Apply habit-building ideas to a realistic scenario.",
+                  "exercises": [
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "A person wants to walk more often. Name one practical strategy that could help them build the habit.",
+                      "hint": "Attach the new behavior to an existing routine.",
+                      "explanation": "A specific cue, such as walking after lunch, can make the behavior easier to repeat.",
+                      "correctAnswer": "walk after lunch"
+                    },
+                    {
+                      "type": "UPLOAD_IMAGE",
+                      "prompt": "Upload an image that represents a healthy routine.",
+                      "hint": "Choose an image related to movement, sleep, food or relaxation.",
+                      "explanation": "This activity is reviewed as a practice submission."
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 15,
+                "exercises": [
+                  {
+                    "type": "MULTIPLE_CHOICE",
+                    "prompt": "Which strategy is most likely to make a new habit easier to repeat?",
+                    "hint": "Think about making the behavior predictable.",
+                    "explanation": "A consistent cue can help a behavior become part of a routine.",
+                    "correctAnswer": "Linking it to a consistent cue",
+                    "options": [
+                      "Linking it to a consistent cue",
+                      "Setting an impossible goal",
+                      "Changing the plan every day without tracking"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic": "GREEN_LIVING",
+      "title": "Green Living",
+      "description": "Explore practical ways to reduce waste, save energy and live more sustainably.",
+      "difficultyLevels": [
+        {
+          "difficulty": "ELEMENTARY",
+          "units": [
+            {
+              "title": "Everyday Recycling",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Understanding Waste",
+                  "description": "Learn the difference between reducing, reusing and recycling.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Reducing waste means using less, reusing means finding another use for an item, and recycling means processing materials so they can be made into new products. Local recycling rules vary."
+                    },
+                    {
+                      "type": "IMAGE",
+                      "content": "images/recycling-bins.png"
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Sort the Choices",
+                  "description": "Identify simple ways to reduce household waste.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "Which action gives a reusable bottle another use?",
+                      "hint": "Choose the action that uses the bottle again.",
+                      "explanation": "Refilling a reusable bottle avoids needing a new single-use bottle.",
+                      "correctAnswer": "Refilling it with water",
+                      "options": [
+                        "Refilling it with water",
+                        "Throwing it away after one use",
+                        "Leaving it unused in a drawer"
+                      ]
+                    },
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "Recycling rules can differ between towns and cities.",
+                      "hint": "Think about local waste collection systems.",
+                      "explanation": "Accepted materials and sorting rules vary by location.",
+                      "correctAnswer": true
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 10,
+                "exercises": [
+                  {
+                    "type": "TRUE_FALSE",
+                    "prompt": "Reusing an item can help reduce waste.",
+                    "hint": "Consider whether the item is being used again.",
+                    "explanation": "Reusing an item can reduce the need to discard it and replace it.",
+                    "correctAnswer": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "BEGINNER",
+          "units": [
+            {
+              "title": "Saving Energy at Home",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Everyday Energy Use",
+                  "description": "Explore simple actions that can reduce unnecessary energy use.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Turning off unused lights and electronics, choosing efficient appliances and adjusting heating responsibly can reduce energy consumption. The impact depends on the home and energy source."
+                    },
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Energy-Saving Choices",
+                  "description": "Choose practical ways to avoid wasting energy.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "What is a sensible way to reduce electricity use when leaving a room?",
+                      "hint": "Focus on avoiding unnecessary use.",
+                      "explanation": "Turning off unnecessary lights reduces electricity use.",
+                      "correctAnswer": "Turn off lights that are not needed",
+                      "options": [
+                        "Turn off lights that are not needed",
+                        "Leave every light on",
+                        "Keep unused devices running"
+                      ]
+                    },
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "Name one way to save energy at home.",
+                      "hint": "Think about lights, heating or electronics.",
+                      "explanation": "Turning off unnecessary lights is one possible answer.",
+                      "correctAnswer": "turn off lights"
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 10,
+                "exercises": [
+                  {
+                    "type": "MULTIPLE_CHOICE",
+                    "prompt": "Which action can help reduce unnecessary energy use?",
+                    "hint": "Choose the option that avoids energy waste.",
+                    "explanation": "Switching off devices when they are not needed can reduce energy consumption.",
+                    "correctAnswer": "Switching off unused electronics",
+                    "options": [
+                      "Switching off unused electronics",
+                      "Leaving devices on all day",
+                      "Opening windows while heating is on"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "INTERMEDIATE",
+          "units": [
+            {
+              "title": "Transport and Emissions",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Choosing How to Travel",
+                  "description": "Compare everyday transport options and their environmental impacts.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Walking, cycling and public transport can have lower emissions per passenger than driving alone, depending on distance, occupancy and the energy used. Practicality and accessibility also matter."
+                    },
+                    {
+                      "type": "IMAGE",
+                      "content": "images/sustainable-transport.png"
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Travel Decisions",
+                  "description": "Apply transport choices to everyday journeys.",
+                  "exercises": [
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "For many urban trips, walking or cycling can avoid direct tailpipe emissions.",
+                      "hint": "Consider whether a vehicle engine is being used.",
+                      "explanation": "Walking and cycling do not produce direct tailpipe emissions.",
+                      "correctAnswer": true
+                    },
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "For a short journey where it is practical and safe, which option avoids using a car?",
+                      "hint": "Choose an option that does not require a motor vehicle.",
+                      "explanation": "Walking avoids the use of a motor vehicle for that trip.",
+                      "correctAnswer": "Walking",
+                      "options": [
+                        "Walking",
+                        "Driving alone",
+                        "Taking a taxi alone"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 12,
+                "exercises": [
+                  {
+                    "type": "OPEN_ENDED",
+                    "prompt": "Name one alternative to driving alone for a short urban journey.",
+                    "hint": "Think of shared or active transport.",
+                    "explanation": "Public transport, walking and cycling are possible alternatives.",
+                    "correctAnswer": "public transport"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "ADVANCED",
+          "units": [
+            {
+              "title": "Evaluating Environmental Claims",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Evidence and Green Claims",
+                  "description": "Learn to assess environmental claims using evidence and context.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Environmental claims should be evaluated by checking their scope, evidence, comparison baseline and life-cycle impacts. A product described as recyclable is not necessarily recycled in every local system."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Assess a Claim",
+                  "description": "Identify what evidence is needed to evaluate a sustainability claim.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "What is most useful when evaluating a claim that a product is environmentally friendly?",
+                      "hint": "Look for verifiable information rather than appearance.",
+                      "explanation": "Clear scope and evidence help consumers assess environmental claims.",
+                      "correctAnswer": "Evidence describing the claim's scope and supporting data",
+                      "options": [
+                        "Evidence describing the claim's scope and supporting data",
+                        "A green-colored package alone",
+                        "An unsourced slogan"
+                      ]
+                    },
+                    {
+                      "type": "COMPLETE_PHRASE",
+                      "prompt": "A fair product comparison should use the same ",
+                      "hint": "Think about the reference point used in a comparison.",
+                      "explanation": "Using a consistent baseline makes comparisons more meaningful.",
+                      "correctAnswer": "baseline",
+                      "phrases": [
+                        "A fair product comparison should use the same ",
+                        "."
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 15,
+                "exercises": [
+                  {
+                    "type": "TRUE_FALSE",
+                    "prompt": "A product labelled recyclable is guaranteed to be recycled everywhere.",
+                    "hint": "Consider local collection and processing facilities.",
+                    "explanation": "Recycling depends on local rules, collection and processing availability.",
+                    "correctAnswer": false
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "topic": "MATH",
+      "title": "An Introduction to Mathematics",
+      "description": "Learn mathematics progressively, from arithmetic and algebra to functions and calculus.",
+      "difficultyLevels": [
+        {
+          "difficulty": "ELEMENTARY",
+          "units": [
+            {
+              "title": "Basic Arithmetic",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Working with Numbers",
+                  "description": "Review the four basic arithmetic operations.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Arithmetic includes addition, subtraction, multiplication and division. These operations are the foundation for more advanced mathematics."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Arithmetic Practice",
+                  "description": "Practice basic calculations.",
+                  "exercises": [
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "What is 12 multiplied by 8?",
+                      "hint": "Calculate 10 times 8, then add 2 times 8.",
+                      "explanation": "12 × 8 = 96.",
+                      "correctAnswer": "96"
+                    },
+                    {
+                      "type": "COMPLETE_PHRASE",
+                      "prompt": "Complete the multiplication statement.",
+                      "hint": "Seven groups of six.",
+                      "explanation": "7 × 6 = 42.",
+                      "correctAnswer": "42",
+                      "phrases": [
+                        "7 × 6 = ",
+                        ""
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 10,
+                "exercises": [
+                  {
+                    "type": "MULTIPLE_CHOICE",
+                    "prompt": "What is 9 × 7?",
+                    "hint": "Calculate 10 × 7 and subtract 7.",
+                    "explanation": "9 × 7 = 63.",
+                    "correctAnswer": "63",
+                    "options": [
+                      "56",
+                      "63",
+                      "72"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Fractions and Decimals",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Parts of a Whole",
+                  "description": "Understand simple fractions and their decimal equivalents.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "A fraction represents part of a whole. For example, one half is written as 1/2 and is equal to 0.5."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Fraction Practice",
+                  "description": "Recognize equivalent representations of numbers.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "Which decimal is equal to one half?",
+                      "hint": "One half is halfway between zero and one.",
+                      "explanation": "1/2 = 0.5.",
+                      "correctAnswer": "0.5",
+                      "options": [
+                        "0.2",
+                        "0.5",
+                        "1.5"
+                      ]
+                    },
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "The fraction 2/4 is equivalent to 1/2.",
+                      "hint": "Simplify the numerator and denominator by the same factor.",
+                      "explanation": "Dividing both 2 and 4 by 2 gives 1/2.",
+                      "correctAnswer": true
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 12,
+                "exercises": [
+                  {
+                    "type": "OPEN_ENDED",
+                    "prompt": "Write one half as a decimal.",
+                    "hint": "It is halfway between zero and one.",
+                    "explanation": "One half is 0.5.",
+                    "correctAnswer": "0.5"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "BEGINNER",
+          "units": [
+            {
+              "title": "Pre-algebra",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Expressions and Variables",
+                  "description": "Learn how variables represent unknown or changing values.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "A variable is a symbol that represents a number. In algebra, 2x means 2 multiplied by x, and an equation states that two expressions are equal."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Algebra Basics",
+                  "description": "Interpret expressions and simple equations.",
+                  "exercises": [
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "The expression 2x means 2 multiplied by x.",
+                      "hint": "Juxtaposition of a number and variable means multiplication.",
+                      "explanation": "In algebra, 2x denotes 2 multiplied by x.",
+                      "correctAnswer": true
+                    },
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "Solve for x: x + 5 = 12.",
+                      "hint": "Subtract 5 from both sides.",
+                      "explanation": "x = 12 − 5 = 7.",
+                      "correctAnswer": "7"
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 10,
+                "exercises": [
+                  {
+                    "type": "MULTIPLE_CHOICE",
+                    "prompt": "Which expression is equivalent to 3(x + 2)?",
+                    "hint": "Apply the distributive property.",
+                    "explanation": "Multiply both terms inside the parentheses by 3.",
+                    "correctAnswer": "3x + 6",
+                    "options": [
+                      "3x + 2",
+                      "3x + 6",
+                      "x + 6"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Equations and Inequalities",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Solving Equations",
+                  "description": "Use inverse operations to solve simple equations.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "To solve an equation, perform the same operation on both sides to keep equality. Inverse operations can isolate the unknown variable."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Solve for the Unknown",
+                  "description": "Practice solving one-step and two-step equations.",
+                  "exercises": [
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "Solve for x: 3x = 21.",
+                      "hint": "Divide both sides by 3.",
+                      "explanation": "x = 21 ÷ 3 = 7.",
+                      "correctAnswer": "7"
+                    },
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "If x − 4 = 9, what is x?",
+                      "hint": "Add 4 to both sides.",
+                      "explanation": "x = 9 + 4 = 13.",
+                      "correctAnswer": "13",
+                      "options": [
+                        "5",
+                        "13",
+                        "36"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 12,
+                "exercises": [
+                  {
+                    "type": "TRUE_FALSE",
+                    "prompt": "Adding the same number to both sides of an equation preserves equality.",
+                    "hint": "Both sides change by the same amount.",
+                    "explanation": "Performing the same addition on both sides preserves equality.",
+                    "correctAnswer": true
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "INTERMEDIATE",
+          "units": [
+            {
+              "title": "Functions and Precalculus",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Understanding Functions",
+                  "description": "Evaluate functions and interpret input-output relationships.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "A function maps each input in its domain to exactly one output. To evaluate a function, substitute the input value into its expression."
+                    },
+                    {
+                      "type": "IMAGE",
+                      "content": "images/function-graph.png"
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Evaluate a Function",
+                  "description": "Calculate outputs from simple functions.",
+                  "exercises": [
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "For f(x) = 2x + 1, calculate f(3).",
+                      "hint": "Replace x with 3.",
+                      "explanation": "f(3) = 2 × 3 + 1 = 7.",
+                      "correctAnswer": "7"
+                    },
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "If g(x) = x², what is g(4)?",
+                      "hint": "Square the input value.",
+                      "explanation": "g(4) = 4² = 16.",
+                      "correctAnswer": "16",
+                      "options": [
+                        "8",
+                        "12",
+                        "16"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 15,
+                "exercises": [
+                  {
+                    "type": "TRUE_FALSE",
+                    "prompt": "A function assigns exactly one output to each input in its domain.",
+                    "hint": "Think about the definition of a function.",
+                    "explanation": "Each input must correspond to exactly one output.",
+                    "correctAnswer": true
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Trigonometry",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Angles and Trigonometric Ratios",
+                  "description": "Review basic sine, cosine and tangent values.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "Trigonometric ratios relate angles to side lengths in right triangles. On the unit circle, sine and cosine correspond to the vertical and horizontal coordinates."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Trigonometry Practice",
+                  "description": "Apply basic trigonometric facts.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "What is sin(90°)?",
+                      "hint": "Consider the top point of the unit circle.",
+                      "explanation": "The sine of 90 degrees is 1.",
+                      "correctAnswer": "1",
+                      "options": [
+                        "0",
+                        "1",
+                        "-1"
+                      ]
+                    },
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "For an angle of 0°, cos(0°) equals 1.",
+                      "hint": "Consider the point at angle zero on the unit circle.",
+                      "explanation": "The cosine of 0 degrees is 1.",
+                      "correctAnswer": true
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 15,
+                "exercises": [
+                  {
+                    "type": "OPEN_ENDED",
+                    "prompt": "What is cos(0°)?",
+                    "hint": "At zero degrees, the unit-circle point is (1, 0).",
+                    "explanation": "The cosine of 0 degrees is 1.",
+                    "correctAnswer": "1"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "difficulty": "ADVANCED",
+          "units": [
+            {
+              "title": "Limits and Continuity",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Understanding Limits",
+                  "description": "Explore limits of simple functions.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "A limit describes the value a function approaches as its input approaches a particular point. For continuous functions, the limit can often be found by direct substitution."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Calculate Limits",
+                  "description": "Evaluate limits for simple continuous expressions.",
+                  "exercises": [
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "What is the limit of x + 2 as x approaches 3?",
+                      "hint": "This function is continuous; substitute x = 3.",
+                      "explanation": "The limit is 3 + 2 = 5.",
+                      "correctAnswer": "5"
+                    },
+                    {
+                      "type": "TRUE_FALSE",
+                      "prompt": "For a polynomial function, the limit at a point equals the function's value at that point.",
+                      "hint": "Polynomial functions are continuous everywhere.",
+                      "explanation": "Polynomials are continuous, so direct substitution gives the limit.",
+                      "correctAnswer": true
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 20,
+                "exercises": [
+                  {
+                    "type": "MULTIPLE_CHOICE",
+                    "prompt": "What is the limit of 2x as x approaches 4?",
+                    "hint": "Substitute 4 for x.",
+                    "explanation": "The limit is 2 × 4 = 8.",
+                    "correctAnswer": "8",
+                    "options": [
+                      "6",
+                      "8",
+                      "10"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Differential Calculus",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Derivatives",
+                  "description": "Learn the power rule for differentiating polynomial terms.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "A derivative describes the instantaneous rate of change of a function. The power rule states that the derivative of xⁿ is n·xⁿ⁻¹."
+                    },
+                    {
+                      "type": "IMAGE",
+                      "content": "images/derivative-graph.png"
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Differentiate",
+                  "description": "Apply the power rule to simple functions.",
+                  "exercises": [
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "What is the derivative of x²?",
+                      "hint": "Bring the exponent down and reduce it by one.",
+                      "explanation": "The derivative of x² is 2x.",
+                      "correctAnswer": "2x",
+                      "options": [
+                        "x",
+                        "2x",
+                        "2"
+                      ]
+                    },
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "What is the derivative of 3x?",
+                      "hint": "The derivative of ax is a constant a.",
+                      "explanation": "The derivative of 3x is 3.",
+                      "correctAnswer": "3"
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 20,
+                "exercises": [
+                  {
+                    "type": "TRUE_FALSE",
+                    "prompt": "The derivative of a constant function is zero.",
+                    "hint": "A constant function does not change.",
+                    "explanation": "A constant has zero rate of change.",
+                    "correctAnswer": true
+                  }
+                ]
+              }
+            },
+            {
+              "title": "Integral Calculus",
+              "sections": [
+                {
+                  "type": "THEORETICAL",
+                  "title": "Antiderivatives",
+                  "description": "Connect integration with reversing differentiation.",
+                  "materials": [
+                    {
+                      "type": "TEXT",
+                      "content": "An indefinite integral represents a family of antiderivatives and includes a constant of integration, C. For example, an antiderivative of 2x is x² + C."
+                    }
+                  ]
+                },
+                {
+                  "type": "PRACTICAL",
+                  "title": "Integration Practice",
+                  "description": "Recognize simple antiderivatives.",
+                  "exercises": [
+                    {
+                      "type": "OPEN_ENDED",
+                      "prompt": "Give an antiderivative of 2x.",
+                      "hint": "Reverse the power rule and include a constant.",
+                      "explanation": "The derivative of x² + C is 2x.",
+                      "correctAnswer": "x^2 + C"
+                    },
+                    {
+                      "type": "MULTIPLE_CHOICE",
+                      "prompt": "Which is an antiderivative of 3?",
+                      "hint": "Look for a function whose derivative is 3.",
+                      "explanation": "The derivative of 3x + C is 3.",
+                      "correctAnswer": "3x + C",
+                      "options": [
+                        "3 + C",
+                        "3x + C",
+                        "x² + C"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "exam": {
+                "passingPercentage": 60,
+                "timeLimitMinutes": 20,
+                "exercises": [
+                  {
+                    "type": "TRUE_FALSE",
+                    "prompt": "An indefinite integral includes an arbitrary constant of integration.",
+                    "hint": "Different functions can have the same derivative.",
+                    "explanation": "Antiderivatives differ by a constant, represented by C.",
+                    "correctAnswer": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

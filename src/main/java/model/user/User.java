@@ -1,19 +1,21 @@
 package model.user;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import database.Database;
+
 import java.util.Objects;
 
 public class User {
-    private String name;
-    private String username;
+    private final String name;
+    private final String username;
+    private final String password;
 
-    private String email;
-    private String password;
-
-    public User(String name, String username, String email, String password) {
-        this.name = Objects.requireNonNull(name);
-        this.username = Objects.requireNonNull(username);
-        this.email = Objects.requireNonNull(email);
-        this.password = Objects.requireNonNull(password);
+    @JsonCreator
+    public User(@JsonProperty("name") String name, @JsonProperty("username") String username, @JsonProperty("password") String password) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
     }
 
     public String getName() {
@@ -27,4 +29,5 @@ public class User {
     public boolean checkPassword(String password) {
         return password.equals(this.password);
     }
+
 }
