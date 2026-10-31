@@ -33,6 +33,7 @@ public class TrueFalseView extends ExerciseView {
         else if (falseButton.isSelected()) {
             return new Boolean(false);
         }
+
         return null;
     }
 

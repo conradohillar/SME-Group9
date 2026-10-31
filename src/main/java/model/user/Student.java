@@ -49,7 +49,8 @@ public class Student extends User {
             throw new IllegalArgumentException("Coins to spend cannot be negative.");
         }
         if (coins > this.coins) {
-            throw new IllegalArgumentException("Not enough coins to spend.");
+            // silently ignore, just does not do anything
+            return;
         }
         this.coins -= coins;
     }
@@ -69,7 +70,6 @@ public class Student extends User {
         } else {
             return; // reject activity for an earlier date
         }
-
         lastActivityDate = day;
     }
 
@@ -109,6 +109,7 @@ public class Student extends User {
         resetWeeklyCounters();
         int limit = subscription.getMaxHintsPerWeek();
         if (limit < 0) return -1;
+
         return Math.max(0, limit + weeklyHintsPurchased - weeklyHintsUsed);
     }
 
@@ -145,6 +146,7 @@ public class Student extends User {
         resetWeeklyCounters();
         int limit = subscription.getMaxUnitsPerWeek();
         if (limit < 0) return -1;
+
         return Math.max(0, limit + weeklyUnitsPurchased - weeklyUnitsProgressed);
     }
 
@@ -164,7 +166,4 @@ public class Student extends User {
     public StudentPreferences getUserPreferences() {
         return studentPreferences;
     }
-
-
-
 }

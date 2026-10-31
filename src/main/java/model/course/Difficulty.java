@@ -1,7 +1,5 @@
 package model.course;
 
-import controller.AuthController;
-
 public enum Difficulty {
     ELEMENTARY("Elementary"),
     BEGINNER("Beginner"),

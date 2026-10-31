@@ -2,9 +2,6 @@ package model.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import database.Database;
-
-import java.util.Objects;
 
 public class User {
     private final String name;
@@ -29,5 +26,4 @@ public class User {
     public boolean checkPassword(String password) {
         return password.equals(this.password);
     }
-
 }

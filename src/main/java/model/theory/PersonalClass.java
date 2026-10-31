@@ -1,8 +1,5 @@
 package model.theory;
 
-import model.user.Professor;
-import model.user.Student;
-
 public class PersonalClass extends OnlineClass {
-
+    // will not be implemented for now, just mocked
 }

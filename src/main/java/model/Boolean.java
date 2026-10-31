@@ -6,4 +6,9 @@ public record Boolean(boolean value) implements ContentType {
     public java.lang.Boolean getContent() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return getContent().toString();
+    }
 }

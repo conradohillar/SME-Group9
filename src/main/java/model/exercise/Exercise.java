@@ -20,8 +20,6 @@ import model.Text;
         @JsonSubTypes.Type(value = UploadImageExercise.class, name = "UPLOAD_IMAGE"),
 })
 public abstract class Exercise {
-    private static final int HINT_PRICE = 3;
-
     private final String prompt;
     private final String hint;
     private final String explanation;
@@ -43,13 +41,6 @@ public abstract class Exercise {
     public abstract ExerciseType getType();
 
     public abstract boolean checkAnswer(ContentType userAnswer);
-
-    public ContentType parseAnswer(String input) {
-        if (input == null) {
-            throw new IllegalArgumentException("Answer must not be null.");
-        }
-        return new Text(input.trim());
-    }
 
     public String getCorrectAnswer() {
         return null;

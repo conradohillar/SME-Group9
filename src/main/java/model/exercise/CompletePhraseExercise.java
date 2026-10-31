@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class CompletePhraseExercise extends Exercise {
-    private final List<String> phrases; // Between strings is an "empty space" that should be completed by the user
-    private final Text correctAnswer; // mocked for now (requires exact answer)
+    // we leave phrases as a string and not text since we consider "part" of the prompt
+    private final List<String> phrases; // between the phrases we place the empty space for the user to complete
+    private final Text correctAnswer; // for now, it requires the exact answer
 
     @JsonCreator
     public CompletePhraseExercise(@JsonProperty("prompt") String prompt, @JsonProperty("phrases") List<String> phrases, @JsonProperty("correctAnswer") String correctAnswer, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
@@ -38,6 +39,7 @@ public class CompletePhraseExercise extends Exercise {
 
     @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return correctAnswer.getContent().equals(userAnswer.getContent());
+        // user answer will always be of type Text in this type of exercise, so it is safe to do the toString
+        return correctAnswer.getContent().equalsIgnoreCase(userAnswer.getContent().toString());
     }
 }

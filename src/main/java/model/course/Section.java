@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import model.exam.Exam;
+import model.feature.Feature;
+import model.feature.FeatureType;
 import model.user.Student;
-import model.user.User;
 
 import java.util.Objects;
 
@@ -20,12 +20,13 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = PracticalSection.class, name = "PRACTICAL"),
         @JsonSubTypes.Type(value = Exam.class, name = "EXAM")
 })
-public abstract class Section implements CompletableByStudent {
+public abstract class Section extends Feature implements CompletableByStudent {
     private final String title;
     private final String description;
 
     @JsonCreator
-    protected Section(@JsonProperty("title") String title, @JsonProperty("description") String description) {
+    protected Section(@JsonProperty("title") String title, @JsonProperty("description") String description, FeatureType featureType) {
+        super(featureType);
         this.title = Objects.requireNonNull(title);
         this.description = Objects.requireNonNull(description);
     }
@@ -39,7 +40,9 @@ public abstract class Section implements CompletableByStudent {
     }
 
     public boolean isCompletedByStudent(Student student) {
-        //By defualt, the sections don't have to necessarily be completed (only the unit's exam), although they could in the future.
+        //By default, the sections don't have to necessarily be completed (only the unit's exam), although they could in the future.
         return true;
     }
+
+
 }

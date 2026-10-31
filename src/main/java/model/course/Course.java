@@ -2,19 +2,19 @@ package model.course;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import model.LoggableState;
+import model.feature.Feature;
 import model.feature.FeatureType;
 import model.user.Student;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Course implements CompletableByStudent, LoggableState {
+public class Course extends Feature implements CompletableByStudent {
     private final Topic topic;
     private final String title;
     private final String description;
     private final List<DifficultyLevel> difficultyLevels;
-    private final FeatureType featureType;
 
     @JsonCreator
     public Course(@JsonProperty("topic") Topic topic, @JsonProperty ("title") String title, @JsonProperty ("description") String description, @JsonProperty ("difficultyLevels") List<DifficultyLevel> difficultyLevels) {
@@ -22,11 +22,7 @@ public class Course implements CompletableByStudent, LoggableState {
         this.title = Objects.requireNonNull(title);
         this.description = description;
         this.difficultyLevels = List.copyOf(difficultyLevels);
-        this.featureType = FeatureType.COURSE;
-    }
-
-    public Topic getTopic() {
-        return topic;
+        super(FeatureType.COURSE);
     }
 
     public String getTitle() {
@@ -63,19 +59,16 @@ public class Course implements CompletableByStudent, LoggableState {
         return difficultyLevels.stream().allMatch(dl -> dl.isCompletedByStudent(student));
     }
 
-    public boolean isStudentEnrolled(Student student) {
-        // TODO: completar
-        return true;
-    }
-
     @Override
-    public String[] getCurrentStateLog() {
-        String[] log = {"Course: { topic: " + topic};
+    public List<String> getCurrentStateLog() {
+        List<String> log = new ArrayList<>(List.of(new String[]{"Course: { topic: " + topic + ", title: " + title + " }", "\tdifficultyLevels: ["}));
+        for (DifficultyLevel dl : difficultyLevels) {
+            List<String> dlLog = dl.getCurrentStateLog();
+            for (String s : dlLog) {
+                log.add("\t"+s);
+            }
+        }
+        log.add("\t]");
         return log;
-    }
-
-    @Override
-    public FeatureType getFeatureType() {
-        return null;
     }
 }

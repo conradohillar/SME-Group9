@@ -2,10 +2,8 @@ package controller;
 
 import model.subscription.SubscriptionTier;
 import model.user.Student;
-import model.user.StudentPreferences;
 
 public class UserController {
-
     private static UserController instance;
 
     private UserController() {}
@@ -15,10 +13,6 @@ public class UserController {
             instance = new UserController();
         }
         return instance;
-    }
-
-    private Student getCurrentStudent() {
-        return AuthController.getInstance().getLoggedStudent();
     }
 
     // --------- account information ---------
@@ -108,4 +102,9 @@ public class UserController {
     public void setAiChatbotEnabled(boolean enabled) {
         getCurrentStudent().getUserPreferences().setAiChatbot(enabled);
     }
+
+    private Student getCurrentStudent() {
+        return AuthController.getInstance().getLoggedStudent();
+    }
+
 }

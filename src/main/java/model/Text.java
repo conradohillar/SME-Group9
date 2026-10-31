@@ -14,7 +14,7 @@ public record Text(String content) implements LearningMaterial {
     }
 
     @Override
-    public String getLearningMaterialName() {
-        return "Text";
+    public String toString() {
+        return getContent();
     }
 }

@@ -3,14 +3,16 @@ package model.exercise;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
+import model.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MultipleChoiceExercise extends Exercise {
-    // TODO: ver porque aca String y no Text. deberia ser text
-    private final List<String> options;
-    private final String correctAnswer;
+    private List<Text> options;
+    private final Text correctAnswer;
 
     @JsonCreator
     public MultipleChoiceExercise(@JsonProperty("prompt") String prompt, @JsonProperty("options") List<String> options, @JsonProperty("correctAnswer") String correctAnswer, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
@@ -18,15 +20,23 @@ public class MultipleChoiceExercise extends Exercise {
         if (options == null || options.isEmpty()) {
             throw new IllegalArgumentException("Options must not be empty.");
         }
-        this.options = List.copyOf(options);
-        if (!this.options.contains(correctAnswer)) {
+        this.options = new ArrayList<>();
+
+        for (String option : options) {
+            Objects.requireNonNull(option);
+            this.options.add(new Text(option));
+        }
+        Objects.requireNonNull(correctAnswer);
+        this.correctAnswer = new Text(correctAnswer);
+        if (!this.options.contains(this.correctAnswer)) {
             throw new IllegalArgumentException("Correct answer must be one of the options.");
         }
-        this.correctAnswer = Objects.requireNonNull(correctAnswer);
     }
 
     public List<String> getOptions() {
-        return options;
+        return options.stream()
+                .map(Text::getContent)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -36,11 +46,11 @@ public class MultipleChoiceExercise extends Exercise {
 
     @Override
     public String getCorrectAnswer() {
-        return correctAnswer;
+        return correctAnswer.getContent();
     }
 
     @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return correctAnswer.equals(userAnswer.getContent());
+        return correctAnswer.getContent().equals(userAnswer.getContent());
     }
 }

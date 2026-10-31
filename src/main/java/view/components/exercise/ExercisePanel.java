@@ -67,6 +67,7 @@ public class ExercisePanel extends JPanel {
         });
     }
 
+    // TODO: sacar la logica aca, deberia estar en el controller
     public void submitAnswer() {
         ContentType answer = exerciseView.getAnswer();
 
@@ -95,10 +96,12 @@ public class ExercisePanel extends JPanel {
         repaint();
     }
 
+    // TODO: ver que hace esta funcion aca, esta rara. igual el uso parece adecuado
     public Exercise getExercise() {
         return exercise;
     }
 
+    // TODO: ver que hace esta funcion aca, esta rara. igual el uso parece adecuado
     public ContentType getAnswer() {
         return exerciseView.getAnswer();
     }

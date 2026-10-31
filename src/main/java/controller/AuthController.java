@@ -6,9 +6,8 @@ import model.user.Student;
 import java.time.LocalDate;
 
 public class AuthController {
-    private static Student loggedStudent = null;
-
     public static AuthController instance;
+    private static Student loggedStudent = null;
 
     private AuthController() {
     }
@@ -22,7 +21,6 @@ public class AuthController {
 
     public boolean login(String username, String password) {
         Database database = Database.getInstance();
-
         Student student = database.getStudent(username);
         if (student == null || !student.checkPassword(password)) {
             return false;

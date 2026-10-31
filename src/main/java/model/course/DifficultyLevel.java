@@ -2,18 +2,22 @@ package model.course;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import model.feature.Feature;
+import model.feature.FeatureType;
 import model.user.Student;
-import model.user.User;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class DifficultyLevel implements CompletableByStudent {
+public class DifficultyLevel extends Feature implements CompletableByStudent {
     private final Difficulty difficulty;
-    private final List<Unit> units;
+    List<Unit> units;
 
     @JsonCreator
     public DifficultyLevel(@JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("units") List<Unit> units) {
+        super(FeatureType.DIFFICULTY);
         this.difficulty = difficulty;
-        this.units = units;
+        this.units = List.copyOf(units);
     }
 
     public Difficulty getDifficulty() {
@@ -21,10 +25,23 @@ public class DifficultyLevel implements CompletableByStudent {
     }
 
     public List<Unit> getUnits() {
-        return List.copyOf(units);
+        return units;
     }
 
     public boolean isCompletedByStudent(Student student) {
         return units.stream().allMatch(u -> u.isCompletedByStudent(student));
+    }
+
+    @Override
+    public List<String> getCurrentStateLog() {
+        List<String> log = new ArrayList<>(List.of(new String[]{"DifficultyLevel: { difficulty: " + difficulty + " }", "\tunits: ["}));
+        for (Unit unit : units) {
+            List<String> unitLog = unit.getCurrentStateLog();
+            for (String s : unitLog) {
+                log.add("\t"+s);
+            }
+        }
+        log.add("\t]");
+        return log;
     }
 }

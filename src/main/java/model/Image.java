@@ -14,7 +14,7 @@ public record Image(String imageUrl) implements LearningMaterial {
     }
 
     @Override
-    public String getLearningMaterialName() {
-        return "Image";
+    public String toString() {
+        return getContent();
     }
 }

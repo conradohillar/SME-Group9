@@ -22,6 +22,7 @@ public class CompletePhraseView extends ExerciseView {
         if (answer.isEmpty()) {
             return null;
         }
+
         return new Text(answer);
     }
 

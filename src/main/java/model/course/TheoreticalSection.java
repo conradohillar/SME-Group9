@@ -3,27 +3,28 @@ package model.course;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.LearningMaterial;
-import model.user.Student;
-import model.user.User;
+import model.exercise.ExerciseType;
+import model.feature.FeatureType;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class TheoreticalSection extends Section {
     private final List<LearningMaterial> materials;
 
     @JsonCreator
     public TheoreticalSection(@JsonProperty("title") String title, @JsonProperty("description") String description, @JsonProperty("materials") List<LearningMaterial> materials) {
-        super(title, description);
+        super(title, description, FeatureType.THEORETICAL_SECTION);
         this.materials = List.copyOf(materials);
     }
 
-    // TODO: esto de activeFeatures hay que cambiarlo a la implementacion actual
-    public List<LearningMaterial> getVisibleMaterials() {
+    public List<LearningMaterial> getLearningMaterials() {
         return materials;
+    }
 
-//        return materials.stream()
-//                .filter(material -> activeFeatures.contains(material.getLearningMaterialName()))
-//                .toList();
+    @Override
+    public List<String> getCurrentStateLog() {
+        return new ArrayList<>(List.of(new String[]{"TheoreticalSection: { title: " + getTitle() + " }"}));
     }
 }

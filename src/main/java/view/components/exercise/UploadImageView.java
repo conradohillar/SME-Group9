@@ -24,11 +24,9 @@ public class UploadImageView extends ExerciseView {
     private void chooseImage() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select an image");
-
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif"));
 
         int result = fileChooser.showOpenDialog(this);
-
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
             fileLabel.setText(selectedFile.getName());
@@ -40,6 +38,7 @@ public class UploadImageView extends ExerciseView {
         if (selectedFile == null) {
             return null;
         }
+
         return new Image(selectedFile.getAbsolutePath());
     }
 

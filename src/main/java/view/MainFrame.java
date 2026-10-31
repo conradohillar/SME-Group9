@@ -9,7 +9,7 @@ import database.Database;
 import model.LearningMaterial;
 import model.Text;
 import model.course.*;
-import model.exam.Exam;
+import model.course.Exam;
 import database.ExamAttempt;
 import model.exercise.Exercise;
 import model.exercise.MultipleChoiceExercise;
@@ -23,7 +23,6 @@ import view.components.section.TheoreticalSectionPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +85,8 @@ public class MainFrame extends JFrame {
         UserPanel userPanel = new UserPanel();
         setBreadcrumbs(null, null, null, null);
         appPanel.addBreadcrumb("User Preferences", null);
-        showContent(userPanel);
+        appPanel.showUserProfile(userPanel);
+
     }
 
     private void showCourse(Course course) {
@@ -126,7 +126,7 @@ public class MainFrame extends JFrame {
 
     private void showPracticalSection(PracticalSection section) {
         List<ExercisePanel> exercisePanels = new ArrayList<>();
-        for (Exercise exercise : section.getVisibleExercises()) {
+        for (Exercise exercise : section.getExercises()) {
             ExerciseView exerciseView = exerciseViewFactory.create(exercise);
             ExercisePanel exercisePanel = new ExercisePanel(exercise, exerciseView, exerciseController);
             exercisePanels.add(exercisePanel);
@@ -136,7 +136,7 @@ public class MainFrame extends JFrame {
     }
 
     private void showTheoreticalSection(TheoreticalSection section) {
-        List<LearningMaterial> materials = section.getVisibleMaterials();
+        List<LearningMaterial> materials = section.getLearningMaterials();
         TheoreticalSectionPanel sectionPanel = new TheoreticalSectionPanel(
                 section.getTitle(),
                 section.getDescription(),

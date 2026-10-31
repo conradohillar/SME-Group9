@@ -9,5 +9,4 @@ public abstract class ExerciseView extends JPanel {
     abstract ContentType getAnswer();
 
     public abstract void setAnswerEnabled(boolean enabled);
-
 }

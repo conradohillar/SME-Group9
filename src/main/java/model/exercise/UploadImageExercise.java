@@ -3,7 +3,6 @@ package model.exercise;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
-import model.Image;
 
 public class UploadImageExercise extends Exercise {
 
@@ -20,10 +19,5 @@ public class UploadImageExercise extends Exercise {
     @Override
     public boolean checkAnswer(ContentType userAnswer) {
         return true; // hard coded, an AI would check it
-    }
-
-    @Override
-    public ContentType parseAnswer(String input) {
-        return new Image(input.trim());
     }
 }

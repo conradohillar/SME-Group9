@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import database.Database;
 import model.course.Course;
-import model.feature.FeatureController;
 import model.feature.FeatureType;
 import model.user.Student;
 import utils.Populator;
@@ -20,8 +19,6 @@ public class AppController implements ControllerInterface {
     private MainFrame mainFrame;
 
     private final FeatureController featureController = FeatureController.getInstance();
-    private final AuthController authController = AuthController.getInstance();
-    private final ExerciseController exerciseController = ExerciseController.getInstance();
 
     private AppController() {
     }
@@ -73,8 +70,7 @@ public class AppController implements ControllerInterface {
             throw new RuntimeException(e);
         }
 
-        // by default we enroll every student in every course ofr simplicity (for now)
-
+        // by default, we enroll every student in every course for simplicity (for now)
         Database database = Database.getInstance();
         for (Course course : database.getCourses()) {
             for (Student student : database.getStudents()) {
@@ -122,6 +118,7 @@ public class AppController implements ControllerInterface {
 
         mainFrame = new MainFrame();
         mainFrame.setVisible(true);
+
         return false;
     }
 
@@ -133,13 +130,10 @@ public class AppController implements ControllerInterface {
     @Override
     public String[] getStateAsLog() {
         Database database = Database.getInstance();
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String coursesJson = "";
-        try {
-            coursesJson = ow.writeValueAsString(database.getCourses());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        ArrayList<String> logs = new ArrayList<>();{};
+        for (Course course : database.getCourses()) {
+            logs.addAll(course.getCurrentStateLog());
         }
-        return new String[]{coursesJson};
+        return logs.toArray(String[]::new);
     }
 }

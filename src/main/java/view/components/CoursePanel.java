@@ -9,19 +9,18 @@ import java.awt.*;
 import java.util.function.Consumer;
 
 public class CoursePanel extends JPanel {
+    private final CourseController courseController;
 
     public CoursePanel(Course course, Consumer<DifficultyLevel> onDifficultySelected) {
+        courseController = CourseController.getInstance();
+
         setLayout(new GridBagLayout());
 
         JPanel difficultiesPanel = new JPanel();
         difficultiesPanel.setLayout(new BoxLayout(difficultiesPanel, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel(course.getTitle());
-        title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel description = new JLabel(course.getDescription());
-        description.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel title = createTitle(course.getTitle());
+        JLabel description = createDescription(course.getDescription());
 
         difficultiesPanel.add(title);
         difficultiesPanel.add(Box.createVerticalStrut(8));
@@ -29,23 +28,43 @@ public class CoursePanel extends JPanel {
         difficultiesPanel.add(Box.createVerticalStrut(20));
 
         for (DifficultyLevel level : course.getDifficultyLevels()) {
-            JButton difficultyButton = new JButton(level.getDifficulty().getFeatureName());
-
-            difficultyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            difficultyButton.setMaximumSize(new Dimension(250, 40));
-
-            difficultyButton.addActionListener(
-                    e -> onDifficultySelected.accept(level)
-            );
-
-            if (!CourseController.getInstance().isDifficultyLevelUnlocked(course, level)) {
-                difficultyButton.setEnabled(false);
-            }
+            JButton difficultyButton = createDifficultyButton(course, level, onDifficultySelected);
 
             difficultiesPanel.add(difficultyButton);
             difficultiesPanel.add(Box.createVerticalStrut(12));
         }
 
         add(difficultiesPanel);
+    }
+
+    private JLabel createTitle(String text) {
+        JLabel title = new JLabel(text);
+        title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        return title;
+    }
+
+    private JLabel createDescription(String text) {
+        JLabel description = new JLabel(text);
+        description.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        return description;
+    }
+
+    private JButton createDifficultyButton(Course course, DifficultyLevel level, Consumer<DifficultyLevel> onDifficultySelected) {
+        JButton button = new JButton(level.getDifficulty().getFeatureName());
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMaximumSize(new Dimension(250, 40));
+        button.addActionListener(e -> onDifficultySelected.accept(level));
+
+        if (!courseController.isDifficultyLevelUnlocked(course, level)) {
+            button.setEnabled(false);
+        }
+        if (courseController.isDifficultyLevelPassed(level)) {
+            button.setForeground(new Color(0, 128, 0));
+        }
+
+        return button;
     }
 }

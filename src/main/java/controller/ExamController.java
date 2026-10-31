@@ -5,7 +5,7 @@ import model.ContentType;
 import model.course.Course;
 import model.course.Difficulty;
 import model.course.Unit;
-import model.exam.Exam;
+import model.course.Exam;
 import database.ExamAttempt;
 import model.exercise.Exercise;
 import model.user.Student;
@@ -15,10 +15,10 @@ import java.time.Instant;
 import java.util.Map;
 
 public class ExamController {
-
     private static ExamController instance;
 
-    private ExamController() {}
+    private ExamController() {
+    }
 
     public static ExamController getInstance() {
         if (instance == null) {
@@ -28,7 +28,8 @@ public class ExamController {
     }
 
     public ExamAttempt startExam(Course course, Difficulty difficulty, Unit unit, Exam exam) {
-        Student student = AuthController.getInstance().getLoggedStudent();
+        Student student = getCurrentStudent();
+
         return new ExamAttempt(student, course, difficulty, unit, exam);
     }
 
@@ -45,7 +46,12 @@ public class ExamController {
     }
 
     public ExamAttempt getLatestAttempt(Unit unit) {
-        Student student = AuthController.getInstance().getLoggedStudent();
+        Student student = getCurrentStudent();
+
         return ExamAttempt.getLatestForStudent(student, unit);
+    }
+
+    private Student getCurrentStudent() {
+        return AuthController.getInstance().getLoggedStudent();
     }
 }

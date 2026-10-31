@@ -4,4 +4,6 @@ public class Professor extends User {
     public Professor(String name, String username, String email, String password) {
         super(name, username, password);
     }
+
+    // will not be implemented for now, just mocked
 }

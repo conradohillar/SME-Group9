@@ -16,22 +16,24 @@ public class ExerciseController {
     }
 
     public boolean shouldShowHint() {
-        Student currentStudent = AuthController.getInstance().getLoggedStudent();
-
+        Student currentStudent = getCurrentStudent();
         boolean wantsHints = currentStudent.getUserPreferences().wantsHints();
-        boolean canUseHints = currentStudent.getRemainingHints() > 0
-                || currentStudent.getRemainingHints() == -1;
+        boolean canUseHints = currentStudent.getRemainingHints() > 0 || currentStudent.getRemainingHints() == -1;
 
         return wantsHints && canUseHints;
     }
 
     public void useHint() {
-        AuthController.getInstance().getLoggedStudent().useHint();
+        getCurrentStudent().useHint();
     }
 
     public boolean shouldShowExplanation() {
-        Student currentStudent = AuthController.getInstance().getLoggedStudent();
+        Student currentStudent = getCurrentStudent();
         return currentStudent.getUserPreferences().wantsExplanations();
+    }
+
+    private Student getCurrentStudent() {
+        return AuthController.getInstance().getLoggedStudent();
     }
 
 }

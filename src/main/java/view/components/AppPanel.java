@@ -1,4 +1,3 @@
-
 package view.components;
 
 import controller.CourseController;
@@ -13,41 +12,51 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class AppPanel extends JPanel {
+    private final CourseController courseController;
 
-    private final JPanel breadcrumbPanel;
+    private JPanel breadcrumbPanel;
     private final JPanel contentPanel;
     private final JPanel homePanel;
-    private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
 
+    private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
     private final Map<Course, JButton> courseButtons = new HashMap<>();
+    private JButton userProfileButton;
 
     public record Breadcrumb(String label, Runnable action) {}
 
     public AppPanel(List<Course> courses, Consumer<Course> onCourseSelected, Runnable onUserProfileClicked) {
+        courseController = CourseController.getInstance();
+
         setLayout(new BorderLayout());
 
+        add(createHeaderPanel(onUserProfileClicked), BorderLayout.NORTH);
+
+        contentPanel = new JPanel(new BorderLayout());
+        add(contentPanel, BorderLayout.CENTER);
+
+        homePanel = createHomePanel(courses, onCourseSelected);
+
+        showHome();
+    }
+
+    private JPanel createHeaderPanel(Runnable onUserProfileClicked) {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
 
         JLabel appTitle = new JLabel("Learning Platform");
-        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
-        headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
-
-        JPanel topPanel = new JPanel(new BorderLayout());
-
         appTitle.setFont(appTitle.getFont().deriveFont(Font.BOLD, 24f));
 
-        JButton userButton = new JButton("♙");
-        userButton.setToolTipText("User Profile");
-        userButton.setFont(userButton.getFont().deriveFont(20f));
-        userButton.setFocusPainted(false);
-        userButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        userProfileButton = new JButton("♙");
+        userProfileButton.addActionListener(e -> onUserProfileClicked.run());
+        userProfileButton.setToolTipText("User Profile");
+        userProfileButton.setFont(userProfileButton.getFont().deriveFont(20f));
+        userProfileButton.setFocusPainted(false);
+        userProfileButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        userButton.addActionListener(e -> onUserProfileClicked.run());
-
+        JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.add(appTitle, BorderLayout.WEST);
-        topPanel.add(userButton, BorderLayout.EAST);
+        topPanel.add(userProfileButton, BorderLayout.EAST);
 
         breadcrumbPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         breadcrumbPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -55,13 +64,8 @@ public class AppPanel extends JPanel {
         headerPanel.add(topPanel);
         headerPanel.add(Box.createVerticalStrut(10));
         headerPanel.add(breadcrumbPanel);
-        add(headerPanel, BorderLayout.NORTH);
 
-        contentPanel = new JPanel(new BorderLayout());
-        add(contentPanel, BorderLayout.CENTER);
-
-        homePanel = createHomePanel(courses, onCourseSelected);
-        showHome();
+        return headerPanel;
     }
 
     private JPanel createHomePanel(List<Course> courses, Consumer<Course> onCourseSelected) {
@@ -77,35 +81,53 @@ public class AppPanel extends JPanel {
         panel.add(Box.createVerticalStrut(20));
 
         for (Course course : courses) {
-            if (CourseController.getInstance().canShowCourse(course)) {
+            if (courseController.canShowCourse(course)) {
                 JButton courseButton = new JButton(course.getTitle());
                 courseButton.setAlignmentX(Component.LEFT_ALIGNMENT);
                 courseButton.setMaximumSize(new Dimension(400, 45));
-                courseButton.addActionListener(
-                        e -> onCourseSelected.accept(course)
-                );
+                courseButton.addActionListener(e -> onCourseSelected.accept(course));
+
                 courseButtons.put(course, courseButton);
+
                 panel.add(courseButton);
                 panel.add(Box.createVerticalStrut(12));
             }
         }
+
         return panel;
     }
 
     public void showHome() {
         clearBreadcrumbs();
+        updateCourseButtons();
+
+        addBreadcrumb("Home", null);
+        setContent(homePanel);
+        setBreadcrumbsVisible(false);
+    }
+
+    public void showUserProfile(Component profilePanel) {
+        setContent(profilePanel);
+        setUserProfileButtonVisible(false);
+    }
+
+    public void setUserProfileButtonVisible(boolean visible) {
+        userProfileButton.setVisible(visible);
+        revalidate();
+        repaint();
+    }
+
+    private void updateCourseButtons() {
         for (Map.Entry<Course, JButton> entry : courseButtons.entrySet()) {
             Course course = entry.getKey();
             JButton button = entry.getValue();
-            if (CourseController.getInstance().isCoursePassed(course)) {
+
+            if (courseController.isCoursePassed(course)) {
                 button.setForeground(new Color(0, 128, 0));
             } else {
                 button.setForeground(UIManager.getColor("Button.foreground"));
             }
         }
-        addBreadcrumb("Home", null);
-        setContent(homePanel);
-        setBreadcrumbsVisible(false);
     }
 
     public void setContent(Component component) {
@@ -113,6 +135,8 @@ public class AppPanel extends JPanel {
         contentPanel.add(component, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
+
+        setUserProfileButtonVisible(true);
     }
 
     public void clearBreadcrumbs() {
@@ -131,31 +155,38 @@ public class AppPanel extends JPanel {
         for (int i = 0; i < breadcrumbs.size(); i++) {
             Breadcrumb breadcrumb = breadcrumbs.get(i);
             boolean isLast = i == breadcrumbs.size() - 1;
-
             if (i > 0) {
                 breadcrumbPanel.add(new JLabel(">"));
             }
-
             if (!isLast && breadcrumb.action() != null) {
-                JButton button = new JButton(breadcrumb.label());
-                button.setBorderPainted(false);
-                button.setContentAreaFilled(false);
-                button.setFocusPainted(false);
-                button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                button.addActionListener(
-                        e -> breadcrumb.action().run()
-                );
-                breadcrumbPanel.add(button);
+                breadcrumbPanel.add(createBreadcrumbButton(breadcrumb));
             } else {
-                JLabel label = new JLabel(breadcrumb.label());
-                if (isLast) {
-                    label.setFont(label.getFont().deriveFont(Font.BOLD));
-                }
-                breadcrumbPanel.add(label);
+                breadcrumbPanel.add(createBreadcrumbLabel(breadcrumb, isLast));
             }
         }
+
         breadcrumbPanel.revalidate();
         breadcrumbPanel.repaint();
+    }
+
+    private JButton createBreadcrumbButton(Breadcrumb breadcrumb) {
+        JButton button = new JButton(breadcrumb.label());
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.addActionListener(e -> breadcrumb.action().run());
+
+        return button;
+    }
+
+    private JLabel createBreadcrumbLabel(Breadcrumb breadcrumb, boolean isLast) {
+        JLabel label = new JLabel(breadcrumb.label());
+        if (isLast) {
+            label.setFont(label.getFont().deriveFont(Font.BOLD));
+        }
+
+        return label;
     }
 
     public void setBreadcrumbsVisible(boolean visible) {

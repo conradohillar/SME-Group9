@@ -58,12 +58,6 @@ public class TheoreticalSectionPanel extends JPanel {
                 )
         );
 
-        JLabel typeLabel = new JLabel(material.getLearningMaterialName());
-        typeLabel.setFont(typeLabel.getFont().deriveFont(Font.BOLD, 14f));
-
-        panel.add(typeLabel);
-        panel.add(Box.createVerticalStrut(8));
-
         // TODO: design wise, make it dif for image, video, text (chiche)
         JTextArea contentArea = new JTextArea(String.valueOf(material.getContent()));
         contentArea.setEditable(false);

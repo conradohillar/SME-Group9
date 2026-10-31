@@ -14,7 +14,7 @@ public record Video(String videoUrl) implements LearningMaterial {
     }
 
     @Override
-    public String getLearningMaterialName() {
-        return "Video";
+    public String toString() {
+        return getContent();
     }
 }

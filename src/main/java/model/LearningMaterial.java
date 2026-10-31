@@ -14,5 +14,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = Video.class, name = "VIDEO"),
 })
 public interface LearningMaterial extends ContentType {
-    String getLearningMaterialName();
 }

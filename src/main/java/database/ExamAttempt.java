@@ -3,10 +3,9 @@ package database;
 import model.course.Course;
 import model.course.Difficulty;
 import model.course.Unit;
-import model.exam.Exam;
+import model.course.Exam;
 import model.user.Student;
 
-import java.time.Duration;
 import java.time.Instant;
 
 public class ExamAttempt {
@@ -32,10 +31,6 @@ public class ExamAttempt {
         this.unit = unit;
         this.exam = exam;
         this.startedAt = Instant.now();
-    }
-
-    public boolean isFinished() {
-        return finishedAt != null;
     }
 
     public Student getStudent() {
@@ -68,10 +63,6 @@ public class ExamAttempt {
 
     public boolean isPassed() {
         return passed;
-    }
-
-    public Duration getElapsedTime() {
-        return finishedAt == null ? Duration.ZERO : Duration.between(startedAt, finishedAt);
     }
 
     public Instant getStartedAt() {

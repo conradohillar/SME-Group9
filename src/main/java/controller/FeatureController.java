@@ -1,4 +1,6 @@
-package model.feature;
+package controller;
+
+import model.feature.FeatureType;
 
 import java.lang.Boolean;
 import java.util.EnumMap;

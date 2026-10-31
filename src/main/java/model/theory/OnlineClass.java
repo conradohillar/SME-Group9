@@ -11,4 +11,7 @@ public abstract class OnlineClass {
     private LocalDateTime scheduledDate;
     private Professor professor;
     private List<Student> students;
+
+    // will not be implemented for now, just mocked
+
 }

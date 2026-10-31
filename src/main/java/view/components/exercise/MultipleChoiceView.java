@@ -4,17 +4,15 @@ import model.ContentType;
 import model.Text;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MultipleChoiceView extends ExerciseView {
-    private final ButtonGroup group;
     private final List<JRadioButton> options;
 
     public MultipleChoiceView(List<String> options) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        group = new ButtonGroup();
+        ButtonGroup group = new ButtonGroup();
         this.options = new ArrayList<>();
 
         for (String option : options) {
@@ -32,6 +30,7 @@ public class MultipleChoiceView extends ExerciseView {
                 return new Text(option.getText());
             }
         }
+
         return null;
     }
 

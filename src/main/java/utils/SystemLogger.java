@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class SystemLogger {
-
     private static Logger systemLogger = null;
 
     private SystemLogger() {
@@ -33,6 +32,7 @@ public class SystemLogger {
         } catch (IOException | SecurityException e) {
             throw new ExceptionInInitializerError(e);
         }
+
         return logger;
     }
 }

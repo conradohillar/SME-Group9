@@ -2,9 +2,6 @@ package model.feature;
 
 public enum FeatureType {
     COURSE                  (false),    //core aspect of the system, without it there's nothing
-    COURSE_MATH             (true),
-    COURSE_HEALTHY_HABITS   (true),
-    COURSE_GREEN_LIVING     (true),
     EXAM                    (true),     //deactivating exams means users can pass to the next difficulty directly
     EXERCISE                (true),
     EXERCISE_MULTIPLE_CHOICE(true),
@@ -15,6 +12,7 @@ public enum FeatureType {
     EXERCISE_HINTS          (true),
     EXERCISE_EXPLANATIONS   (true),
     DIFFICULTY              (true),     //deactivating diff. makes a course have a single level (no leveling exams)
+    UNIT                    (false),
     LEARNING_MATERIAL       (false),
     LEARNING_MATERIAL_TEXT  (true),
     LEARNING_MATERIAL_VIDEO (true),
