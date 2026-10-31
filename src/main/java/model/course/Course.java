@@ -2,17 +2,19 @@ package model.course;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import model.LoggableState;
+import model.feature.FeatureType;
 import model.user.Student;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Course implements CompletableByStudent {
+public class Course implements CompletableByStudent, LoggableState {
     private final Topic topic;
     private final String title;
     private final String description;
     private final List<DifficultyLevel> difficultyLevels;
+    private final FeatureType featureType;
 
     @JsonCreator
     public Course(@JsonProperty("topic") Topic topic, @JsonProperty ("title") String title, @JsonProperty ("description") String description, @JsonProperty ("difficultyLevels") List<DifficultyLevel> difficultyLevels) {
@@ -20,6 +22,7 @@ public class Course implements CompletableByStudent {
         this.title = Objects.requireNonNull(title);
         this.description = description;
         this.difficultyLevels = List.copyOf(difficultyLevels);
+        this.featureType = FeatureType.COURSE;
     }
 
     public Topic getTopic() {
@@ -63,5 +66,16 @@ public class Course implements CompletableByStudent {
     public boolean isStudentEnrolled(Student student) {
         // TODO: completar
         return true;
+    }
+
+    @Override
+    public String[] getCurrentStateLog() {
+        String[] log = {"Course: { topic: " + topic};
+        return log;
+    }
+
+    @Override
+    public FeatureType getFeatureType() {
+        return null;
     }
 }

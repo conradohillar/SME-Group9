@@ -4,13 +4,21 @@ import java.lang.Boolean;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class FeatureManager {
+public class FeatureController {
+    private static FeatureController instance;
     private final Map<FeatureType, Boolean> activationsMap = new EnumMap<>(FeatureType.class);
 
-    public FeatureManager() {
+    private FeatureController() {
         for (FeatureType featureType : FeatureType.values()) {
             activationsMap.put(featureType, true);
         }
+    }
+
+    public static FeatureController getInstance() {
+        if (instance == null) {
+            instance = new FeatureController();
+        }
+        return instance;
     }
 
     public void activate(FeatureType featureType) {

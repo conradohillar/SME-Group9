@@ -1,14 +1,15 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import database.Database;
 import model.course.Course;
-import model.feature.FeatureManager;
+import model.feature.FeatureController;
 import model.feature.FeatureType;
 import model.user.Student;
 import utils.Populator;
 import view.MainFrame;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
 
 public class AppController implements ControllerInterface {
     private static AppController instance;
-    private final FeatureManager featureManager = new FeatureManager();
     private MainFrame mainFrame;
 
+    private final FeatureController featureController = FeatureController.getInstance();
     private final AuthController authController = AuthController.getInstance();
     private final ExerciseController exerciseController = ExerciseController.getInstance();
 
@@ -95,7 +96,7 @@ public class AppController implements ControllerInterface {
                  continue;
             }
             try {
-                featureManager.deactivate(FeatureType.valueOf(deactivation));
+                featureController.deactivate(FeatureType.valueOf(deactivation));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -103,7 +104,7 @@ public class AppController implements ControllerInterface {
 
         for (String activation : activationsList) {
             try {
-                featureManager.activate(FeatureType.valueOf(activation));
+                featureController.activate(FeatureType.valueOf(activation));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -131,6 +132,14 @@ public class AppController implements ControllerInterface {
 
     @Override
     public String[] getStateAsLog() {
-        return new String[]{"hola", "chau", "como", "estas"};
+        Database database = Database.getInstance();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String coursesJson = "";
+        try {
+            coursesJson = ow.writeValueAsString(database.getCourses());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return new String[]{coursesJson};
     }
 }
