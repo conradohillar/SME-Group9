@@ -13,7 +13,9 @@ public class OpenEndedView extends ExerciseView {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         answerField = new JTextField();
         answerField.setPreferredSize(new Dimension(300, 30));
-        this.add(answerField, BorderLayout.CENTER);
+        answerField.setMaximumSize(new Dimension(300, 30));
+        answerField.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.add(answerField);
     }
 
     @Override

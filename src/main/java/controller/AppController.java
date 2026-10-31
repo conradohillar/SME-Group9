@@ -9,6 +9,7 @@ import model.user.Student;
 import utils.Populator;
 import view.MainFrame;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -106,6 +107,7 @@ public class AppController implements ControllerInterface {
             }
         }
 
+        SwingUtilities.invokeLater(() -> mainFrame.refreshWholeView());
         return 0;
     }
 
@@ -133,6 +135,9 @@ public class AppController implements ControllerInterface {
         ArrayList<String> logs = new ArrayList<>();{};
         for (Course course : database.getCourses()) {
             logs.addAll(course.getCurrentStateLog());
+        }
+        for (Student student : database.getStudents()) {
+            logs.addAll(student.getCurrentStateLog());
         }
         return logs.toArray(String[]::new);
     }

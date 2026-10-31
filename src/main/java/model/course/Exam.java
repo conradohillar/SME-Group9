@@ -3,10 +3,12 @@ package model.course;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import controller.FeatureController;
 import database.Database;
 import database.ExamAttempt;
 import model.ContentType;
 import model.exercise.Exercise;
+import model.feature.FeatureType;
 import model.user.Student;
 
 import java.time.Duration;
@@ -16,9 +18,10 @@ import java.util.Map;
 public class Exam extends PracticalSection {
     private Unit unit;
     private final double passingPercentage;
-
     @JsonIgnore
     private final Duration timeLimit;
+
+    private final FeatureController featureController = FeatureController.getInstance();
 
     @JsonCreator
     public Exam(
@@ -28,7 +31,7 @@ public class Exam extends PracticalSection {
             @JsonProperty("passingPercentage") double passingPercentage,
             @JsonProperty("timeLimitMinutes") long timeLimitMinutes
     ) {
-        super(title, description, exercises);
+        super(title, description, exercises, FeatureType.EXAM);
 
         if (exercises == null || exercises.isEmpty()) {
             throw new IllegalArgumentException("Exam must contain at least one exercise.");

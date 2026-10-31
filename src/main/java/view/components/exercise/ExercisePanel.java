@@ -29,7 +29,7 @@ public class ExercisePanel extends JPanel {
         hintsErrorMessage = new JLabel("You cannot use more hints.");
         feedback = new JLabel();
 
-        setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(5, 3));
 
         add(new JLabel(exercise.getPrompt()), BorderLayout.NORTH);
         add(exerciseView, BorderLayout.CENTER);
@@ -67,7 +67,6 @@ public class ExercisePanel extends JPanel {
         });
     }
 
-    // TODO: sacar la logica aca, deberia estar en el controller
     public void submitAnswer() {
         ContentType answer = exerciseView.getAnswer();
 
@@ -96,12 +95,10 @@ public class ExercisePanel extends JPanel {
         repaint();
     }
 
-    // TODO: ver que hace esta funcion aca, esta rara. igual el uso parece adecuado
     public Exercise getExercise() {
         return exercise;
     }
 
-    // TODO: ver que hace esta funcion aca, esta rara. igual el uso parece adecuado
     public ContentType getAnswer() {
         return exerciseView.getAnswer();
     }

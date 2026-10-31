@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
 import model.Text;
+import model.feature.FeatureType;
 
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ public class OpenEndedExercise extends Exercise {
 
     @JsonCreator
     public OpenEndedExercise(@JsonProperty("prompt") String prompt, @JsonProperty("correctAnswer") String correctAnswer, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
-        super(prompt, hint, explanation);
+        super(prompt, hint, explanation, FeatureType.EXERCISE_OPEN_ENDED);
         this.correctAnswer = new Text(Objects.requireNonNull(correctAnswer));
     }
 

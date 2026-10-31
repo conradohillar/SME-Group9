@@ -5,11 +5,14 @@ import model.course.Course;
 import model.course.Difficulty;
 import model.course.DifficultyLevel;
 import model.course.Unit;
+import model.feature.FeatureType;
 import model.user.Student;
 
 public class CourseController {
     private static CourseController instance;
     private static final int COINS_PER_UNIT = 2;
+
+    private static final FeatureController featureController = FeatureController.getInstance();
 
     private CourseController() {
     }
@@ -106,6 +109,20 @@ public class CourseController {
             enrollment.setCurrentUnitIndex(enrollment.getCurrentUnitIndex() + 1);
         }
         student.progressUnit();
+    }
+
+    // active or inactive features ------------------------------------------------
+
+    public boolean shouldShowTheoreticalSection() {
+        return featureController.isActive(FeatureType.THEORETICAL_SECTION);
+    }
+
+    public boolean shouldShowPracticalSection() {
+        return featureController.isActive(FeatureType.PRACTICAL_SECTION);
+    }
+
+    public boolean shouldShowExam() {
+        return featureController.isActive(FeatureType.EXAM);
     }
 
     private Student getCurrentStudent() {

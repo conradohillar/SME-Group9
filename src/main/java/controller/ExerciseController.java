@@ -17,7 +17,7 @@ public class ExerciseController {
 
     public boolean shouldShowHint() {
         Student currentStudent = getCurrentStudent();
-        boolean wantsHints = currentStudent.getUserPreferences().wantsHints();
+        boolean wantsHints = currentStudent.getStudentPreferences().wantsHints();
         boolean canUseHints = currentStudent.getRemainingHints() > 0 || currentStudent.getRemainingHints() == -1;
 
         return wantsHints && canUseHints;
@@ -29,7 +29,7 @@ public class ExerciseController {
 
     public boolean shouldShowExplanation() {
         Student currentStudent = getCurrentStudent();
-        return currentStudent.getUserPreferences().wantsExplanations();
+        return currentStudent.getStudentPreferences().wantsExplanations();
     }
 
     private Student getCurrentStudent() {

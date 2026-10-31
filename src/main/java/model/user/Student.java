@@ -7,6 +7,8 @@ import model.subscription.SubscriptionFactory;
 import model.subscription.SubscriptionTier;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Student extends User {
     private int streak = 0;
@@ -163,7 +165,17 @@ public class Student extends User {
 
     /* --------- preferences --------- */
 
-    public StudentPreferences getUserPreferences() {
+    public StudentPreferences getStudentPreferences() {
         return studentPreferences;
+    }
+
+    @Override
+    public List<String> getCurrentStateLog() {
+        List<String> log =  new ArrayList<>(List.of(new String[]{"Student: { username: " + getUsername() + ", name: " + getName() + ", streak: " + streak + ", coins: " + coins + ", subscription: "}));
+        for (String s : subscription.getCurrentStateLog()) {
+            log.add("\t"+s);
+        }
+        log.add("\t}");
+        return log;
     }
 }

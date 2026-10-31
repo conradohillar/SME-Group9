@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import model.ContentType;
-import model.Text;
+import model.feature.Feature;
+import model.feature.FeatureType;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -19,13 +20,14 @@ import model.Text;
         @JsonSubTypes.Type(value = TrueFalseExercise.class, name = "TRUE_FALSE"),
         @JsonSubTypes.Type(value = UploadImageExercise.class, name = "UPLOAD_IMAGE"),
 })
-public abstract class Exercise {
+public abstract class Exercise extends Feature {
     private final String prompt;
     private final String hint;
     private final String explanation;
 
     @JsonCreator
-    protected Exercise(@JsonProperty("prompt") String prompt, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
+    protected Exercise(@JsonProperty("prompt") String prompt, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation, FeatureType exerciseType) {
+        super(exerciseType);
         if (prompt == null || prompt.isBlank()) {
             throw new IllegalArgumentException("Prompt must not be blank.");
         }
@@ -53,5 +55,4 @@ public abstract class Exercise {
     public String getExplanation() {
         return explanation;
     }
-
 }

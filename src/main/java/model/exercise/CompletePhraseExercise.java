@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
 import model.Text;
+import model.feature.FeatureType;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public class CompletePhraseExercise extends Exercise {
 
     @JsonCreator
     public CompletePhraseExercise(@JsonProperty("prompt") String prompt, @JsonProperty("phrases") List<String> phrases, @JsonProperty("correctAnswer") String correctAnswer, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
-        super(prompt, hint, explanation);
+        super(prompt, hint, explanation, FeatureType.EXERCISE_COMPLETE_PHRASE);
         if (phrases == null || phrases.size() != 2) {
             throw new IllegalArgumentException("Phrases must contain exactly 2 strings.");
         }

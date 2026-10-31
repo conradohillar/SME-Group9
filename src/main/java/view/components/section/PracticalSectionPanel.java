@@ -20,10 +20,10 @@ public class PracticalSectionPanel extends JPanel {
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
         for (ExercisePanel exercise : exercises) {
+            exercise.setMaximumSize(new Dimension(Integer.MAX_VALUE, exercise.getPreferredSize().height + 10));
             contentPanel.add(exercise);
         }
 
-        contentPanel.add(Box.createVerticalStrut(15));
         contentPanel.add(submitButton);
 
         JScrollPane scrollPane = new JScrollPane(contentPanel);

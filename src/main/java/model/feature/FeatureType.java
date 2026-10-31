@@ -1,9 +1,9 @@
 package model.feature;
 
 public enum FeatureType {
-    COURSE                  (false),    //core aspect of the system, without it there's nothing
-    EXAM                    (true),     //deactivating exams means users can pass to the next difficulty directly
-    EXERCISE                (true),
+    COURSE                  (false),    // core aspect of the system, without it there's nothing
+    EXAM                    (true),     // deactivating exams means users can pass to the next unit directly
+    EXERCISE                (false),    // exercise as a concept cannot be deactivated. only a type of exercise or a whole practical section/exam
     EXERCISE_MULTIPLE_CHOICE(true),
     EXERCISE_TRUE_FALSE     (true),
     EXERCISE_COMPLETE_PHRASE(true),
@@ -11,18 +11,16 @@ public enum FeatureType {
     EXERCISE_UPLOAD_IMAGE   (true),
     EXERCISE_HINTS          (true),
     EXERCISE_EXPLANATIONS   (true),
-    DIFFICULTY              (true),     //deactivating diff. makes a course have a single level (no leveling exams)
+    DIFFICULTY              (false),
     UNIT                    (false),
     LEARNING_MATERIAL       (false),
-    LEARNING_MATERIAL_TEXT  (true),
-    LEARNING_MATERIAL_VIDEO (true),
-    LEARNING_MATERIAL_IMAGE (true),
-    SUBSCRIPTION            (true),     //deactivating subs. gives all users access to everything
-    ONLINE_CLASS            (true),
-    GROUP_CLASS             (true),
-    PERSONAL_CLASS          (true),
-    PRACTICAL_SECTION       (true),     //kind of equivalent to deactivating exercises
-    THEORETICAL_SECTION     (false);    //deactivating theoretical sections means that you can't learn anything
+    USER                    (false),
+    SUBSCRIPTION            (true, new SubscriptionFeatureHandler()),     // deactivating subs. gives all users access to everything
+    ONLINE_CLASS            (true),     // not implemented for now
+    GROUP_CLASS             (true),     // not implemented for now
+    PERSONAL_CLASS          (true),     // not implemented for now
+    PRACTICAL_SECTION       (true),     // deactivates the section completely no exercises shown
+    THEORETICAL_SECTION     (true);     // deactivating theoretical sections means that you can't learn anything
 
     private final boolean canBeDeactivated;
     private final FeatureHandler handler;

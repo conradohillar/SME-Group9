@@ -80,27 +80,27 @@ public class UserController {
     // --------- preferences ---------
 
     public boolean wantsHints() {
-        return getCurrentStudent().getUserPreferences().wantsHints();
+        return getCurrentStudent().getStudentPreferences().wantsHints();
     }
 
     public boolean wantsExplanations() {
-        return getCurrentStudent().getUserPreferences().wantsExplanations();
+        return getCurrentStudent().getStudentPreferences().wantsExplanations();
     }
 
     public boolean wantsAiChatbot() {
-        return getCurrentStudent().getUserPreferences().wantsAiChatbot();
+        return getCurrentStudent().getStudentPreferences().wantsAiChatbot();
     }
 
     public void setHintsEnabled(boolean enabled) {
-        getCurrentStudent().getUserPreferences().setHints(enabled);
+        getCurrentStudent().getStudentPreferences().setHints(enabled);
     }
 
     public void setExplanationsEnabled(boolean enabled) {
-        getCurrentStudent().getUserPreferences().setExplanations(enabled);
+        getCurrentStudent().getStudentPreferences().setExplanations(enabled);
     }
 
     public void setAiChatbotEnabled(boolean enabled) {
-        getCurrentStudent().getUserPreferences().setAiChatbot(enabled);
+        getCurrentStudent().getStudentPreferences().setAiChatbot(enabled);
     }
 
     private Student getCurrentStudent() {

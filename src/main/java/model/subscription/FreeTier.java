@@ -1,5 +1,8 @@
 package model.subscription;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FreeTier extends Subscription {
     private static final int HINT_PRICE = 1;
     private static final int UNIT_PRICE = 3;
@@ -34,4 +37,6 @@ public class FreeTier extends Subscription {
     public int getUnitPrice() {
         return UNIT_PRICE;
     }
+
+
 }

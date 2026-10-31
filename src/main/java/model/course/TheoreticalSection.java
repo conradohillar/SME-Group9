@@ -3,12 +3,10 @@ package model.course;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.LearningMaterial;
-import model.exercise.ExerciseType;
 import model.feature.FeatureType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TheoreticalSection extends Section {
     private final List<LearningMaterial> materials;

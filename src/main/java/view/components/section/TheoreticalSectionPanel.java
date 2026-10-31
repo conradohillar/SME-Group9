@@ -1,4 +1,3 @@
-
 package view.components.section;
 
 import model.LearningMaterial;
@@ -37,8 +36,9 @@ public class TheoreticalSectionPanel extends JPanel {
         for (LearningMaterial material : materials) {
             JPanel materialPanel = createMaterialPanel(material);
             materialPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            materialPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, materialPanel.getPreferredSize().height));
             materialsPanel.add(materialPanel);
-            materialsPanel.add(Box.createVerticalStrut(15));
+            materialsPanel.add(Box.createVerticalStrut(8));
         }
 
         JScrollPane scrollPane = new JScrollPane(materialsPanel);
@@ -50,7 +50,7 @@ public class TheoreticalSectionPanel extends JPanel {
 
     private JPanel createMaterialPanel(LearningMaterial material) {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setLayout(new BorderLayout());
         panel.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(Color.LIGHT_GRAY),
@@ -58,7 +58,6 @@ public class TheoreticalSectionPanel extends JPanel {
                 )
         );
 
-        // TODO: design wise, make it dif for image, video, text (chiche)
         JTextArea contentArea = new JTextArea(String.valueOf(material.getContent()));
         contentArea.setEditable(false);
         contentArea.setLineWrap(true);
@@ -66,7 +65,11 @@ public class TheoreticalSectionPanel extends JPanel {
         contentArea.setOpaque(false);
         contentArea.setFocusable(false);
 
-        panel.add(contentArea);
+        JScrollPane scrollPane = new JScrollPane(contentArea);
+        scrollPane.setBorder(null);
+        scrollPane.setPreferredSize(new Dimension(0, 130));
+
+        panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
     }

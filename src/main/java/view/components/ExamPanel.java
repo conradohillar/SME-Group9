@@ -35,10 +35,10 @@ public class ExamPanel extends JPanel {
 
     private final ExamAttempt attempt;
 
-    public ExamPanel(ExamAttempt attempt, ExerciseViewFactory exerciseViewFactory, ExerciseController exerciseController, ExamController examController, Runnable onFinished) {
+    public ExamPanel(ExamAttempt attempt, ExerciseViewFactory exerciseViewFactory, ExerciseController exerciseController, ExamController examController, Runnable backToUnit) {
         this.attempt = attempt;
         this.examController = examController;
-        this.onFinished = onFinished;
+        this.onFinished = backToUnit;
 
         Exam exam = attempt.getExam();
 

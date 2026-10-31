@@ -2,6 +2,8 @@ package model.feature;
 
 import controller.FeatureController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -25,5 +27,11 @@ public abstract class Feature {
         return getCurrentStateLog();
     }
 
-    public abstract List<String> getCurrentStateLog();
+    public FeatureType getFeatureType() {
+        return featureType;
+    }
+
+    public List<String> getCurrentStateLog() {
+        return List.of();
+    }
 }

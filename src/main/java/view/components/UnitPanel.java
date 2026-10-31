@@ -1,7 +1,9 @@
 package view.components;
 
 import controller.ExamController;
+import model.course.PracticalSection;
 import model.course.Section;
+import model.course.TheoreticalSection;
 import model.course.Unit;
 import database.ExamAttempt;
 
@@ -13,7 +15,7 @@ import java.util.function.Consumer;
 public class UnitPanel extends JPanel {
     private final ExamController examController;
 
-    public UnitPanel(Unit unit, Consumer<Section> onSectionSelected, Consumer<Unit> onExamSelected) {
+    public UnitPanel(Unit unit, boolean showTheoreticalSection, boolean showPracticalSection, boolean showExam, Consumer<Section> onSectionSelected, Consumer<Unit> onExamSelected) {
         examController = ExamController.getInstance();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -25,17 +27,27 @@ public class UnitPanel extends JPanel {
         add(title);
         add(Box.createVerticalStrut(20));
 
-        addSections(unit.getSections(), onSectionSelected);
+        addSections(unit.getSections(), showTheoreticalSection, showPracticalSection, onSectionSelected);
 
-        JButton examButton = createExamButton(unit, onExamSelected);
-        add(examButton);
-        add(Box.createVerticalStrut(12));
+        if (showExam) {
+            JButton examButton = createExamButton(unit, onExamSelected);
+            add(examButton);
+            add(Box.createVerticalStrut(12));
 
-        updateExamStatus(unit, examButton);
+            updateExamStatus(unit, examButton);
+        }
     }
 
-    private void addSections(List<Section> sections, Consumer<Section> onSectionSelected) {
+    private void addSections(List<Section> sections, boolean showTheoreticalSection, boolean showPracticalSection, Consumer<Section> onSectionSelected) {
         for (Section section : sections) {
+            if (section instanceof TheoreticalSection && !showTheoreticalSection) {
+                continue;
+            }
+
+            if (section instanceof PracticalSection && !showPracticalSection) {
+                continue;
+            }
+
             JButton sectionButton = new JButton(section.getTitle());
             sectionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             sectionButton.setMaximumSize(new Dimension(350, 40));

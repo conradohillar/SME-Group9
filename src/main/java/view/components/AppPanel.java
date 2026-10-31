@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class AppPanel extends JPanel {
+
     private final CourseController courseController;
 
     private JPanel breadcrumbPanel;
@@ -69,30 +70,34 @@ public class AppPanel extends JPanel {
     }
 
     private JPanel createHomePanel(List<Course> courses, Consumer<Course> onCourseSelected) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JPanel coursesPanel = new JPanel();
+        coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Available courses");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        panel.add(title);
-        panel.add(Box.createVerticalStrut(20));
+        coursesPanel.add(title);
+        coursesPanel.add(Box.createVerticalStrut(20));
 
         for (Course course : courses) {
             if (courseController.canShowCourse(course)) {
                 JButton courseButton = new JButton(course.getTitle());
-                courseButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+                courseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
                 courseButton.setMaximumSize(new Dimension(400, 45));
+                courseButton.setPreferredSize(new Dimension(400, 45));
                 courseButton.addActionListener(e -> onCourseSelected.accept(course));
 
                 courseButtons.put(course, courseButton);
 
-                panel.add(courseButton);
-                panel.add(Box.createVerticalStrut(12));
+                coursesPanel.add(courseButton);
+                coursesPanel.add(Box.createVerticalStrut(12));
             }
         }
+        panel.add(coursesPanel);
 
         return panel;
     }
@@ -106,7 +111,7 @@ public class AppPanel extends JPanel {
         setBreadcrumbsVisible(false);
     }
 
-    public void showUserProfile(Component profilePanel) {
+    public void showNoHeaderPanel(Component profilePanel) {
         setContent(profilePanel);
         setUserProfileButtonVisible(false);
     }
@@ -155,9 +160,11 @@ public class AppPanel extends JPanel {
         for (int i = 0; i < breadcrumbs.size(); i++) {
             Breadcrumb breadcrumb = breadcrumbs.get(i);
             boolean isLast = i == breadcrumbs.size() - 1;
+
             if (i > 0) {
                 breadcrumbPanel.add(new JLabel(">"));
             }
+
             if (!isLast && breadcrumb.action() != null) {
                 breadcrumbPanel.add(createBreadcrumbButton(breadcrumb));
             } else {

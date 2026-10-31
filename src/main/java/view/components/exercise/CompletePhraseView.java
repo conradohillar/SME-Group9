@@ -4,12 +4,15 @@ import model.ContentType;
 import model.Text;
 
 import javax.swing.*;
+import java.awt.FlowLayout;
 import java.util.List;
 
 public class CompletePhraseView extends ExerciseView {
     private final JTextField answerField;
 
     public CompletePhraseView(List<String> phrases) {
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+
         this.add(new JLabel(phrases.getFirst()));
         answerField = new JTextField(15);
         this.add(answerField);

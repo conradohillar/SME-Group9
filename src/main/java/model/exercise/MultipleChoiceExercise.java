@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.ContentType;
 import model.Text;
+import model.feature.FeatureType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class MultipleChoiceExercise extends Exercise {
 
     @JsonCreator
     public MultipleChoiceExercise(@JsonProperty("prompt") String prompt, @JsonProperty("options") List<String> options, @JsonProperty("correctAnswer") String correctAnswer, @JsonProperty("hint") String hint, @JsonProperty("explanation") String explanation) {
-        super(prompt, hint, explanation);
+        super(prompt, hint, explanation, FeatureType.EXERCISE_MULTIPLE_CHOICE);
         if (options == null || options.isEmpty()) {
             throw new IllegalArgumentException("Options must not be empty.");
         }
