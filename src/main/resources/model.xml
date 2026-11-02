@@ -2,7 +2,7 @@
 <featureModel>
 	<properties>
 		<graphics key="autolayoutconstraints" value="false"/>
-		<graphics key="legendposition" value="598,195"/>
+		<graphics key="legendposition" value="860,271"/>
 		<graphics key="legendautolayout" value="false"/>
 		<graphics key="showconstraints" value="true"/>
 		<graphics key="showshortnames" value="false"/>
@@ -18,7 +18,7 @@
 				<graphics key="collapsed" value="false"/>
 				<feature mandatory="true" name="User preferences"/>
 				<feature mandatory="true" name="Coins"/>
-				<feature name="Daily Streak"/>
+				<feature name="Streak"/>
 			</and>
 			<and mandatory="true" name="Courses">
 				<graphics key="collapsed" value="false"/>
@@ -28,78 +28,53 @@
 					<feature name="Healty Habits"/>
 					<feature name="Mathematics"/>
 				</or>
-				<alt mandatory="true" name="Progression Level">
+				<and mandatory="true" name="Difficulty Level">
 					<graphics key="collapsed" value="false"/>
-					<feature name="Limited Progress"/>
-					<feature name="Unlimited Progress"/>
-				</alt>
-				<feature mandatory="true" name="Exams"/>
+					<and mandatory="true" name="Unit">
+						<graphics key="collapsed" value="false"/>
+						<feature mandatory="true" name="Exam"/>
+						<or abstract="true" mandatory="true" name="Section">
+							<graphics key="collapsed" value="false"/>
+							<feature name="Theoretical Section"/>
+							<feature name="Practical Section"/>
+						</or>
+						<alt name="Progress Restriction">
+							<graphics key="collapsed" value="false"/>
+							<feature name="Limited Progress"/>
+							<feature name="Unlimited Progress"/>
+						</alt>
+					</and>
+				</and>
 			</and>
-			<feature name="AI Chatbot"/>
-			<and mandatory="true" name="Exercises">
+			<and abstract="true" mandatory="true" name="Exercises">
 				<graphics key="collapsed" value="false"/>
-				<or mandatory="true" name="Types">
+				<and mandatory="true" name="Types">
 					<graphics key="collapsed" value="false"/>
 					<feature name="Upload image"/>
 					<feature name="Open-ended question"/>
 					<feature name="Complete phrase"/>
 					<feature name="Multiple choice"/>
-					<feature name="Speaking"/>
 					<feature name="True/False"/>
-				</or>
-				<feature mandatory="true" name="Answer Explanations"/>
+				</and>
+				<feature name="Answer Explanations"/>
 				<alt name="Hints">
 					<graphics key="collapsed" value="false"/>
 					<feature name="Limited Hints"/>
 					<feature name="Unlimited Hints"/>
 				</alt>
 			</and>
-			<or mandatory="true" name="Learning Methods">
+			<and mandatory="true" name="Learning Methods">
 				<graphics key="collapsed" value="false"/>
-				<and name="Text">
+				<feature name="Text">
 					<graphics key="collapsed" value="false"/>
-					<feature name="Image"/>
-					<feature name="Examples"/>
-				</and>
-				<feature name="Videos"/>
-				<or name="Online Classes">
-					<graphics key="collapsed" value="false"/>
-					<feature name="Group Classes"/>
-					<feature name="1-1 Classes"/>
-				</or>
-			</or>
-			<feature name="AI Integration"/>
-			<alt mandatory="true" name="Subscription">
+				</feature>
+				<feature name="Image"/>
+			</and>
+			<alt name="Subscription">
 				<graphics key="collapsed" value="false"/>
 				<feature name="Free"/>
 				<feature name="Premium"/>
 			</alt>
 		</and>
 	</struct>
-	<constraints>
-		<rule>
-			<imp>
-				<disj>
-					<var>AI Chatbot</var>
-					<disj>
-						<var>Upload image</var>
-						<var>Open-ended question</var>
-					</disj>
-				</disj>
-				<var>AI Integration</var>
-			</imp>
-		</rule>
-		<rule>
-			<imp>
-				<disj>
-					<var>Online Classes</var>
-					<disj>
-						<var>Unlimited Hints</var>
-						<var>Unlimited Progress</var>
-					</disj>
-				</disj>
-				<var>Premium</var>
-			</imp>
-		</rule>
-	</constraints>
 </featureModel>

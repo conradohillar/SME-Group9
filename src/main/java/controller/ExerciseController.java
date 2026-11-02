@@ -1,5 +1,6 @@
 package controller;
 
+import model.feature.FeatureType;
 import model.user.Student;
 
 public class ExerciseController {
@@ -16,6 +17,9 @@ public class ExerciseController {
     }
 
     public boolean shouldShowHint() {
+        if (!FeatureController.getInstance().isActive(FeatureType.EXERCISE_HINTS)) {
+            return false;
+        }
         Student currentStudent = getCurrentStudent();
         boolean wantsHints = currentStudent.getStudentPreferences().wantsHints();
         boolean canUseHints = currentStudent.getRemainingHints() > 0 || currentStudent.getRemainingHints() == -1;
@@ -28,6 +32,9 @@ public class ExerciseController {
     }
 
     public boolean shouldShowExplanation() {
+        if (!FeatureController.getInstance().isActive(FeatureType.EXERCISE_EXPLANATIONS)) {
+            return false;
+        }
         Student currentStudent = getCurrentStudent();
         return currentStudent.getStudentPreferences().wantsExplanations();
     }
