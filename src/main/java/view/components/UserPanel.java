@@ -16,6 +16,7 @@ public class UserPanel extends JPanel {
     private final JLabel coinsLabel;
 
     private final JPanel coinsRow;
+    private JPanel subscriptionRow;
 
     private final JButton subscriptionButton;
     private final JButton buyHintButton;
@@ -84,7 +85,12 @@ public class UserPanel extends JPanel {
 
         GridBagConstraints gbc = createAccountConstraints();
 
-        addAccountRow(accountPanel, gbc, 0, "Subscription tier:", subscriptionLabel, subscriptionButton);
+        subscriptionRow = createAccountRow("Subscription tier:", subscriptionLabel, subscriptionButton);
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridwidth = 3;
+        accountPanel.add(subscriptionRow, gbc);
+        gbc.gridwidth = 1;
         addAccountRow(accountPanel, gbc, 1, "Current streak:", streakLabel, null);
         addAccountRow(accountPanel, gbc, 2, "Remaining hints this week:", hintsLabel, buyHintButton);
         addAccountRow(accountPanel, gbc, 3, "Remaining units this week:", unitsLabel, buyUnitButton);
@@ -143,6 +149,14 @@ public class UserPanel extends JPanel {
         return gbc;
     }
 
+    private JPanel createAccountRow(String description, JLabel value, JButton actionButton) {
+        JPanel row = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = createAccountConstraints();
+        addAccountRow(row, gbc, 0, description, value, actionButton);
+
+        return row;
+    }
+
     private void addAccountRow(JPanel panel, GridBagConstraints gbc, int row, String description, JLabel value, JButton actionButton) {
         gbc.gridy = row;
         gbc.gridx = 0;
@@ -192,7 +206,7 @@ public class UserPanel extends JPanel {
     private void refreshAccountInformation() {
         boolean premium = controller.isPremium();
 
-        updateSubscriptionInformation(premium);
+        updateSubscriptionInformation(premium, controller.shouldShowSubscription());
         updateStreakInformation();
         updateHintsInformation(premium);
         updateUnitsInformation(premium);
@@ -202,13 +216,19 @@ public class UserPanel extends JPanel {
         repaint();
     }
 
-    private void updateSubscriptionInformation(boolean premium) {
+    private void updateSubscriptionInformation(boolean premium, boolean showSubscription) {
+        if (!showSubscription) {
+            subscriptionRow.setVisible(false);
+            coinsRow.setVisible(false);
+            return;
+        }
         subscriptionLabel.setText(controller.getSubscriptionTier().toString());
         if (premium) {
             subscriptionButton.setText("Downgrade subscription");
         } else {
             subscriptionButton.setText("Upgrade (€" + String.format("%.2f", controller.getPremiumMonthlyPrice()) + "/month)");
         }
+
     }
 
     private void updateStreakInformation() {

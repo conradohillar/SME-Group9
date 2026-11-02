@@ -1,9 +1,11 @@
+
 package view.components.section;
 
 import model.LearningMaterial;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.List;
 
 public class TheoreticalSectionPanel extends JPanel {
@@ -58,18 +60,42 @@ public class TheoreticalSectionPanel extends JPanel {
                 )
         );
 
-        JTextArea contentArea = new JTextArea(String.valueOf(material.getContent()));
-        contentArea.setEditable(false);
-        contentArea.setLineWrap(true);
-        contentArea.setWrapStyleWord(true);
-        contentArea.setOpaque(false);
-        contentArea.setFocusable(false);
+        if (material instanceof model.Image image) {
+            URL imageUrl = getClass().getClassLoader().getResource(image.getContent().replaceFirst("^/", ""));
 
-        JScrollPane scrollPane = new JScrollPane(contentArea);
-        scrollPane.setBorder(null);
-        scrollPane.setPreferredSize(new Dimension(0, 130));
+            if (imageUrl != null) {
+                ImageIcon icon = new ImageIcon(imageUrl);
 
-        panel.add(scrollPane, BorderLayout.CENTER);
+                int maxWidth = 300;
+                int originalWidth = icon.getIconWidth();
+                int originalHeight = icon.getIconHeight();
+
+                if (originalWidth > maxWidth) {
+                    int scaledHeight = (int) ((double) originalHeight * maxWidth / originalWidth);
+                    java.awt.Image scaledImage = icon.getImage().getScaledInstance(maxWidth, scaledHeight, java.awt.Image.SCALE_SMOOTH);
+                    icon = new ImageIcon(scaledImage);
+                }
+
+                JLabel imageLabel = new JLabel(icon);
+                imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                panel.add(imageLabel, BorderLayout.CENTER);
+            } else {
+                panel.add(new JLabel("Image not found: " + image.getContent()), BorderLayout.CENTER);
+            }
+        } else {
+            JTextArea contentArea = new JTextArea(String.valueOf(material.getContent()));
+            contentArea.setEditable(false);
+            contentArea.setLineWrap(true);
+            contentArea.setWrapStyleWord(true);
+            contentArea.setOpaque(false);
+            contentArea.setFocusable(false);
+
+            JScrollPane scrollPane = new JScrollPane(contentArea);
+            scrollPane.setBorder(null);
+            scrollPane.setPreferredSize(new Dimension(0, 130));
+
+            panel.add(scrollPane, BorderLayout.CENTER);
+        }
 
         return panel;
     }

@@ -1,5 +1,6 @@
 package controller;
 
+import model.feature.FeatureType;
 import model.subscription.SubscriptionTier;
 import model.user.Student;
 
@@ -41,10 +42,14 @@ public class UserController {
         return getSubscriptionTier() == SubscriptionTier.PREMIUM;
     }
 
+    public boolean shouldShowSubscription() {
+        return FeatureController.getInstance().isActive(FeatureType.SUBSCRIPTION);
+    }
+
     // --------- subscription ---------
 
     public double getPremiumMonthlyPrice() {
-        return new model.subscription.PremiumTier().getMonthlyPrice();
+        return SubscriptionTier.PREMIUM.getMonthlyPrice();
     }
 
     public void upgradeSubscription() {

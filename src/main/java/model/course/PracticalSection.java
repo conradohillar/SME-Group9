@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import controller.FeatureController;
 import model.exercise.Exercise;
 import model.exercise.ExerciseType;
-import model.feature.Feature;
 import model.feature.FeatureType;
 
 import java.util.ArrayList;

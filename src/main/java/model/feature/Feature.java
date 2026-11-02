@@ -1,9 +1,8 @@
 package model.feature;
 
 import controller.FeatureController;
+import model.LoggableState;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -12,7 +11,7 @@ import java.util.List;
     The design is so that features are default-activated, methods need to override activate() and deactivate()
     to truly do something.
 */
-public abstract class Feature {
+public abstract class Feature implements LoggableState {
     protected final FeatureType featureType;
 
     protected Feature(FeatureType featureType) {
@@ -31,7 +30,4 @@ public abstract class Feature {
         return featureType;
     }
 
-    public List<String> getCurrentStateLog() {
-        return List.of();
-    }
 }

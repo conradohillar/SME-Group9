@@ -3,9 +3,11 @@ package database;
 
 import model.course.Course;
 import model.course.Difficulty;
+import model.course.Exam;
 import model.course.Unit;
 import model.user.Student;
 
+import java.time.Instant;
 import java.util.*;
 
 public class Database {
@@ -58,6 +60,14 @@ public class Database {
 
     public List<Course> getCourses() {
         return List.copyOf(courses);
+    }
+
+    public List<Unit> getAllUnits() {
+        List<Unit> units = new ArrayList<>();
+        for (Course course : courses) {
+            units.addAll(course.getAllUnits());
+        }
+        return units;
     }
 
     // enrollment related methods ------------------------------------------------------------------------
@@ -131,7 +141,7 @@ public class Database {
         return attemptsByUnit.get(unit);
     }
 
-    // private classes ------------------------------------------------------------------------
+    // inner classes ------------------------------------------------------------------------
 
     public static class EnrollmentDto {
         private final Course course;

@@ -6,12 +6,12 @@ import model.feature.FeatureType;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Subscription extends Feature {
+public class Subscription extends Feature {
     private SubscriptionTier tier;
     private boolean isActive; // we leave this field for future purposes
     // i.e. if the payment is not done in a premium plan, the subscription should be deactivated
 
-    protected Subscription(SubscriptionTier tier, boolean active) {
+    public Subscription(SubscriptionTier tier, boolean active) {
         super(FeatureType.SUBSCRIPTION);
         this.tier = tier;
         this.isActive = active;
@@ -21,15 +21,29 @@ public abstract class Subscription extends Feature {
         return tier;
     }
 
-    public abstract int getMaxUnitsPerWeek();
+    public void changeTier(SubscriptionTier newTier) {
+        tier = newTier;
+    }
 
-    public abstract int getMaxHintsPerWeek();
+    public int getMaxUnitsPerWeek() {
+        return tier.getMaxUnitsPerWeek();
+    }
 
-    public abstract double getMonthlyPrice();
+    public int getMaxHintsPerWeek() {
+        return tier.getMaxHintsPerWeek();
+    }
 
-    public abstract int getHintPrice();
+    public double getMonthlyPrice() {
+        return tier.getMonthlyPrice();
+    }
 
-    public abstract int getUnitPrice();
+    public int getHintPrice() {
+        return tier.getHintPrice();
+    }
+
+    public int getUnitPrice() {
+        return tier.getUnitPrice();
+    }
 
     @Override
     public List<String> getCurrentStateLog() {

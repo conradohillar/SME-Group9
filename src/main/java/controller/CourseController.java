@@ -1,10 +1,7 @@
 package controller;
 
 import database.Database;
-import model.course.Course;
-import model.course.Difficulty;
-import model.course.DifficultyLevel;
-import model.course.Unit;
+import model.course.*;
 import model.feature.FeatureType;
 import model.user.Student;
 
@@ -40,6 +37,9 @@ public class CourseController {
     }
 
     public boolean isDifficultyLevelUnlocked(Course course, DifficultyLevel difficultyLevel) {
+        if (!shouldShowExam()) {
+            return true;
+        }
         Student currentStudent = getCurrentStudent();
         Database database = Database.getInstance();
         Difficulty currentDifficulty = database.getCurrentDifficulty(currentStudent, course);
@@ -50,11 +50,17 @@ public class CourseController {
 
     public boolean isDifficultyLevelPassed(DifficultyLevel level) {
         Student currentStudent = getCurrentStudent();
-
-        return level.getUnits().getLast().getUnitExam().isCompletedByStudent(currentStudent);
+        Exam lastUnitExam = level.getUnits().getLast().getUnitExam();
+        if (!shouldShowExam() || lastUnitExam == null) {
+            return false;
+        }
+        return lastUnitExam.isCompletedByStudent(currentStudent);
     }
 
     public boolean isUnitUnlocked(Course course, Unit unit) {
+        if (!shouldShowExam()) {
+            return true;
+        }
         Student currentStudent = getCurrentStudent();
         Database database = Database.getInstance();
 
@@ -81,7 +87,11 @@ public class CourseController {
 
     public boolean isUnitPassed(Unit unit) {
         Student currentStudent = getCurrentStudent();
-        return unit.getUnitExam().isCompletedByStudent(currentStudent);
+        Exam unitExam = unit.getUnitExam();
+        if (!shouldShowExam() || unitExam == null) {
+            return false;
+        }
+        return unitExam.isCompletedByStudent(currentStudent);
     }
 
     public void passUnitForStudent(Student student, Unit unit, Course course, Difficulty difficulty) {

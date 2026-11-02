@@ -2,8 +2,8 @@ package database;
 
 import model.course.Course;
 import model.course.Difficulty;
-import model.course.Unit;
 import model.course.Exam;
+import model.course.Unit;
 import model.user.Student;
 
 import java.time.Instant;

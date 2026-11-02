@@ -55,6 +55,14 @@ public class Course extends Feature implements CompletableByStudent {
                 .orElse(List.of());
     }
 
+    public List<Unit> getAllUnits() {
+        List<Unit> units = new ArrayList<>();
+        for (Difficulty d : Difficulty.values()) {
+            units.addAll(getUnitsByDifficulty(d));
+        }
+        return units;
+    }
+
     public boolean isCompletedByStudent(Student student) {
         return difficultyLevels.stream().allMatch(dl -> dl.isCompletedByStudent(student));
     }

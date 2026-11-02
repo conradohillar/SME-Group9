@@ -10,10 +10,7 @@ public static void main(String[] args) {
         appController.enableUIView();
 
         // this has to be a different thread or else it doesn't work because Scanner.nextLine() is blocking
-        new Thread(
-                appController::runConsoleLoop,
-                "Console-Thread"
-        ).start();
+        new Thread(appController::runConsoleLoop, "Console-Thread").start();
     });
 }
 

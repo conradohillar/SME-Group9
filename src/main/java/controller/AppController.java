@@ -1,7 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import database.Database;
 import model.course.Course;
 import model.feature.FeatureType;
@@ -95,6 +93,9 @@ public class AppController implements ControllerInterface {
             try {
                 featureController.deactivate(FeatureType.valueOf(deactivation));
             } catch (Exception e) {
+                if (e.getMessage().equals("No enum constant model.feature.FeatureType." + deactivation)) {
+                    System.out.println("Feature type \"" + deactivation + "\" not found.");
+                }
                 System.out.println(e.getMessage());
             }
         }
@@ -139,6 +140,7 @@ public class AppController implements ControllerInterface {
         for (Student student : database.getStudents()) {
             logs.addAll(student.getCurrentStateLog());
         }
+        logs.addAll(FeatureController.getInstance().getCurrentStateLog());
         return logs.toArray(String[]::new);
     }
 }

@@ -3,7 +3,6 @@ package model.course;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import controller.FeatureController;
 import database.Database;
 import database.ExamAttempt;
 import model.ContentType;
@@ -20,8 +19,6 @@ public class Exam extends PracticalSection {
     private final double passingPercentage;
     @JsonIgnore
     private final Duration timeLimit;
-
-    private final FeatureController featureController = FeatureController.getInstance();
 
     @JsonCreator
     public Exam(

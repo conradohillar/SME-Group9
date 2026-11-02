@@ -3,7 +3,6 @@ package model.user;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.subscription.Subscription;
-import model.subscription.SubscriptionFactory;
 import model.subscription.SubscriptionTier;
 
 import java.time.LocalDate;
@@ -28,7 +27,7 @@ public class Student extends User {
     @JsonCreator
     public Student(@JsonProperty("firstName")String firstName, @JsonProperty("username")String lastName, @JsonProperty("password")String password, @JsonProperty("subscriptionTier")SubscriptionTier tier) {
         super(firstName, lastName, password);
-        this.subscription = SubscriptionFactory.createSubscription(tier);
+        this.subscription = new Subscription(tier, true);
         this.lastResetDate = LocalDate.now();
         this.studentPreferences = new StudentPreferences(true, true ,true); // by default everything is enabled
     }
@@ -46,15 +45,16 @@ public class Student extends User {
         this.coins += coins;
     }
 
-    public void spendCoins(int coins) {
+    public boolean spendCoins(int coins) {
         if (coins < 0) {
             throw new IllegalArgumentException("Coins to spend cannot be negative.");
         }
-        if (coins > this.coins) {
-            // silently ignore, just does not do anything
-            return;
+        if (coins > this.coins - coins) {
+            return false;
         }
         this.coins -= coins;
+
+        return true;
     }
 
     /* --------- activity --------- */
@@ -140,8 +140,9 @@ public class Student extends User {
         if (subscription.getMaxUnitsPerWeek() < 0) {
             throw new IllegalStateException("Units are unlimited.");
         }
-        spendCoins(subscription.getUnitPrice());
-        weeklyUnitsPurchased++;
+        if (spendCoins(subscription.getUnitPrice())) {
+            weeklyUnitsPurchased++;
+        }
     }
 
     public int getRemainingUnits() {
@@ -160,7 +161,7 @@ public class Student extends User {
     }
 
     public void changeSubscription(SubscriptionTier newTier) {
-        this.subscription = SubscriptionFactory.createSubscription(newTier);
+        subscription.changeTier(newTier);
     }
 
     /* --------- preferences --------- */

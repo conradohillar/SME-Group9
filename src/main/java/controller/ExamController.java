@@ -1,12 +1,12 @@
 package controller;
 
 import database.Database;
+import database.ExamAttempt;
 import model.ContentType;
 import model.course.Course;
 import model.course.Difficulty;
 import model.course.Unit;
 import model.course.Exam;
-import database.ExamAttempt;
 import model.exercise.Exercise;
 import model.user.Student;
 
