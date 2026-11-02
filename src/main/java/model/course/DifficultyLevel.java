@@ -8,6 +8,7 @@ import model.user.Student;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DifficultyLevel extends Feature implements CompletableByStudent {
     private final Difficulty difficulty;
@@ -17,7 +18,7 @@ public class DifficultyLevel extends Feature implements CompletableByStudent {
     public DifficultyLevel(@JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("units") List<Unit> units) {
         super(FeatureType.DIFFICULTY);
         this.difficulty = difficulty;
-        this.units = List.copyOf(units);
+        this.units = Objects.requireNonNull(List.copyOf(units));
     }
 
     public Difficulty getDifficulty() {

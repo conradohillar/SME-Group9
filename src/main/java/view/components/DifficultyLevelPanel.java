@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 
 public class DifficultyLevelPanel extends JPanel {
     private final CourseController courseController;
+    private int idx = 1;
 
     public DifficultyLevelPanel(Course course, DifficultyLevel difficultyLevel, Consumer<Unit> onUnitSelected) {
         courseController = CourseController.getInstance();
@@ -39,11 +40,15 @@ public class DifficultyLevelPanel extends JPanel {
     }
 
     private JButton createUnitButton(Course course, Unit unit, Consumer<Unit> onUnitSelected) {
-        JButton button = new JButton(unit.getTitle());
+        JButton button = new JButton("Unit " + idx + ": "+ unit.getTitle());
+        idx++;
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMaximumSize(new Dimension(350, 40));
         button.addActionListener(e -> onUnitSelected.accept(unit));
 
+        if (unit.getSections() == null) {
+            button.setVisible(false);
+        }
         if (!courseController.isUnitUnlocked(course, unit)) {
             button.setEnabled(false);
         }

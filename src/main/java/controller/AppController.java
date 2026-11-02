@@ -54,9 +54,18 @@ public class AppController implements ControllerInterface {
                 case "log":
                     Arrays.stream(getStateAsLog()).forEach(System.out::println);
                     break;
+                case "enableUI":
+                    enableUIView();
+                    break;
+                case "disableUI":
+                    disableUIView();
+                    break;
                 case "exit":
                     System.exit(0);
                     break;
+                    default:
+                        System.out.println("Unknown command: " + prompt);
+                        System.out.println("Available commands: activate [feature], deactivate [feature], log, enableUI, disableUI, exit");
             }
         }
     }
@@ -119,14 +128,13 @@ public class AppController implements ControllerInterface {
         if (mainFrame == null) {
             mainFrame = new MainFrame();
         }
-        if(!mainFrame.isDisplayable()) {
-            return false;
-        }
         mainFrame.setVisible(true);
-        return true;
+
+        return mainFrame.isDisplayable();
     }
 
     @Override
+    //TODO: ask professors if this method should kill te UI process or if simply hiding the content is enough (what we are doing now)
     public boolean disableUIView() {
         if (mainFrame == null) {
             return false;
@@ -156,6 +164,7 @@ public class AppController implements ControllerInterface {
             logs.addAll(student.getCurrentStateLog());
         }
         logs.addAll(FeatureController.getInstance().getCurrentStateLog());
+        logs.add("uiEnabled: " + isUIEnabled());
         return logs.toArray(String[]::new);
     }
 }

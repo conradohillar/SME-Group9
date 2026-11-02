@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Josefina Gonzalez Cornet",
+    "username": "jgonzalezcornet",
+    "password": "123456",
+    "subscriptionTier": "PREMIUM"
+  },
+  {
+    "name": "Conrado Hillar",
+    "username": "chillar",
+    "password": "123456",
+    "subscriptionTier": "FREE"
+  }
+]

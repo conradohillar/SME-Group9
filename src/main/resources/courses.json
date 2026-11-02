@@ -8,7 +8,7 @@
         "difficulty": "ELEMENTARY",
         "units": [
           {
-            "title": "Unit 1: Everyday Healthy Choices",
+            "title": "Everyday Healthy Choices",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -87,7 +87,7 @@
         "difficulty": "BEGINNER",
         "units": [
           {
-            "title": "Unit 1: Balanced Meals",
+            "title": "Balanced Meals",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -166,7 +166,7 @@
         "difficulty": "INTERMEDIATE",
         "units": [
           {
-            "title": "Unit 1: Sleep and Recovery",
+            "title": "Sleep and Recovery",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -244,7 +244,7 @@
         "difficulty": "ADVANCED",
         "units": [
           {
-            "title": "Unit 1: Building Sustainable Routines",
+            "title": "Building Sustainable Routines",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -329,7 +329,7 @@
         "difficulty": "ELEMENTARY",
         "units": [
           {
-            "title": "Unit 1: Everyday Recycling",
+            "title": "Everyday Recycling",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -403,7 +403,7 @@
         "difficulty": "BEGINNER",
         "units": [
           {
-            "title": "Unit 1: Saving Energy at Home",
+            "title": "Saving Energy at Home",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -482,7 +482,7 @@
         "difficulty": "INTERMEDIATE",
         "units": [
           {
-            "title": "Unit 1: Transport and Emissions",
+            "title": "Transport and Emissions",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -556,7 +556,7 @@
         "difficulty": "ADVANCED",
         "units": [
           {
-            "title": "Unit 1: Evaluating Environmental Claims",
+            "title": "Evaluating Environmental Claims",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -637,7 +637,7 @@
         "difficulty": "ELEMENTARY",
         "units": [
           {
-            "title": "Unit 1: Basic Arithmetic",
+            "title": "Basic Arithmetic",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -711,7 +711,7 @@
             }
           },
           {
-            "title": "Unit 2: Fractions and Decimals",
+            "title": "Fractions and Decimals",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -781,7 +781,7 @@
         "difficulty": "BEGINNER",
         "units": [
           {
-            "title": "Unit 1: Pre-algebra",
+            "title": "Pre-algebra",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -851,7 +851,7 @@
             }
           },
           {
-            "title": "Unit 2: Equations and Inequalities",
+            "title": "Equations and Inequalities",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -921,7 +921,7 @@
         "difficulty": "INTERMEDIATE",
         "units": [
           {
-            "title": "Unit 1: Functions and Precalculus",
+            "title": "Functions and Precalculus",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -990,7 +990,7 @@
             }
           },
           {
-            "title": "Unit 2: Trigonometry",
+            "title": "Trigonometry",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -1064,7 +1064,7 @@
         "difficulty": "ADVANCED",
         "units": [
           {
-            "title": "Unit 1: Limits and Continuity",
+            "title": "Limits and Continuity",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -1138,7 +1138,7 @@
             }
           },
           {
-            "title": "Unit 2: Differential Calculus",
+            "title": "Differential Calculus",
             "sections": [
               {
                 "type": "THEORETICAL",
@@ -1207,7 +1207,7 @@
             }
           },
           {
-            "title": "Unit 3: Integral Calculus",
+            "title": "Integral Calculus",
             "sections": [
               {
                 "type": "THEORETICAL",

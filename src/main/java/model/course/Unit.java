@@ -22,7 +22,7 @@ public class Unit extends Feature implements CompletableByStudent {
     public Unit(@JsonProperty("title") String title, @JsonProperty("sections") List<Section> sections, @JsonProperty("unitExam") Exam unitExam) {
         super(FeatureType.UNIT);
         this.title = Objects.requireNonNull(title);
-        this.sections = List.copyOf(sections);
+        this.sections = Objects.requireNonNull(List.copyOf(sections));
         this.unitExam = unitExam;
         if (this.unitExam != null) {
             unitExam.setUnit(this);

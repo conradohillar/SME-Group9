@@ -21,7 +21,7 @@ public class Course extends Feature implements CompletableByStudent {
         this.topic = Objects.requireNonNull(topic);
         this.title = Objects.requireNonNull(title);
         this.description = description;
-        this.difficultyLevels = List.copyOf(difficultyLevels);
+        this.difficultyLevels = Objects.requireNonNull(List.copyOf(difficultyLevels));
         super(FeatureType.COURSE);
     }
 
