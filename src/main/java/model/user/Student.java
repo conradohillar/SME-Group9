@@ -43,7 +43,7 @@ public class Student extends User {
             throw new IllegalArgumentException("Coins to add cannot be negative.");
         }
         if (this.subscription.getTier().equals(SubscriptionTier.PREMIUM)) {
-            throw new IllegalArgumentException("Premium users can't add coins");
+            throw new IllegalStateException("Premium users can't add coins");
         }
         this.coins += coins;
     }
@@ -53,7 +53,7 @@ public class Student extends User {
             throw new IllegalArgumentException("Coins to spend cannot be negative.");
         }
         if (this.subscription.getTier().equals(SubscriptionTier.PREMIUM)) {
-            throw new IllegalArgumentException("Premium users can't spend coins");
+            throw new IllegalStateException("Premium users can't spend coins");
         }
         if (coins > this.coins) {
             return false;
@@ -127,8 +127,9 @@ public class Student extends User {
         if (subscription.getMaxHintsPerWeek() < 0) {
             throw new IllegalStateException("Hints are unlimited.");
         }
-        spendCoins(subscription.getHintPrice());
-        hintsPurchased++;
+        if(spendCoins(subscription.getHintPrice())) {
+            hintsPurchased++;
+        }
     }
 
     /* --------- units --------- */
