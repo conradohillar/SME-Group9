@@ -18,8 +18,8 @@ public class Student extends User {
 
     private int weeklyUnitsProgressed = 0;
     private int weeklyHintsUsed = 0;
-    private int weeklyHintsPurchased = 0;
-    private int weeklyUnitsPurchased = 0;
+    private int hintsPurchased = 0;
+    private int unitsPurchased = 0;
 
     private Subscription subscription;
     private final StudentPreferences studentPreferences;
@@ -42,6 +42,9 @@ public class Student extends User {
         if (coins < 0) {
             throw new IllegalArgumentException("Coins to add cannot be negative.");
         }
+        if (this.subscription.getTier().equals(SubscriptionTier.PREMIUM)) {
+            throw new IllegalArgumentException("Premium users can't add coins");
+        }
         this.coins += coins;
     }
 
@@ -49,7 +52,10 @@ public class Student extends User {
         if (coins < 0) {
             throw new IllegalArgumentException("Coins to spend cannot be negative.");
         }
-        if (coins > this.coins - coins) {
+        if (this.subscription.getTier().equals(SubscriptionTier.PREMIUM)) {
+            throw new IllegalArgumentException("Premium users can't spend coins");
+        }
+        if (coins > this.coins) {
             return false;
         }
         this.coins -= coins;
@@ -81,8 +87,6 @@ public class Student extends User {
         if (lastResetDate == null || !today.isBefore(lastResetDate.plusDays(7))) {
             weeklyHintsUsed = 0;
             weeklyUnitsProgressed = 0;
-            weeklyHintsPurchased = 0;
-            weeklyUnitsPurchased = 0;
             lastResetDate = today;
         }
     }
@@ -104,6 +108,9 @@ public class Student extends User {
 
     public void useHint() {
         resetWeeklyCounters();
+        if(weeklyHintsUsed >= subscription.getMaxHintsPerWeek()) {
+            hintsPurchased--;
+        }
         weeklyHintsUsed++;
     }
 
@@ -112,7 +119,7 @@ public class Student extends User {
         int limit = subscription.getMaxHintsPerWeek();
         if (limit < 0) return -1;
 
-        return Math.max(0, limit + weeklyHintsPurchased - weeklyHintsUsed);
+        return Math.max(0, limit + hintsPurchased - weeklyHintsUsed);
     }
 
     public void buyHint() {
@@ -121,13 +128,16 @@ public class Student extends User {
             throw new IllegalStateException("Hints are unlimited.");
         }
         spendCoins(subscription.getHintPrice());
-        weeklyHintsPurchased++;
+        hintsPurchased++;
     }
 
     /* --------- units --------- */
 
     public void progressUnit() {
         resetWeeklyCounters();
+        if(weeklyUnitsProgressed >= subscription.getMaxUnitsPerWeek()) {
+            unitsPurchased--;
+        }
         weeklyUnitsProgressed++;
     }
 
@@ -141,16 +151,16 @@ public class Student extends User {
             throw new IllegalStateException("Units are unlimited.");
         }
         if (spendCoins(subscription.getUnitPrice())) {
-            weeklyUnitsPurchased++;
+            unitsPurchased++;
         }
     }
 
     public int getRemainingUnits() {
         resetWeeklyCounters();
         int limit = subscription.getMaxUnitsPerWeek();
-        if (limit < 0) return -1;
+        if (limit < 0) return - 1;
 
-        return Math.max(0, limit + weeklyUnitsPurchased - weeklyUnitsProgressed);
+        return Math.max(0, limit + unitsPurchased - weeklyUnitsProgressed);
     }
 
 
