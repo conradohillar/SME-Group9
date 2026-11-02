@@ -2,12 +2,11 @@ import controller.AppController;
 
 import javax.swing.*;
 
-public static void main(String[] args) {
+void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
         AppController appController = AppController.getInstance();
 
         appController.initializeApp();
-        appController.enableUIView();
 
         // this has to be a different thread or else it doesn't work because Scanner.nextLine() is blocking
         new Thread(appController::runConsoleLoop, "Console-Thread").start();

@@ -19,9 +19,9 @@ public enum FeatureType {
     LEARNING_MATERIAL       (false),
     USER                    (false),
     SUBSCRIPTION            (true, new SubscriptionFeatureHandler()),     // deactivating subs. gives all users access to everything
-    ONLINE_CLASS            (true),     // not implemented for now
-    GROUP_CLASS             (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
-    PERSONAL_CLASS          (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
+//    ONLINE_CLASS            (true),     // not implemented for now
+//    GROUP_CLASS             (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
+//    PERSONAL_CLASS          (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
     PRACTICAL_SECTION       (true, new PracticalSectionFeatureHandler(), new HashSet<>(Set.of(FeatureType.EXERCISE))),        // deactivates the section completely means no exercises shown
     THEORETICAL_SECTION     (true, new TheoreticalSectionFeatureHandler());     // deactivating theoretical sections means that you can't learn anything
 

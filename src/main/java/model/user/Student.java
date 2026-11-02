@@ -25,8 +25,8 @@ public class Student extends User {
     private final StudentPreferences studentPreferences;
 
     @JsonCreator
-    public Student(@JsonProperty("firstName")String firstName, @JsonProperty("username")String lastName, @JsonProperty("password")String password, @JsonProperty("subscriptionTier")SubscriptionTier tier) {
-        super(firstName, lastName, password);
+    public Student(@JsonProperty("firstName")String name, @JsonProperty("username")String username, @JsonProperty("password")String password, @JsonProperty("subscriptionTier")SubscriptionTier tier) {
+        super(name, username, password);
         this.subscription = new Subscription(tier, true);
         this.lastResetDate = LocalDate.now();
         this.studentPreferences = new StudentPreferences(true, true ,true); // by default everything is enabled

@@ -27,6 +27,8 @@ public class FeatureController implements LoggableState {
     }
 
     public void activate(FeatureType featureType) {
+        // the following is not an error, but it's a useful message to print later. Since we capture the exception, no crashing occurs
+        // TODO: ask professors if there is a cleaner way to handle this (also in deactivate)
         if (this.isActive(featureType)) {
             throw new IllegalArgumentException(featureType + " is already activated.");
         }
@@ -48,6 +50,7 @@ public class FeatureController implements LoggableState {
         if(!featureType.canBeDeactivated()) {
             throw new IllegalArgumentException("Feature " + featureType.name() + " is mandatory, it cannot be deactivated");
         }
+        // the following is not an error, but it's a useful message to print later. Since we capture the exception, no crashing occurs
         if (!this.isActive(featureType)) {
             throw new IllegalArgumentException(featureType + " is already deactivated.");
         }

@@ -76,6 +76,8 @@ public class AppController implements ControllerInterface {
                 database.enrollStudent(student, course);
             }
         }
+
+        enableUIView();
     }
 
     @Override
@@ -108,26 +110,39 @@ public class AppController implements ControllerInterface {
             }
         }
 
-        SwingUtilities.invokeLater(() -> mainFrame.refreshWholeView());
+        refreshUIView();
         return 0;
     }
 
     @Override
     public boolean enableUIView() {
-        if (mainFrame != null && mainFrame.isDisplayable()) {
-            mainFrame.setVisible(true);
-            return true;
+        if (mainFrame == null) {
+            mainFrame = new MainFrame();
         }
-
-        mainFrame = new MainFrame();
+        if(!mainFrame.isDisplayable()) {
+            return false;
+        }
         mainFrame.setVisible(true);
-
-        return false;
+        return true;
     }
 
     @Override
     public boolean disableUIView() {
+        if (mainFrame == null) {
+            return false;
+        }
+        mainFrame.setVisible(false);
         return false;
+    }
+
+    public boolean isUIEnabled() {
+        return mainFrame != null && mainFrame.isVisible();
+    }
+
+    public void refreshUIView() {
+        if(isUIEnabled()) {
+            SwingUtilities.invokeLater(() -> mainFrame.refreshWholeView());
+        }
     }
 
     @Override
