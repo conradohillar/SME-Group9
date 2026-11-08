@@ -6,16 +6,13 @@ import model.user.Student;
 import java.time.LocalDate;
 
 public class AuthController {
-    public static AuthController instance;
+    private static final AuthController instance = new AuthController();
     private static Student loggedStudent = null;
 
     private AuthController() {
     }
 
     public static AuthController getInstance() {
-        if (instance == null) {
-            instance = new AuthController();
-        }
         return instance;
     }
 

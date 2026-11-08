@@ -5,14 +5,11 @@ import model.subscription.SubscriptionTier;
 import model.user.Student;
 
 public class UserController {
-    private static UserController instance;
+    private static final UserController instance = new UserController();
 
     private UserController() {}
 
     public static UserController getInstance() {
-        if (instance == null) {
-            instance = new UserController();
-        }
         return instance;
     }
 

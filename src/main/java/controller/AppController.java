@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public class AppController implements ControllerInterface {
-    private static AppController instance;
+    private static final AppController instance = new AppController();
     private MainFrame mainFrame;
 
     private final FeatureController featureController = FeatureController.getInstance();
@@ -23,9 +23,6 @@ public class AppController implements ControllerInterface {
     }
 
     public static AppController getInstance() {
-        if (instance == null) {
-            instance = new AppController();
-        }
         return instance;
     }
 
@@ -156,7 +153,7 @@ public class AppController implements ControllerInterface {
     @Override
     public String[] getStateAsLog() {
         Database database = Database.getInstance();
-        ArrayList<String> logs = new ArrayList<>();{};
+        ArrayList<String> logs = new ArrayList<>();{}
         for (Course course : database.getCourses()) {
             logs.addAll(course.getCurrentStateLog());
         }

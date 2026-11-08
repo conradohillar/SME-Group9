@@ -6,7 +6,7 @@ import model.feature.FeatureType;
 import model.user.Student;
 
 public class CourseController {
-    private static CourseController instance;
+    private static final CourseController instance = new CourseController();
     private static final int COINS_PER_UNIT = 2;
 
     private static final FeatureController featureController = FeatureController.getInstance();
@@ -15,9 +15,6 @@ public class CourseController {
     }
 
     public static CourseController getInstance() {
-        if (instance == null) {
-            instance = new CourseController();
-        }
         return instance;
     }
 

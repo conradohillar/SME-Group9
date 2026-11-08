@@ -15,15 +15,12 @@ import java.time.Instant;
 import java.util.Map;
 
 public class ExamController {
-    private static ExamController instance;
+    private static final ExamController instance = new ExamController();
 
     private ExamController() {
     }
 
     public static ExamController getInstance() {
-        if (instance == null) {
-            instance = new ExamController();
-        }
         return instance;
     }
 

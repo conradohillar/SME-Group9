@@ -4,15 +4,12 @@ import model.feature.FeatureType;
 import model.user.Student;
 
 public class ExerciseController {
-    private static ExerciseController instance;
+    private static final ExerciseController instance = new ExerciseController();
 
     private ExerciseController() {
     }
 
     public static ExerciseController getInstance() {
-        if (instance == null) {
-            instance = new ExerciseController();
-        }
         return instance;
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class FeatureController implements LoggableState {
-    private static FeatureController instance;
+    private static final FeatureController instance = new FeatureController();
     private final Map<FeatureType, Boolean> activationsMap = new EnumMap<>(FeatureType.class);
 
     private FeatureController() {
@@ -20,9 +20,6 @@ public class FeatureController implements LoggableState {
     }
 
     public static FeatureController getInstance() {
-        if (instance == null) {
-            instance = new FeatureController();
-        }
         return instance;
     }
 
