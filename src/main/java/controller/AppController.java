@@ -26,46 +26,7 @@ public class AppController implements ControllerInterface {
         return instance;
     }
 
-    public void runConsoleLoop() {
-        System.out.println("Starting console loop...");
 
-        Scanner scanner = new Scanner(System.in);
-
-        while(true) {
-            System.out.print("Enter a command: ");
-            String prompt = scanner.nextLine();
-            String[] tokens = prompt.split(" ");
-            switch (tokens[0]) {
-                case "activate":
-                    if (tokens.length == 1) {
-                        System.out.println("Command usage: activate [feature_1] [feature_2] ... [feature_n]");
-                    }
-                    activate(new String[]{}, Arrays.copyOfRange(tokens, 1, tokens.length));
-                    break;
-                case "deactivate":
-                    if (tokens.length == 1) {
-                        System.out.println("Command usage: deactivate [feature_1] [feature_2] ... [feature_n]");
-                    }
-                    activate(Arrays.copyOfRange(tokens, 1, tokens.length), new String[]{});
-                    break;
-                case "log":
-                    Arrays.stream(getStateAsLog()).forEach(System.out::println);
-                    break;
-                case "enableUI":
-                    enableUIView();
-                    break;
-                case "disableUI":
-                    disableUIView();
-                    break;
-                case "exit":
-                    System.exit(0);
-                    break;
-                    default:
-                        System.out.println("Unknown command: " + prompt);
-                        System.out.println("Available commands: activate [feature], deactivate [feature], log, enableUI, disableUI, exit");
-            }
-        }
-    }
 
     public void initializeApp() {
         try {
