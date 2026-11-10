@@ -1,4 +1,4 @@
-package view.components.exercise;
+package view.pages;
 
 import model.exercise.*;
 

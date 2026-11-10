@@ -2,7 +2,7 @@ package model.exercise;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import model.ContentType;
+import utils.datatype.ContentType;
 import model.feature.FeatureType;
 
 public class UploadImageExercise extends Exercise {

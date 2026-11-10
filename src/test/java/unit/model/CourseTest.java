@@ -1,7 +1,7 @@
 package unit.model;
-import model.ContentType;
-import model.LearningMaterial;
-import model.Text;
+import utils.datatype.ContentType;
+import utils.datatype.LearningMaterial;
+import utils.datatype.Text;
 import model.course.*;
 import model.exercise.Exercise;
 import model.exercise.MultipleChoiceExercise;

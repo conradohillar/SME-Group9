@@ -3,6 +3,7 @@ package controller;
 import database.Database;
 import model.course.*;
 import model.feature.FeatureType;
+import model.subscription.SubscriptionTier;
 import model.user.Student;
 
 public class CourseController {
@@ -54,6 +55,10 @@ public class CourseController {
         return lastUnitExam.isCompletedByStudent(currentStudent);
     }
 
+    public boolean isUnitEmpty(Unit unit) {
+        return unit.getSections() == null;
+    }
+
     public boolean isUnitUnlocked(Course course, Unit unit) {
         if (!shouldShowExam()) {
             return true;
@@ -102,7 +107,9 @@ public class CourseController {
             throw new IllegalStateException("The student cannot skip units.");
         }
 
-        student.addCoins(COINS_PER_UNIT);
+        if (student.getSubscription().getTier().equals(SubscriptionTier.FREE)) {
+            student.addCoins(COINS_PER_UNIT);
+        }
 
         if (unit.equals(course.getUnitsByDifficulty(difficulty).getLast())) {
             Difficulty nextDifficulty = difficulty.getNextDifficulty();

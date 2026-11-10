@@ -3,6 +3,7 @@ package controller;
 import view.CLIView;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
@@ -44,6 +45,10 @@ public class CLIController {
         return Arrays.stream(CLICommand.values()).map(CLICommand::getTooltip).toList().toString();
     }
 
+    public void printFeaturesStateAsLog(List<String> featuresStateLog) {
+        featuresStateLog.forEach(System.out::println);
+    }
+
     // in this enum we can add a new command very easily, just define the function that it does and override the tooltip if necessary
     private enum CLICommand {
         HELP(
@@ -54,13 +59,13 @@ public class CLIController {
                 args -> {
                     if(checkArgsNotEmpty(args)) AppController.getInstance().activate(new String[]{}, args);
                     },
-                "activate [feature1, ..., featureN]"
+                "activate [feature1 feature2 ... featureN]"
         ),
         DEACTIVATE(
                 args -> {
                     if(checkArgsNotEmpty(args)) AppController.getInstance().activate(args, new String[]{});
                     },
-                "deactivate [feature1, ..., featureN]"
+                "deactivate [feature1 feature 2 ... featureN]"
         ),
         LOG(
                 _ -> Arrays.stream(AppController.getInstance().getStateAsLog()).forEach(System.out::println),
@@ -80,7 +85,7 @@ public class CLIController {
         );
 
         private final Consumer<String[]> action;
-        // the tooltip is what is shown for each command (if none is provided, only tha name is the tooltip)
+        // the tooltip is what is shown for each command (if none is provided, only the name is the tooltip)
         private final String tooltip;
 
         CLICommand(Consumer<String[]> action, String tooltip) {

@@ -1,8 +1,9 @@
-package view.components.exercise;
+package view.pages;
 
 import controller.ExerciseController;
-import model.ContentType;
+import utils.datatype.ContentType;
 import model.exercise.Exercise;
+import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.awt.*;
 public class ExercisePanel extends JPanel {
     private final Exercise exercise;
     private final ExerciseView exerciseView;
-    private final ExerciseController controller;
+    private final ExerciseController exerciseController;
 
     private final JButton hintButton;
     private final JLabel hint;
@@ -18,10 +19,10 @@ public class ExercisePanel extends JPanel {
     private final JLabel hintsErrorMessage;
     private final JLabel feedback;
 
-    public ExercisePanel(Exercise exercise, ExerciseView exerciseView, ExerciseController controller) {
+    public ExercisePanel(Exercise exercise, ExerciseView exerciseView, ExerciseController exerciseController) {
         this.exercise = exercise;
         this.exerciseView = exerciseView;
-        this.controller = controller;
+        this.exerciseController = exerciseController;
 
         hintButton = new JButton("Hint");
         hint = new JLabel(exercise.getHint());
@@ -49,14 +50,14 @@ public class ExercisePanel extends JPanel {
 
         add(sidePanel, BorderLayout.EAST);
 
-        if (!controller.shouldShowHint()) {
+        if (!exerciseController.shouldShowHint()) {
             hintButton.setEnabled(false);
         }
 
         hintButton.addActionListener(e -> {
-            if (controller.shouldShowHint()) {
+            if (exerciseController.shouldShowHint()) {
                 hint.setVisible(true);
-                controller.useHint();
+                exerciseController.useHint();
             } else {
                 hintsErrorMessage.setVisible(true);
             }
@@ -68,17 +69,14 @@ public class ExercisePanel extends JPanel {
     }
 
     public void submitAnswer() {
-        ContentType answer = exerciseView.getAnswer();
+        boolean isCorrect = exerciseController.isAnswerCorrect(exercise, exerciseView.getAnswer());
 
-        if (answer == null) {
-            feedback.setText("✗ Not answered. Correct answer was: " + exercise.getCorrectAnswer());
-            feedback.setForeground(new Color(128, 0, 0));
-        } else if (exercise.checkAnswer(answer)) {
+        if (isCorrect) {
             feedback.setText("✓ Correct!");
-            feedback.setForeground(new Color(0, 128, 0));
+            feedback.setForeground(Theme.CORRECT_COLOR);
         } else {
             feedback.setText("✗ Incorrect. Correct answer was: " + exercise.getCorrectAnswer());
-            feedback.setForeground(new Color(128, 0, 0));
+            feedback.setForeground(Theme.INCORRECT_COLOR);
         }
 
         exerciseView.setAnswerEnabled(false);
@@ -87,7 +85,7 @@ public class ExercisePanel extends JPanel {
         explanation.setVisible(false);
         hintsErrorMessage.setVisible(false);
 
-        if (controller.shouldShowExplanation()) {
+        if (exerciseController.shouldShowExplanation()) {
             explanation.setVisible(true);
         }
 

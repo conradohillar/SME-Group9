@@ -1,7 +1,7 @@
-package view.components.exercise;
+package view.pages;
 
-import model.ContentType;
-import model.Image;
+import utils.datatype.ContentType;
+import utils.datatype.Image;
 
 import javax.swing.*;
 import java.io.File;

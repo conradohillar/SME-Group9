@@ -1,4 +1,6 @@
-package view.components;
+package view.pages;
+
+import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +43,7 @@ public class LoginPanel extends JPanel {
 
     private JLabel createErrorLabel() {
         JLabel label = new JLabel(" ");
-        label.setForeground(new Color(128, 0, 0));
+        label.setForeground(Theme.INCORRECT_COLOR);
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
         return label;

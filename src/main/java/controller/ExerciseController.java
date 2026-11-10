@@ -1,7 +1,9 @@
 package controller;
 
+import model.exercise.Exercise;
 import model.feature.FeatureType;
 import model.user.Student;
+import utils.datatype.ContentType;
 
 public class ExerciseController {
     private static final ExerciseController instance = new ExerciseController();
@@ -34,6 +36,10 @@ public class ExerciseController {
         }
         Student currentStudent = getCurrentStudent();
         return currentStudent.getStudentPreferences().wantsExplanations();
+    }
+
+    public boolean isAnswerCorrect(Exercise exercise, ContentType userAnswer) {
+        return exercise.checkAnswer(userAnswer);
     }
 
     private Student getCurrentStudent() {

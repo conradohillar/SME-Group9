@@ -1,4 +1,5 @@
-package view.components;
+
+package view.pages;
 
 import controller.UserController;
 
@@ -15,8 +16,8 @@ public class UserPanel extends JPanel {
     private final JLabel unitsLabel;
     private final JLabel coinsLabel;
 
-    private final JPanel coinsRow;
-    private JPanel subscriptionRow;
+    private JLabel subscriptionDescriptionLabel;
+    private JLabel coinsDescriptionLabel;
 
     private final JButton subscriptionButton;
     private final JButton buyHintButton;
@@ -36,8 +37,6 @@ public class UserPanel extends JPanel {
         subscriptionButton = new JButton();
         buyHintButton = new JButton();
         buyUnitButton = new JButton();
-
-        coinsRow = new JPanel(new GridBagLayout());
 
         JPanel mainPanel = createMainPanel();
 
@@ -85,16 +84,14 @@ public class UserPanel extends JPanel {
 
         GridBagConstraints gbc = createAccountConstraints();
 
-        subscriptionRow = createAccountRow("Subscription tier:", subscriptionLabel, subscriptionButton);
-        gbc.gridy = 0;
-        gbc.gridx = 0;
-        gbc.gridwidth = 3;
-        accountPanel.add(subscriptionRow, gbc);
-        gbc.gridwidth = 1;
-        addAccountRow(accountPanel, gbc, 1, "Current streak:", streakLabel, null);
-        addAccountRow(accountPanel, gbc, 2, "Remaining hints this week:", hintsLabel, buyHintButton);
-        addAccountRow(accountPanel, gbc, 3, "Remaining units this week:", unitsLabel, buyUnitButton);
-        addAccountRow(accountPanel, gbc, 4, "Coins: ", coinsLabel, null);
+        subscriptionDescriptionLabel = new JLabel("Subscription tier:");
+        coinsDescriptionLabel = new JLabel("Coins:");
+
+        addAccountRow(accountPanel, gbc, 0, subscriptionDescriptionLabel, subscriptionLabel, subscriptionButton);
+        addAccountRow(accountPanel, gbc, 1, new JLabel("Current streak:"), streakLabel, null);
+        addAccountRow(accountPanel, gbc, 2, new JLabel("Remaining hints this week:"), hintsLabel, buyHintButton);
+        addAccountRow(accountPanel, gbc, 3, new JLabel("Remaining units this week:"), unitsLabel, buyUnitButton);
+        addAccountRow(accountPanel, gbc, 4, coinsDescriptionLabel, coinsLabel, null);
 
         return container;
     }
@@ -149,26 +146,22 @@ public class UserPanel extends JPanel {
         return gbc;
     }
 
-    private JPanel createAccountRow(String description, JLabel value, JButton actionButton) {
-        JPanel row = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = createAccountConstraints();
-        addAccountRow(row, gbc, 0, description, value, actionButton);
-
-        return row;
-    }
-
-    private void addAccountRow(JPanel panel, GridBagConstraints gbc, int row, String description, JLabel value, JButton actionButton) {
+    private void addAccountRow(JPanel panel, GridBagConstraints gbc, int row, JLabel description, JLabel value, JButton actionButton) {
         gbc.gridy = row;
         gbc.gridx = 0;
-        gbc.weightx = 1;
-        panel.add(new JLabel(description), gbc);
+        gbc.weightx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        panel.add(description, gbc);
 
         gbc.gridx = 1;
-        gbc.weightx = 0;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(value, gbc);
 
         if (actionButton != null) {
             gbc.gridx = 2;
+            gbc.weightx = 0;
+            gbc.fill = GridBagConstraints.NONE;
             panel.add(actionButton, gbc);
         }
     }
@@ -217,18 +210,20 @@ public class UserPanel extends JPanel {
     }
 
     private void updateSubscriptionInformation(boolean premium, boolean showSubscription) {
+        subscriptionDescriptionLabel.setVisible(showSubscription);
+        subscriptionLabel.setVisible(showSubscription);
+        subscriptionButton.setVisible(showSubscription);
+
         if (!showSubscription) {
-            subscriptionRow.setVisible(false);
-            coinsRow.setVisible(false);
             return;
         }
+
         subscriptionLabel.setText(controller.getSubscriptionTier().toString());
         if (premium) {
             subscriptionButton.setText("Downgrade subscription");
         } else {
             subscriptionButton.setText("Upgrade (€" + String.format("%.2f", controller.getPremiumMonthlyPrice()) + "/month)");
         }
-
     }
 
     private void updateStreakInformation() {
@@ -244,7 +239,7 @@ public class UserPanel extends JPanel {
             hintsLabel.setText(String.valueOf(controller.getRemainingHints()));
             buyHintButton.setText("Buy hint (" + controller.getHintPrice() + " coins)");
             buyHintButton.setVisible(true);
-            buyHintButton.setEnabled(controller.hasCoins());
+            buyHintButton.setEnabled(controller.hasEnoughCoinsForHint());
         }
     }
 
@@ -256,12 +251,13 @@ public class UserPanel extends JPanel {
             unitsLabel.setText(String.valueOf(controller.getRemainingUnits()));
             buyUnitButton.setText("Buy unit (" + controller.getUnitPrice() + " coins)");
             buyUnitButton.setVisible(true);
-            buyUnitButton.setEnabled(controller.hasCoins());
+            buyUnitButton.setEnabled(controller.hasEnoughCoinsForUnit());
         }
     }
 
     private void updateCoinsInformation(boolean premium) {
         coinsLabel.setText(String.valueOf(controller.getCoins()));
-        coinsRow.setVisible(!premium);
+        coinsDescriptionLabel.setVisible(!premium);
+        coinsLabel.setVisible(!premium);
     }
 }

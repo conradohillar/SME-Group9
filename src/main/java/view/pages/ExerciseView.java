@@ -1,6 +1,6 @@
-package view.components.exercise;
+package view.pages;
 
-import model.ContentType;
+import utils.datatype.ContentType;
 
 import javax.swing.*;
 

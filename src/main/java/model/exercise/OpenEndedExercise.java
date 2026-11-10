@@ -2,8 +2,8 @@ package model.exercise;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import model.ContentType;
-import model.Text;
+import utils.datatype.ContentType;
+import utils.datatype.Text;
 import model.feature.FeatureType;
 
 import java.util.Objects;
@@ -29,6 +29,9 @@ public class OpenEndedExercise extends Exercise {
 
     @Override
     public boolean checkAnswer(ContentType userAnswer) {
-        return correctAnswer.getContent().equals(userAnswer.getContent());
+        // formatting to ignore differences in case and spaces in between words etc
+        return correctAnswer.getContent().trim().replaceAll("\\s+", " ")
+                .equalsIgnoreCase(((String) userAnswer.getContent()).trim().replaceAll("\\s+", " "));
+
     }
 }

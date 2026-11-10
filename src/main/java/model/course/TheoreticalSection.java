@@ -2,7 +2,7 @@ package model.course;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import model.LearningMaterial;
+import utils.datatype.LearningMaterial;
 import model.feature.FeatureType;
 
 import java.util.ArrayList;

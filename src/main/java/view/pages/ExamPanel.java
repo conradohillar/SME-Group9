@@ -1,14 +1,16 @@
-package view.components;
+
+package view.pages;
 
 import controller.ExamController;
 import controller.ExerciseController;
-import model.ContentType;
+import utils.datatype.ContentType;
 import model.course.Exam;
 import database.ExamAttempt;
 import model.exercise.Exercise;
-import view.components.exercise.ExercisePanel;
-import view.components.exercise.ExerciseView;
-import view.components.exercise.ExerciseViewFactory;
+import view.components.PageHeading;
+import view.components.ScrollablePanel;
+import view.components.VerticalListPanel;
+import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,19 +69,9 @@ public class ExamPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 5, 20));
 
-        JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+        PageHeading heading = new PageHeading(exam.getTitle(), exam.getDescription(), 22);
 
-        JLabel titleLabel = new JLabel(exam.getTitle());
-        titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 22f));
-
-        JLabel descriptionLabel = new JLabel(exam.getDescription());
-
-        titlePanel.add(titleLabel);
-        titlePanel.add(Box.createVerticalStrut(5));
-        titlePanel.add(descriptionLabel);
-
-        headerPanel.add(titlePanel, BorderLayout.CENTER);
+        headerPanel.add(heading, BorderLayout.CENTER);
         headerPanel.add(timerLabel, BorderLayout.EAST);
 
         return headerPanel;
@@ -99,8 +91,7 @@ public class ExamPanel extends JPanel {
     }
 
     private JScrollPane createExercisesScrollPane(Exam exam, ExerciseViewFactory exerciseViewFactory, ExerciseController exerciseController) {
-        JPanel exercisesPanel = new JPanel();
-        exercisesPanel.setLayout(new BoxLayout(exercisesPanel, BoxLayout.Y_AXIS));
+        VerticalListPanel exercisesPanel = new VerticalListPanel(15);
         exercisesPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         for (Exercise exercise : exam.getExercises()) {
@@ -110,14 +101,10 @@ public class ExamPanel extends JPanel {
             exercisePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             exercisePanels.add(exercisePanel);
 
-            exercisesPanel.add(exercisePanel);
-            exercisesPanel.add(Box.createVerticalStrut(15));
+            exercisesPanel.addItem(exercisePanel);
         }
 
-        JScrollPane scrollPane = new JScrollPane(exercisesPanel);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-
-        return scrollPane;
+        return new ScrollablePanel(exercisesPanel);
     }
 
     private JPanel createFooterPanel() {
@@ -154,7 +141,7 @@ public class ExamPanel extends JPanel {
         timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
 
         if (remainingSeconds <= 60) {
-            timerLabel.setForeground(new Color(128, 0, 0));
+            timerLabel.setForeground(Theme.INCORRECT_COLOR);
         }
     }
 
@@ -178,10 +165,10 @@ public class ExamPanel extends JPanel {
         examController.finishExam(attempt, answers);
 
         if (attempt.isPassed()) {
-            resultLabel.setForeground(new Color(0, 128, 0));
+            resultLabel.setForeground(Theme.CORRECT_COLOR);
             resultLabel.setText(String.format("Passed! Score: %.1f%%", attempt.getScore()));
         } else {
-            resultLabel.setForeground(new Color(128, 0, 0));
+            resultLabel.setForeground(Theme.INCORRECT_COLOR);
             resultLabel.setText(String.format("Not passed. Score: %.1f%%", attempt.getScore()));
         }
 

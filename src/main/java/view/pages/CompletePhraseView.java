@@ -1,7 +1,7 @@
-package view.components.exercise;
+package view.pages;
 
-import model.ContentType;
-import model.Text;
+import utils.datatype.ContentType;
+import utils.datatype.Text;
 
 import javax.swing.*;
 import java.awt.FlowLayout;

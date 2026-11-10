@@ -1,7 +1,7 @@
-package view.components.exercise;
+package view.pages;
 
-import model.Boolean;
-import model.ContentType;
+import utils.datatype.Boolean;
+import utils.datatype.ContentType;
 
 import javax.swing.*;
 

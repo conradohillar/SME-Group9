@@ -1,4 +1,4 @@
-package model;
+package utils.datatype;
 
 // java records automatically implement equals and hashcode methods
 public record Boolean(boolean value) implements ContentType {

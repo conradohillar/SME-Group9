@@ -2,8 +2,8 @@ package model.exercise;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import model.ContentType;
-import model.Text;
+import utils.datatype.ContentType;
+import utils.datatype.Text;
 import model.feature.FeatureType;
 
 import java.util.ArrayList;

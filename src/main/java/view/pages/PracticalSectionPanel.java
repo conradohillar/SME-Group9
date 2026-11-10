@@ -1,6 +1,8 @@
-package view.components.section;
 
-import view.components.exercise.ExercisePanel;
+package view.pages;
+
+import view.components.ScrollablePanel;
+import view.components.VerticalListPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,19 +18,16 @@ public class PracticalSectionPanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        VerticalListPanel contentPanel = new VerticalListPanel(10);
 
         for (ExercisePanel exercise : exercises) {
             exercise.setMaximumSize(new Dimension(Integer.MAX_VALUE, exercise.getPreferredSize().height + 10));
-            contentPanel.add(exercise);
+            contentPanel.addItem(exercise);
         }
 
-        contentPanel.add(submitButton);
+        contentPanel.addLastItem(submitButton);
 
-        JScrollPane scrollPane = new JScrollPane(contentPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollPane = new ScrollablePanel(contentPanel);
         add(scrollPane, BorderLayout.CENTER);
 
         submitButton.addActionListener(e -> submitAnswers());

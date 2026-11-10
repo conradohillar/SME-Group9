@@ -1,16 +1,16 @@
-package model;
+package utils.datatype;
 
 import java.util.Objects;
 
 // java records automatically implement equals and hashcode methods
-public record Image(String imageUrl) implements LearningMaterial {
-    public Image {
-        Objects.requireNonNull(imageUrl, "Image url cannot be null");
+public record Video(String videoUrl) implements LearningMaterial {
+    public Video {
+        Objects.requireNonNull(videoUrl, "Video url cannot be null");
     }
 
     @Override
     public String getContent() {
-        return imageUrl;
+        return videoUrl;
     }
 
     @Override

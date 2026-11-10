@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import database.Database;
 import database.ExamAttempt;
-import model.ContentType;
+import utils.datatype.ContentType;
 import model.exercise.Exercise;
 import model.feature.FeatureType;
 import model.user.Student;

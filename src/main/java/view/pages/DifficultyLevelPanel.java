@@ -1,9 +1,14 @@
-package view.components;
+
+package view.pages;
 
 import controller.CourseController;
 import model.course.Course;
 import model.course.DifficultyLevel;
 import model.course.Unit;
+import view.components.CenteredActionButton;
+import view.components.PageHeading;
+import view.components.VerticalListPanel;
+import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,41 +24,32 @@ public class DifficultyLevelPanel extends JPanel {
 
         setLayout(new GridBagLayout());
 
-        JPanel unitsPanel = new JPanel();
-        unitsPanel.setLayout(new BoxLayout(unitsPanel, BoxLayout.Y_AXIS));
+        VerticalListPanel unitsPanel = new VerticalListPanel(12);
 
-        JLabel title = new JLabel(difficultyLevel.getDifficulty().getFeatureName());
-        title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        PageHeading heading = new PageHeading(difficultyLevel.getDifficulty().getFeatureName(), null, 22);
+        heading.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        unitsPanel.add(title);
-        unitsPanel.add(Box.createVerticalStrut(20));
+        unitsPanel.addItem(heading);
+        unitsPanel.addItem(Box.createVerticalStrut(20));
 
         List<Unit> units = difficultyLevel.getUnits();
         for (Unit unit : units) {
             JButton unitButton = createUnitButton(course, unit, onUnitSelected);
-            unitsPanel.add(unitButton);
-            unitsPanel.add(Box.createVerticalStrut(12));
+            unitsPanel.addItem(unitButton);
         }
 
         add(unitsPanel);
     }
 
     private JButton createUnitButton(Course course, Unit unit, Consumer<Unit> onUnitSelected) {
-        JButton button = new JButton("Unit " + idx + ": "+ unit.getTitle());
+        JButton button = new CenteredActionButton("Unit " + idx + ": " + unit.getTitle(), 350, 40, () -> onUnitSelected.accept(unit));
         idx++;
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMaximumSize(new Dimension(350, 40));
-        button.addActionListener(e -> onUnitSelected.accept(unit));
 
-        if (unit.getSections() == null) {
-            button.setVisible(false);
-        }
-        if (!courseController.isUnitUnlocked(course, unit)) {
+        if (!courseController.isUnitUnlocked(course, unit) || courseController.isUnitEmpty(unit)) {
             button.setEnabled(false);
         }
         if (courseController.isUnitPassed(unit)) {
-            button.setForeground(new Color(0, 128, 0));
+            button.setForeground(Theme.CORRECT_COLOR);
         }
 
         return button;

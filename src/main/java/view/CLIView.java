@@ -14,6 +14,7 @@ public class CLIView {
 
     public static void showHelp() {
         output.println("Available commands: " + CLIController.getHelp());
+        output.println("Ps: to see the full list of features for activation/deactivation run the \"log\" command");
     }
 
     public static void showUnknownCommand(String command) {

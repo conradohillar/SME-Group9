@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
+import static java.lang.IO.println;
+
 
 public class AppController implements ControllerInterface {
     private static final AppController instance = new AppController();
@@ -25,8 +27,6 @@ public class AppController implements ControllerInterface {
     public static AppController getInstance() {
         return instance;
     }
-
-
 
     public void initializeApp() {
         try {
@@ -76,8 +76,9 @@ public class AppController implements ControllerInterface {
                 System.out.println(e.getMessage());
             }
         }
-
         refreshUIView();
+        CLIController.getInstance().printFeaturesStateAsLog(getFeaturesStateAsLog());
+
         return 0;
     }
 
@@ -92,7 +93,6 @@ public class AppController implements ControllerInterface {
     }
 
     @Override
-    //TODO: ask professors if this method should kill te UI process or if simply hiding the content is enough (what we are doing now)
     public boolean disableUIView() {
         if (mainFrame == null) {
             return false;
@@ -109,6 +109,10 @@ public class AppController implements ControllerInterface {
         if(isUIEnabled()) {
             SwingUtilities.invokeLater(() -> mainFrame.refreshWholeView());
         }
+    }
+
+    private List<String> getFeaturesStateAsLog() {
+        return FeatureController.getInstance().getCurrentStateLog();
     }
 
     @Override

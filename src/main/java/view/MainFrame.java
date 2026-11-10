@@ -2,16 +2,16 @@ package view;
 
 import controller.*;
 import database.Database;
-import model.LearningMaterial;
+import utils.datatype.LearningMaterial;
 import model.course.*;
 import database.ExamAttempt;
 import model.exercise.Exercise;
-import view.components.*;
-import view.components.exercise.ExercisePanel;
-import view.components.exercise.ExerciseView;
-import view.components.exercise.ExerciseViewFactory;
-import view.components.section.PracticalSectionPanel;
-import view.components.section.TheoreticalSectionPanel;
+import view.pages.ExercisePanel;
+import view.pages.ExerciseView;
+import view.pages.ExerciseViewFactory;
+import view.pages.PracticalSectionPanel;
+import view.pages.TheoreticalSectionPanel;
+import view.pages.*;
 
 import javax.swing.*;
 import java.awt.*;

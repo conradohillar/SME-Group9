@@ -1,4 +1,5 @@
-package view.components;
+
+package view.pages;
 
 import controller.ExamController;
 import model.course.PracticalSection;
@@ -6,6 +7,10 @@ import model.course.Section;
 import model.course.TheoreticalSection;
 import model.course.Unit;
 import database.ExamAttempt;
+import view.components.CenteredActionButton;
+import view.components.PageHeading;
+import view.components.VerticalListPanel;
+import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,25 +25,26 @@ public class UnitPanel extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel(unit.getTitle());
-        title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        VerticalListPanel contentPanel = new VerticalListPanel(12);
 
-        add(title);
-        add(Box.createVerticalStrut(20));
+        PageHeading heading = new PageHeading(unit.getTitle(), null, 22);
+        heading.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        addSections(unit.getSections(), showTheoreticalSection, showPracticalSection, onSectionSelected);
+        contentPanel.addItem(heading);
+        contentPanel.addItem(Box.createVerticalStrut(20));
+
+        addSections(contentPanel, unit.getSections(), showTheoreticalSection, showPracticalSection, onSectionSelected);
 
         if (showExam) {
             JButton examButton = createExamButton(unit, onExamSelected);
-            add(examButton);
-            add(Box.createVerticalStrut(12));
-
-            updateExamStatus(unit, examButton);
+            contentPanel.addItem(examButton);
+            updateExamStatus(contentPanel, unit, examButton);
         }
+
+        add(contentPanel);
     }
 
-    private void addSections(List<Section> sections, boolean showTheoreticalSection, boolean showPracticalSection, Consumer<Section> onSectionSelected) {
+    private void addSections(VerticalListPanel panel, List<Section> sections, boolean showTheoreticalSection, boolean showPracticalSection, Consumer<Section> onSectionSelected) {
         for (Section section : sections) {
             if (section instanceof TheoreticalSection && !showTheoreticalSection) {
                 continue;
@@ -48,25 +54,16 @@ public class UnitPanel extends JPanel {
                 continue;
             }
 
-            JButton sectionButton = new JButton(section.getTitle());
-            sectionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            sectionButton.setMaximumSize(new Dimension(350, 40));
-            sectionButton.addActionListener(e -> onSectionSelected.accept(section));
-            add(sectionButton);
-            add(Box.createVerticalStrut(12));
+            JButton sectionButton = new CenteredActionButton(section.getTitle(), 350, 40, () -> onSectionSelected.accept(section));
+            panel.addItem(sectionButton);
         }
     }
 
     private JButton createExamButton(Unit unit, Consumer<Unit> onExamSelected) {
-        JButton examButton = new JButton("Take unit exam");
-        examButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        examButton.setMaximumSize(new Dimension(350, 40));
-        examButton.addActionListener(e -> onExamSelected.accept(unit));
-
-        return examButton;
+        return new CenteredActionButton("Take unit exam", 350, 40, () -> onExamSelected.accept(unit));
     }
 
-    private void updateExamStatus(Unit unit, JButton examButton) {
+    private void updateExamStatus(VerticalListPanel panel, Unit unit, JButton examButton) {
         ExamAttempt latestAttempt = examController.getLatestAttempt(unit);
 
         if (latestAttempt == null) {
@@ -76,13 +73,13 @@ public class UnitPanel extends JPanel {
         if (latestAttempt.isPassed()) {
             examButton.setVisible(false);
             JLabel passedExamLabel = new JLabel("Unit exam passed. Score: " + latestAttempt.getScore());
-            passedExamLabel.setForeground(new Color(0, 128, 0));
+            passedExamLabel.setForeground(Theme.CORRECT_COLOR);
             passedExamLabel.setVisible(true);
             passedExamLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            add(passedExamLabel);
+            panel.addLastItem(passedExamLabel);
         } else {
             examButton.setText("Retake unit exam. Last attempt: Score = " + latestAttempt.getScore());
-            examButton.setForeground(new Color(128, 0, 0));
+            examButton.setForeground(Theme.INCORRECT_COLOR);
         }
 
         revalidate();

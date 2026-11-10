@@ -1,4 +1,4 @@
-package model;
+package utils.datatype;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

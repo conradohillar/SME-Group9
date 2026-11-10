@@ -63,6 +63,11 @@ public class UserController {
         return getCurrentStudent().getCoins() > 0;
     }
 
+    public boolean hasEnoughCoinsForHint() { return getCurrentStudent().getCoins() >= 1; }
+
+    public boolean hasEnoughCoinsForUnit() { return getCurrentStudent().getCoins() >= 3; }
+
+
     public int getHintPrice() {
         return getCurrentStudent().getSubscription().getHintPrice();
     }

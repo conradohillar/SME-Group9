@@ -1,7 +1,11 @@
-package view.components;
+
+package view.pages;
 
 import controller.CourseController;
 import model.course.Course;
+import view.components.CenteredActionButton;
+import view.components.VerticalListPanel;
+import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,30 +77,23 @@ public class AppPanel extends JPanel {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JPanel coursesPanel = new JPanel();
-        coursesPanel.setLayout(new BoxLayout(coursesPanel, BoxLayout.Y_AXIS));
+        VerticalListPanel coursesPanel = new VerticalListPanel(12);
 
         JLabel title = new JLabel("Available courses");
         title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        coursesPanel.add(title);
-        coursesPanel.add(Box.createVerticalStrut(20));
+        coursesPanel.addItem(title);
 
         for (Course course : courses) {
             if (courseController.canShowCourse(course)) {
-                JButton courseButton = new JButton(course.getTitle());
-                courseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-                courseButton.setMaximumSize(new Dimension(400, 45));
-                courseButton.setPreferredSize(new Dimension(400, 45));
-                courseButton.addActionListener(e -> onCourseSelected.accept(course));
+                JButton courseButton = new CenteredActionButton(course.getTitle(), 400, 45, () -> onCourseSelected.accept(course));
 
                 courseButtons.put(course, courseButton);
-
-                coursesPanel.add(courseButton);
-                coursesPanel.add(Box.createVerticalStrut(12));
+                coursesPanel.addItem(courseButton);
             }
         }
+
         panel.add(coursesPanel);
 
         return panel;
@@ -128,9 +125,7 @@ public class AppPanel extends JPanel {
             JButton button = entry.getValue();
 
             if (courseController.isCoursePassed(course)) {
-                button.setForeground(new Color(0, 128, 0));
-            } else {
-                button.setForeground(UIManager.getColor("Button.foreground"));
+                button.setForeground(Theme.CORRECT_COLOR);
             }
         }
     }

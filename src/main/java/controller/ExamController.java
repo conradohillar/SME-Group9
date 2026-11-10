@@ -2,7 +2,7 @@ package controller;
 
 import database.Database;
 import database.ExamAttempt;
-import model.ContentType;
+import utils.datatype.ContentType;
 import model.course.Course;
 import model.course.Difficulty;
 import model.course.Unit;
