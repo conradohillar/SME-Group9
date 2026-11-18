@@ -3,19 +3,16 @@ package model.course;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import database.Database;
-import database.ExamAttempt;
 import utils.datatype.ContentType;
 import model.exercise.Exercise;
 import model.feature.FeatureType;
-import model.user.Student;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class Exam extends PracticalSection {
-    private Unit unit;
     private final double passingPercentage;
     @JsonIgnore
     private final Duration timeLimit;
@@ -43,23 +40,23 @@ public class Exam extends PracticalSection {
         this.passingPercentage = passingPercentage;
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
     public Duration getTimeLimit() {
         return timeLimit;
     }
 
     public double checkAnswers(Map<Exercise, ContentType> answers) {
+        if (answers.isEmpty()) {
+            return 0;
+        }
+
         int correctAnswers = 0;
-        for (Exercise exercise : exercises) {
-            ContentType answer = answers.get(exercise);
-            if (answer != null && exercise.checkAnswer(answer)) {
+        for (Map.Entry<Exercise, ContentType> entry : answers.entrySet()) {
+            ContentType answer = entry.getValue();
+            if (answer != null && entry.getKey().checkAnswer(answer)) {
                 correctAnswers++;
             }
         }
-        return correctAnswers / (double) exercises.size() * 100;
+        return correctAnswers / (double) answers.size() * 100;
     }
 
     public boolean isPassed(double score, Duration elapsedTime) {
@@ -67,14 +64,7 @@ public class Exam extends PracticalSection {
     }
 
     @Override
-    public boolean isCompletedByStudent(Student student) {
-        ExamAttempt latestAttempt = Database.getInstance().getLatestExamAttempt(student, unit);
-
-        return latestAttempt != null && latestAttempt.isPassed();
-    }
-
-    @Override
-    public List<String> getCurrentStateLog() {
-        return getCurrentStateLogWithCustomName("unitExam");
+    public List<String> getCurrentStateLog(Predicate<FeatureType> isFeatureActive) {
+        return getCurrentStateLogWithCustomName("unitExam", isFeatureActive);
     }
 }

@@ -14,21 +14,18 @@ public class Student extends User {
     private int coins = 5;
 
     private LocalDate lastActivityDate;
-    private LocalDate lastResetDate;
-
-    private int weeklyUnitsProgressed = 0;
-    private int weeklyHintsUsed = 0;
-    private int hintsPurchased = 0;
-    private int unitsPurchased = 0;
 
     private final Subscription subscription;
+    private final WeeklyQuota hintQuota;
+    private final WeeklyQuota unitQuota;
     private final StudentPreferences studentPreferences;
 
     @JsonCreator
     public Student(@JsonProperty("firstName")String name, @JsonProperty("username")String username, @JsonProperty("password")String password, @JsonProperty("subscriptionTier")SubscriptionTier tier) {
         super(name, username, password);
-        this.subscription = new Subscription(tier, true);
-        this.lastResetDate = LocalDate.now();
+        this.subscription = new Subscription(tier);
+        this.hintQuota = new WeeklyQuota(subscription::getMaxHintsPerWeek);
+        this.unitQuota = new WeeklyQuota(subscription::getMaxUnitsPerWeek);
         this.studentPreferences = new StudentPreferences(true, true ,true); // by default everything is enabled
     }
 
@@ -43,7 +40,7 @@ public class Student extends User {
             throw new IllegalArgumentException("Coins to add cannot be negative.");
         }
         if (this.subscription.getTier().equals(SubscriptionTier.PREMIUM)) {
-            throw new IllegalArgumentException("Premium users can't add coins");
+            throw new IllegalArgumentException("Cannot add coins to a premium tier.");
         }
         this.coins += coins;
     }
@@ -81,16 +78,6 @@ public class Student extends User {
         lastActivityDate = day;
     }
 
-    public void resetWeeklyCounters() {
-        LocalDate today = LocalDate.now();
-
-        if (lastResetDate == null || !today.isBefore(lastResetDate.plusDays(7))) {
-            weeklyHintsUsed = 0;
-            weeklyUnitsProgressed = 0;
-            lastResetDate = today;
-        }
-    }
-
     /* --------- streak --------- */
 
     public int getStreak() {
@@ -103,69 +90,68 @@ public class Student extends User {
     /* --------- hints --------- */
 
     public int getWeeklyHintsUsed() {
-        return weeklyHintsUsed;
+        return hintQuota.getUsedThisWeek();
     }
 
     public void useHint() {
-        resetWeeklyCounters();
-        if(weeklyHintsUsed >= subscription.getMaxHintsPerWeek()) {
-            hintsPurchased--;
-        }
-        weeklyHintsUsed++;
+        useQuota(hintQuota, "No hints left this week.");
     }
 
     public int getRemainingHints() {
-        resetWeeklyCounters();
-        int limit = subscription.getMaxHintsPerWeek();
-        if (limit < 0) return -1;
+        return hintQuota.getRemaining();
+    }
 
-        return Math.max(0, limit + hintsPurchased - weeklyHintsUsed);
+    public boolean hasHintsLeft() {
+        return hintQuota.hasRemaining();
     }
 
     public void buyHint() {
-        resetWeeklyCounters();
-        if (subscription.getMaxHintsPerWeek() < 0) {
-            throw new IllegalArgumentException("Hints are unlimited.");
-        }
-        if(spendCoins(subscription.getHintPrice())) {
-            hintsPurchased++;
-        }
+        buyQuota(hintQuota, subscription.getHintPrice(), "Hints are unlimited.");
     }
 
     /* --------- units --------- */
 
-    public void progressUnit() {
-        resetWeeklyCounters();
-        if(weeklyUnitsProgressed >= subscription.getMaxUnitsPerWeek()) {
-            unitsPurchased--;
-        }
-        weeklyUnitsProgressed++;
-    }
-
     public int getWeeklyUnitsProgressed() {
-        return weeklyUnitsProgressed;
+        return unitQuota.getUsedThisWeek();
     }
 
-    public void buyUnit() {
-        resetWeeklyCounters();
-        if (subscription.getMaxUnitsPerWeek() < 0) {
-            throw new IllegalArgumentException("Units are unlimited.");
-        }
-        if (spendCoins(subscription.getUnitPrice())) {
-            unitsPurchased++;
-        }
+    public void progressUnit() {
+        useQuota(unitQuota, "No units left this week.");
     }
 
     public int getRemainingUnits() {
-        resetWeeklyCounters();
-        int limit = subscription.getMaxUnitsPerWeek();
-        if (limit < 0) return - 1;
-
-        return Math.max(0, limit + unitsPurchased - weeklyUnitsProgressed);
+        return unitQuota.getRemaining();
     }
 
+    public boolean hasUnitsLeft() {
+        return unitQuota.hasRemaining();
+    }
+
+    public void buyUnit() {
+        buyQuota(unitQuota, subscription.getUnitPrice(), "Units are unlimited.");
+    }
+
+    private void useQuota(WeeklyQuota quota, String exhaustedMessage) {
+        if (!quota.hasRemaining()) {
+            throw new IllegalStateException(exhaustedMessage);
+        }
+        quota.use();
+    }
+
+    private void buyQuota(WeeklyQuota quota, int price, String unlimitedMessage) {
+        if (quota.isUnlimited()) {
+            throw new IllegalArgumentException(unlimitedMessage);
+        }
+        if (spendCoins(price)) {
+            quota.addPurchase();
+        }
+    }
 
     /* --------- subscription --------- */
+
+    public boolean isFreeTier() {
+        return subscription.getTier().equals(SubscriptionTier.FREE);
+    }
 
     public Subscription getSubscription() {
         return subscription;

@@ -2,10 +2,9 @@
 package view;
 
 import controller.*;
-import database.Database;
 import utils.datatype.LearningMaterial;
 import model.course.*;
-import database.ExamAttempt;
+import model.course.ExamAttempt;
 import model.exercise.Exercise;
 import view.pages.ExercisePanel;
 import view.pages.exerciseTypes.ExerciseView;
@@ -29,7 +28,6 @@ public class MainFrame extends JFrame {
     private final ExerciseViewFactory exerciseViewFactory;
 
     private final AuthController authController = AuthController.getInstance();
-    private final ExerciseController exerciseController = ExerciseController.getInstance();
     private final ExamController examController = ExamController.getInstance();
     private final CourseController courseController = CourseController.getInstance();
 
@@ -61,7 +59,7 @@ public class MainFrame extends JFrame {
         if (authController.login(username, password)) {
             if (appPanel == null) {
                 appPanel = new AppPanel(
-                        Database.getInstance().getCourses(),
+                        courseController.getCourses(),
                         this::showCourse,
                         this::showUser
                 );
@@ -130,9 +128,8 @@ public class MainFrame extends JFrame {
 
         UnitPanel unitPanel = new UnitPanel(
                 unit,
-                courseController.shouldShowTheoreticalSection(),
-                courseController.shouldShowPracticalSection(),
-                courseController.shouldShowExam(),
+                courseController.getVisibleSections(unit),
+                courseController.getVisibleUnitExam(unit) != null,
                 section -> showSection(course, level, unit, section),
                 selectedUnit -> showExam(course, level, selectedUnit)
         );
@@ -165,7 +162,7 @@ public class MainFrame extends JFrame {
     private void showPracticalSection(PracticalSection section) {
         List<ExercisePanel> exercisePanels = new ArrayList<>();
 
-        for (Exercise exercise : section.getExercises()) {
+        for (Exercise exercise : courseController.getVisibleExercises(section)) {
             ExerciseView exerciseView = exerciseViewFactory.create(exercise);
             ExercisePanel exercisePanel = new ExercisePanel(exercise, exerciseView);
             exercisePanels.add(exercisePanel);
@@ -192,7 +189,9 @@ public class MainFrame extends JFrame {
     private void showExam(Course course, DifficultyLevel level, Unit unit) {
         currentViewRefresh = () -> showUnit(course, level, unit);
 
-        if (!courseController.shouldShowExam()) {
+        Exam exam = courseController.getVisibleUnitExam(unit);
+
+        if (exam == null) {
             return;
         }
 
@@ -204,13 +203,12 @@ public class MainFrame extends JFrame {
                 course,
                 level.getDifficulty(),
                 unit,
-                unit.getUnitExam()
+                exam
         );
 
         ExamPanel examPanel = new ExamPanel(
                 attempt,
                 exerciseViewFactory,
-                exerciseController,
                 examController,
                 () -> backToUnit(course, level, unit)
         );

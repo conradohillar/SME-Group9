@@ -17,18 +17,18 @@ public class SystemTest {
     Student student;
     FeatureController featureController = FeatureController.getInstance();
     ExerciseController exerciseController = ExerciseController.getInstance();
+    String user = "systemTest";
 
     @BeforeEach
     public void setUp() {
-        student = new Student("System Test", "test", "password", SubscriptionTier.FREE);
+        student = new Student(user, user, user, SubscriptionTier.FREE);
         Database.getInstance().addStudent(student);
-        assertTrue(AuthController.getInstance().login("test", "password"));
+        assertTrue(AuthController.getInstance().login(user, user));
+        featureController.resetState();
     }
 
     @Test
     public void testRuntimeFeatureAdaptation() {
-        featureController.resetState();
-
         featureController.deactivate(FeatureType.EXERCISE_HINTS);
         featureController.deactivate(FeatureType.EXERCISE_EXPLANATIONS);
 

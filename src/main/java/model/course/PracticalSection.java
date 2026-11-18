@@ -2,7 +2,6 @@ package model.course;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import controller.FeatureController;
 import model.exercise.Exercise;
 import model.exercise.ExerciseType;
 import model.feature.FeatureType;
@@ -11,12 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public class PracticalSection extends Section {
-    // protected so exam can access the exercises
-    protected final List<Exercise> exercises;
-
-    FeatureController featureController = FeatureController.getInstance();
+    private final List<Exercise> exercises;
 
     public PracticalSection(String title, String description, List<Exercise> exercises, FeatureType featureType) {
         super(title, description, featureType);
@@ -29,30 +26,28 @@ public class PracticalSection extends Section {
     }
 
     public List<Exercise> getExercises() {
-        if (!featureController.isActive(featureType)) {
-            return null;
-        }
-        // we only return the exercises that are active, if none are active we return null
-        List<Exercise> toReturn = exercises.stream().filter(e -> featureController.isActive(e.getFeatureType())).toList();
-        return toReturn.isEmpty() ? null : toReturn;
+        return exercises;
     }
 
-    Map<ExerciseType, Integer> getExerciseCounts() {
+    private Map<ExerciseType, Integer> getExerciseCounts(Predicate<FeatureType> isFeatureActive) {
         Map<ExerciseType, Integer> exerciseCounts = new HashMap<>();
-        for (Exercise exercise : getExercises()) {
+        for (Exercise exercise : exercises) {
+            if (!isFeatureActive.test(exercise.getFeatureType())) {
+                continue;
+            }
             exerciseCounts.putIfAbsent(exercise.getType(), 0);
             exerciseCounts.put(exercise.getType(), exerciseCounts.get(exercise.getType()) + 1);
         }
         return exerciseCounts;
     }
 
-    protected List<String> getCurrentStateLogWithCustomName(String name) {
-        if (!featureController.isActive(featureType)) {
+    protected List<String> getCurrentStateLogWithCustomName(String name, Predicate<FeatureType> isFeatureActive) {
+        if (!isFeatureActive.test(getFeatureType())) {
             return List.of();
         }
         List<String> log = new ArrayList<>(List.of(new String[]{name + ": { title: " + getTitle() + ", exercises: ["}));
 
-        Map<ExerciseType, Integer> exerciseCounts = getExerciseCounts();
+        Map<ExerciseType, Integer> exerciseCounts = getExerciseCounts(isFeatureActive);
 
         for (ExerciseType exerciseType : exerciseCounts.keySet()) {
             log.add("\t\t" + exerciseType.toString() + ": " + exerciseCounts.get(exerciseType));
@@ -64,8 +59,8 @@ public class PracticalSection extends Section {
     }
 
     @Override
-    public List<String> getCurrentStateLog() {
-        return getCurrentStateLogWithCustomName("PracticalSection");
+    public List<String> getCurrentStateLog(Predicate<FeatureType> isFeatureActive) {
+        return getCurrentStateLogWithCustomName("PracticalSection", isFeatureActive);
     }
 }
 

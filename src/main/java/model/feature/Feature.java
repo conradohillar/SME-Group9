@@ -1,9 +1,6 @@
 package model.feature;
 
-import controller.FeatureController;
 import model.LoggableState;
-
-import java.util.List;
 
 /*
     Every feature has to implement this class to work properly with the controller.
@@ -12,22 +9,13 @@ import java.util.List;
     to truly do something.
 */
 public abstract class Feature implements LoggableState {
-    protected final FeatureType featureType;
+    private final FeatureType featureType;
 
     protected Feature(FeatureType featureType) {
         this.featureType = featureType;
     }
 
-    public List<String> logCurrentState() {
-        if (!FeatureController.getInstance().isActive(featureType)) {
-            return null;
-        }
-
-        return getCurrentStateLog();
-    }
-
     public FeatureType getFeatureType() {
         return featureType;
     }
-
 }

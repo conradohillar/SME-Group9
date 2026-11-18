@@ -135,7 +135,6 @@ public class LogTest {
 
     @Test
     public void testLogConsistencyAcrossActivationOrders() {
-
         featureController.activate(FeatureType.SUBSCRIPTION);
         featureController.activate(FeatureType.EXERCISE_HINTS);
 

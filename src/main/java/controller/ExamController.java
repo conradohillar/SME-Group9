@@ -1,7 +1,7 @@
 package controller;
 
 import database.Database;
-import database.ExamAttempt;
+import model.course.ExamAttempt;
 import utils.datatype.ContentType;
 import model.course.Course;
 import model.course.Difficulty;
@@ -35,16 +35,16 @@ public class ExamController {
         double score = exam.checkAnswers(exercises);
         boolean passed = exam.isPassed(score, Duration.between(attempt.getStartedAt(), Instant.now()));
         attempt.finish(passed, score);
-        Database.getInstance().saveExamAttempt(attempt);
         if (passed) {
             CourseController.getInstance().passUnitForStudent(attempt.getStudent(), attempt.getUnit(), attempt.getCourse(), attempt.getDifficulty());
         }
+        Database.getInstance().saveExamAttempt(attempt);
     }
 
     public ExamAttempt getLatestAttempt(Unit unit) {
         Student student = getCurrentStudent();
 
-        return ExamAttempt.getLatestForStudent(student, unit);
+        return Database.getInstance().getLatestExamAttempt(student, unit);
     }
 
     private Student getCurrentStudent() {

@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import model.feature.Feature;
 import model.feature.FeatureType;
 
-import java.util.List;
-
 public class User extends Feature {
     private final String name;
     private final String username;

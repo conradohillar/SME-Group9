@@ -2,11 +2,9 @@
 package view.pages;
 
 import controller.ExamController;
-import model.course.PracticalSection;
 import model.course.Section;
-import model.course.TheoreticalSection;
 import model.course.Unit;
-import database.ExamAttempt;
+import model.course.ExamAttempt;
 import view.components.CenteredActionButton;
 import view.components.PageHeading;
 import view.components.VerticalListPanel;
@@ -22,7 +20,7 @@ public class UnitPanel extends JPanel {
 
     private final ExamController examController;
 
-    public UnitPanel(Unit unit, boolean showTheoreticalSection, boolean showPracticalSection, boolean showExam, Consumer<Section> onSectionSelected, Consumer<Unit> onExamSelected) {
+    public UnitPanel(Unit unit, List<Section> sections, boolean showExam, Consumer<Section> onSectionSelected, Consumer<Unit> onExamSelected) {
         examController = ExamController.getInstance();
 
         Objects.requireNonNull(onSectionSelected, "onSectionSelected cannot be null");
@@ -37,7 +35,7 @@ public class UnitPanel extends JPanel {
 
         contentPanel.addItem(heading);
 
-        addSections(contentPanel, unit.getSections(), showTheoreticalSection, showPracticalSection, onSectionSelected);
+        addSections(contentPanel, sections, onSectionSelected);
 
         if (showExam) {
             addExamStatus(contentPanel, unit, onExamSelected);
@@ -46,16 +44,8 @@ public class UnitPanel extends JPanel {
         add(contentPanel, BorderLayout.CENTER);
     }
 
-    private void addSections(VerticalListPanel panel, List<Section> sections, boolean showTheoreticalSection, boolean showPracticalSection, Consumer<Section> onSectionSelected) {
+    private void addSections(VerticalListPanel panel, List<Section> sections, Consumer<Section> onSectionSelected) {
         for (Section section : sections) {
-            if (section instanceof TheoreticalSection && !showTheoreticalSection) {
-                continue;
-            }
-
-            if (section instanceof PracticalSection && !showPracticalSection) {
-                continue;
-            }
-
             JButton sectionButton = new CenteredActionButton(section.getTitle(), 350, 40, () -> onSectionSelected.accept(section));
             panel.addItem(sectionButton);
         }

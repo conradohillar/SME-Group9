@@ -18,13 +18,11 @@ public class CLIController {
 
     public void runConsoleLoop() {
         CLIView.showHelp();
-//        CLIView.showNextCommandPrompt();
 
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
-
-            String[] tokens = scanner.nextLine().toUpperCase().split(" ");
+            String[] tokens = scanner.nextLine().trim().toUpperCase().split("\\s+");
             String command = tokens[0];
             String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
@@ -38,10 +36,6 @@ public class CLIController {
                     CLIView.showError(e.getMessage());
                 }
 
-            }
-
-            if (command.equals("exit")) {
-                break;
             }
         }
     }

@@ -2,9 +2,7 @@
 package view.pages;
 
 import controller.CourseController;
-import controller.FeatureController;
 import model.course.Course;
-import model.feature.FeatureType;
 import view.components.AIChatButton;
 import view.components.AIChatPanel;
 import view.components.CenteredActionButton;
@@ -25,7 +23,6 @@ public class AppPanel extends JPanel {
     private static final int CHAT_HEIGHT = 400;
 
     private final CourseController courseController;
-    private final FeatureController featureController;
 
     private JPanel breadcrumbPanel;
     private final JPanel contentPanel;
@@ -51,7 +48,6 @@ public class AppPanel extends JPanel {
             Runnable onUserProfileClicked
     ) {
         courseController = CourseController.getInstance();
-        featureController = FeatureController.getInstance();
 
         Objects.requireNonNull(onCourseSelected, "onCourseSelected cannot be null");
         Objects.requireNonNull(onUserProfileClicked, "onUserProfileClicked cannot be null");
@@ -182,8 +178,7 @@ public class AppPanel extends JPanel {
     }
 
     private void updateChatbotVisibility() {
-        boolean visible = insideCourse
-                && featureController.isActive(FeatureType.AI_CHATBOT);
+        boolean visible = courseController.shouldShowAiChatbot(insideCourse);
 
         footerPanel.setVisible(visible);
 

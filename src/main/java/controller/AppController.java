@@ -4,14 +4,15 @@ import database.Database;
 import model.course.Course;
 import model.feature.FeatureType;
 import model.user.Student;
+import utils.ErrorCodes;
+import utils.FeatureActivationException;
 import utils.Populator;
 import view.MainFrame;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class AppController implements ControllerInterface {
     private static final AppController instance = new AppController();
@@ -28,8 +29,8 @@ public class AppController implements ControllerInterface {
 
     public void initializeApp() {
         try {
-            Populator.populateUsers("src/main/resources/users.json");
-            Populator.populateCourses("src/main/resources/courses.json");
+            Populator.populateUsers("users.json");
+            Populator.populateCourses("courses.json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,52 +46,50 @@ public class AppController implements ControllerInterface {
         enableUIView();
     }
 
-    // TODO: falta que devuelva distintos ints si da error y manejar ese numero
     @Override
     public int activate(String[] deactivations, String[] activations){
-        List<String> activationsList = Arrays.asList(activations);
-        List<String> deactivationsList = Arrays.asList(deactivations);
+        Set<String> conflicting = new HashSet<>(Arrays.asList(activations));
+        conflicting.retainAll(Arrays.asList(deactivations));
 
-        boolean statusChanged = true;
-        for (String deactivation : deactivationsList) {
-            // If a feature is present in deactivations and activations it's silently ignored instead of returning an error
-            if (activationsList.contains(deactivation)) {
-                 activationsList.remove(deactivation);
-                 deactivationsList.remove(deactivation);
-                 continue;
-            }
-            try {
-                featureController.deactivate(FeatureType.valueOf(deactivation));
-            } catch (Exception e) {
-                if (e.getMessage().equals("No enum constant model.feature.FeatureType." + deactivation)) {
-                    System.out.println("Feature type \"" + deactivation + "\" not found.");
-                }
-                else {
-                    System.out.println(e.getMessage());
-                }
-                statusChanged = false;
+        ErrorCodes result = conflicting.isEmpty() ? ErrorCodes.SUCCESS : ErrorCodes.CONFLICTING_REQUEST;
+
+        for (String deactivation : deactivations) {
+            if (!conflicting.contains(deactivation)) {
+                result = keepFirstError(result, changeFeatureState(deactivation, featureController::deactivate));
             }
         }
 
-        for (String activation : activationsList) {
-            try {
-                featureController.activate(FeatureType.valueOf(activation));
-            } catch (Exception e) {
-                if (e.getMessage().equals("No enum constant model.feature.FeatureType." + activation)) {
-                    System.out.println("Feature type \"" + activation + "\" not found.");
-                }
-                else {
-                    System.out.println(e.getMessage());
-                }
-                statusChanged = false;
+        for (String activation : activations) {
+            if (!conflicting.contains(activation)) {
+                result = keepFirstError(result, changeFeatureState(activation, featureController::activate));
             }
         }
         refreshUIView();
-        if (statusChanged) {
-            CLIController.getInstance().printFeaturesStateAsLog(getFeaturesStateAsLog());
+        CLIController.getInstance().printFeaturesStateAsLog(getFeaturesStateAsLog());
+
+        return result.getCode();
+    }
+
+    private ErrorCodes changeFeatureState(String featureName, Consumer<FeatureType> stateChange) {
+        FeatureType featureType;
+        try {
+            featureType = FeatureType.valueOf(featureName);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Feature type \"" + featureName + "\" not found.");
+            return ErrorCodes.UNKNOWN_FEATURE;
         }
 
-        return 0;
+        try {
+            stateChange.accept(featureType);
+            return ErrorCodes.SUCCESS;
+        } catch (FeatureActivationException e) {
+            System.out.println(e.getMessage());
+            return e.getErrorCode();
+        }
+    }
+
+    private ErrorCodes keepFirstError(ErrorCodes current, ErrorCodes next) {
+        return current == ErrorCodes.SUCCESS ? next : current;
     }
 
     @Override
@@ -130,9 +129,9 @@ public class AppController implements ControllerInterface {
     @Override
     public String[] getStateAsLog() {
         Database database = Database.getInstance();
-        ArrayList<String> logs = new ArrayList<>();{}
+        ArrayList<String> logs = new ArrayList<>();
         for (Course course : database.getCourses()) {
-            logs.addAll(course.getCurrentStateLog());
+            logs.addAll(course.getCurrentStateLog(featureController::isActive));
         }
         for (Student student : database.getStudents()) {
             logs.addAll(student.getCurrentStateLog());

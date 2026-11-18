@@ -8,10 +8,6 @@ public class CLIView {
 
     private static final PrintStream output = System.out;
 
-//    public static void showNextCommandPrompt() {
-//        output.print(">: ");
-//    }
-
     public static void showHelp() {
         output.println("Available commands: " + CLIController.getHelp());
         output.println("Ps: to see the full list of features for activation/deactivation run the \"log\" command");

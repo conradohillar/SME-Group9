@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.feature.Feature;
 import model.feature.FeatureType;
-import model.user.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
-public class DifficultyLevel extends Feature implements CompletableByStudent {
+public class DifficultyLevel extends Feature {
     private final Difficulty difficulty;
     private final List<Unit> units;
 
@@ -29,15 +29,10 @@ public class DifficultyLevel extends Feature implements CompletableByStudent {
         return units;
     }
 
-    public boolean isCompletedByStudent(Student student) {
-        return units.stream().allMatch(u -> u.isCompletedByStudent(student));
-    }
-
-    @Override
-    public List<String> getCurrentStateLog() {
+    public List<String> getCurrentStateLog(Predicate<FeatureType> isFeatureActive) {
         List<String> log = new ArrayList<>(List.of(new String[]{"DifficultyLevel: { difficulty: " + difficulty + " }", "\tunits: ["}));
         for (Unit unit : units) {
-            List<String> unitLog = unit.getCurrentStateLog();
+            List<String> unitLog = unit.getCurrentStateLog(isFeatureActive);
             for (String s : unitLog) {
                 log.add("\t"+s);
             }

@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.HashSet;
 
 public enum FeatureType {
-    COURSE                  (false),    // core aspect of the system, without it there's nothing
-    EXERCISE                (true),     // exercises as a concept cannot be deactivated. only a type of exercise or a whole practical section/exam
+    COURSE                  (false),
+    EXERCISE                (true),
     EXERCISE_MULTIPLE_CHOICE(true, new HashSet<>(Set.of(FeatureType.EXERCISE))),
     EXERCISE_TRUE_FALSE     (true, new HashSet<>(Set.of(FeatureType.EXERCISE))),
     EXERCISE_COMPLETE_PHRASE(true, new HashSet<>(Set.of(FeatureType.EXERCISE))),
@@ -18,12 +18,12 @@ public enum FeatureType {
     UNIT                    (false),
     LEARNING_MATERIAL       (false),
     USER                    (false),
-    SUBSCRIPTION            (true, new SubscriptionFeatureHandler()),     // deactivating subs. gives all users access to everything
-    ONLINE_CLASS            (true),     // not implemented for now
-    GROUP_CLASS             (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
-    PRIVATE_CLASS(true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
-    PRACTICAL_SECTION       (true, new PracticalSectionFeatureHandler(), new HashSet<>(Set.of(FeatureType.EXERCISE))),        // deactivates the section completely means no exercises shown
-    THEORETICAL_SECTION     (true, new TheoreticalSectionFeatureHandler()),     // deactivating theoretical sections means that you can't learn anything
+    SUBSCRIPTION            (true, new SubscriptionFeatureHandler()),     // deactivating subs. gives all users access to everything (premium subs)
+    ONLINE_CLASS            (true),
+    GROUP_CLASS             (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),
+    PRIVATE_CLASS(true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),
+    PRACTICAL_SECTION       (true, new PracticalSectionFeatureHandler(), new HashSet<>(Set.of(FeatureType.EXERCISE))),
+    THEORETICAL_SECTION     (true, new TheoreticalSectionFeatureHandler()),
     AI_CHATBOT(true);
 
     private final boolean canBeDeactivated;
@@ -33,15 +33,7 @@ public enum FeatureType {
     // If a feature doesn't do anything in particular during (de)activation, it returns a default handler that does nothing
     FeatureType(boolean canBeDeactivated) {
         this.canBeDeactivated = canBeDeactivated;
-        this.handler = new FeatureHandler() {
-            @Override
-            public void activate() {
-            }
-
-            @Override
-            public void deactivate() {
-            }
-        };
+        this.handler = new FeatureHandler() {};
     }
 
     // even though canBeDeactivated is clearly always true for this case, we leave it for comprehension and tidiness reasons
@@ -71,7 +63,7 @@ public enum FeatureType {
     }
 
     public Set<FeatureType> getDependencies() {
-        return dependencies;
+        return Set.copyOf(dependencies);
     }
 
     public Set<FeatureType> getChildrenFeatures() {

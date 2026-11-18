@@ -2,10 +2,13 @@
 package controller;
 
 import database.Database;
+import model.course.ExamAttempt;
 import model.course.*;
+import model.exercise.Exercise;
 import model.feature.FeatureType;
-import model.subscription.SubscriptionTier;
 import model.user.Student;
+
+import java.util.List;
 
 public class CourseController {
 
@@ -13,6 +16,7 @@ public class CourseController {
     private static final int COINS_PER_UNIT = 2;
 
     private static final FeatureController featureController = FeatureController.getInstance();
+    private static final UserController userController = UserController.getInstance();
 
     private CourseController() {
     }
@@ -22,6 +26,10 @@ public class CourseController {
     }
 
     // courses ------------------------------------------------
+
+    public List<Course> getCourses() {
+        return Database.getInstance().getCourses();
+    }
 
     public boolean canShowCourse(Course course) {
         Student currentStudent = getCurrentStudent();
@@ -33,20 +41,17 @@ public class CourseController {
     }
 
     public boolean isCoursePassed(Course course) {
-        Student currentStudent = getCurrentStudent();
-
-        if (!Database.getInstance().isStudentEnrolled(currentStudent, course)) {
+        if (!Database.getInstance().isStudentEnrolled(getCurrentStudent(), course)) {
             return false;
         }
 
-        Database database = Database.getInstance();
+        return isDifficultyLevelPassed(course.getLastDifficultyLevel());
+    }
 
-        return isDifficultyLevelPassed(
-                database.getEnrollment(currentStudent, course)
-                        .getCourse()
-                        .getDifficultyLevels()
-                        .getLast()
-        );
+    // chatbot ------------------------------------------------
+
+    public boolean shouldShowAiChatbot(boolean insideCourse) {
+        return insideCourse && featureController.isActive(FeatureType.AI_CHATBOT) && userController.wantsAiChatbot();
     }
 
     // difficulty levels --------------------------------------
@@ -55,33 +60,48 @@ public class CourseController {
         if (!shouldShowExam()) {
             return true;
         }
-
         Student currentStudent = getCurrentStudent();
         Database database = Database.getInstance();
-
-        Difficulty currentDifficulty = database.getCurrentDifficulty(currentStudent, course);
-
+        Difficulty currentDifficulty = database.getEnrollment(currentStudent, course).getCurrentDifficulty();
         Difficulty levelDifficulty = difficultyLevel.getDifficulty();
 
         return levelDifficulty.ordinal() <= currentDifficulty.ordinal();
     }
 
     public boolean isDifficultyLevelPassed(DifficultyLevel level) {
-        Student currentStudent = getCurrentStudent();
-
-        Exam lastUnitExam = level.getUnits().getLast().getUnitExam();
-
-        if (!shouldShowExam() || lastUnitExam == null) {
-            return false;
-        }
-
-        return lastUnitExam.isCompletedByStudent(currentStudent);
+        return isUnitPassed(level.getUnits().getLast());
     }
 
     // units --------------------------------------------------
 
     public boolean isUnitEmpty(Unit unit) {
-        return unit.getSections() == null;
+        return getVisibleSections(unit).isEmpty();
+    }
+
+    public List<Section> getVisibleSections(Unit unit) {
+        return unit.getSections().stream()
+                .filter(section -> featureController.isActive(section.getFeatureType()))
+                .toList();
+    }
+
+    public List<Exercise> getVisibleExercises(PracticalSection section) {
+        if (!featureController.isActive(section.getFeatureType())) {
+            return List.of();
+        }
+
+        return section.getExercises().stream()
+                .filter(exercise -> featureController.isActive(exercise.getFeatureType()))
+                .toList();
+    }
+
+    public Exam getVisibleUnitExam(Unit unit) {
+        Exam unitExam = unit.getUnitExam();
+
+        if (unitExam == null || getVisibleExercises(unitExam).isEmpty()) {
+            return null;
+        }
+
+        return unitExam;
     }
 
     private record UnitProgress(
@@ -93,13 +113,12 @@ public class CourseController {
     private UnitProgress getUnitProgress(Course course) {
         Student currentStudent = getCurrentStudent();
         Database database = Database.getInstance();
-
-        int remainingUnits = currentStudent.getRemainingUnits();
+        Enrollment enrollment = database.getEnrollment(currentStudent, course);
 
         return new UnitProgress(
-                database.getCurrentDifficulty(currentStudent, course),
-                database.getCurrentUnitIndex(currentStudent, course),
-                remainingUnits > 0 || remainingUnits == -1
+                enrollment.getCurrentDifficulty(),
+                enrollment.getCurrentUnitIndex(),
+                currentStudent.hasUnitsLeft()
         );
     }
 
@@ -165,50 +184,35 @@ public class CourseController {
     }
 
     public boolean isUnitPassed(Unit unit) {
-        Student currentStudent = getCurrentStudent();
-
-        Exam unitExam = unit.getUnitExam();
-
-        if (!shouldShowExam() || unitExam == null) {
+        if (getVisibleUnitExam(unit) == null) {
             return false;
         }
 
-        return unitExam.isCompletedByStudent(currentStudent);
+        ExamAttempt latestAttempt = Database.getInstance().getLatestExamAttempt(getCurrentStudent(), unit);
+
+        return latestAttempt != null && latestAttempt.isPassed();
     }
 
     public void passUnitForStudent(Student student, Unit unit, Course course, Difficulty difficulty) {
-        Database database = Database.getInstance();
-
-        Database.EnrollmentDto enrollment = database.getEnrollment(student, course);
-
-        if (enrollment.getDifficulty() != difficulty) {
+        Enrollment enrollment = Database.getInstance().getEnrollment(student, course);
+        if (!enrollment.isAt(difficulty)) {
             throw new IllegalArgumentException("The student is not enrolled in this difficulty.");
         }
-
-        if (!unit.canStudentTakeExam(student)) {
-            throw new IllegalArgumentException("The student cannot complete this unit yet.");
+        if (!enrollment.isCurrentUnit(unit)) {
+            throw new IllegalArgumentException("The previous unit must be passed before completing this one.");
+        }
+        ExamAttempt latestAttempt = Database.getInstance().getLatestExamAttempt(student, unit);
+        if (latestAttempt != null && latestAttempt.isPassed()) {
+            throw new IllegalArgumentException("This unit has already been approved.");
+        }
+        if (!student.hasUnitsLeft()) {
+            throw new IllegalStateException("No units left this week.");
         }
 
-        if (student.getSubscription().getTier().equals(SubscriptionTier.FREE)) {
+        if (student.isFreeTier()) {
             student.addCoins(COINS_PER_UNIT);
         }
-
-        if (unit.equals(course.getUnitsByDifficulty(difficulty).getLast())) {
-            Difficulty nextDifficulty = difficulty.getNextDifficulty();
-
-            if (nextDifficulty == null) {
-                student.progressUnit();
-                return; // the course has been completed
-            }
-
-            enrollment.setDifficulty(nextDifficulty);
-            enrollment.setCurrentUnitIndex(0);
-        } else {
-            enrollment.setCurrentUnitIndex(
-                    enrollment.getCurrentUnitIndex() + 1
-            );
-        }
-
+        enrollment.passUnit(unit);
         student.progressUnit();
     }
 

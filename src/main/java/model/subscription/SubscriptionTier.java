@@ -10,7 +10,6 @@ public enum SubscriptionTier {
     private final int maxUnitsPerWeek;
     private final double monthlyPrice;
 
-
     SubscriptionTier(int maxHints, int maxUnits, int hintPrice, int unitPrice, double monthlyPrice) {
         this.maxHintsPerWeek = maxHints;
         this.maxUnitsPerWeek = maxUnits;

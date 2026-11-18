@@ -13,7 +13,7 @@ public class UserController {
         return instance;
     }
 
-    // --------- account information ---------
+    // account information ------------------------------------------------
 
     public SubscriptionTier getSubscriptionTier() {
         return getCurrentStudent().getSubscription().getTier();
@@ -43,7 +43,7 @@ public class UserController {
         return FeatureController.getInstance().isActive(FeatureType.SUBSCRIPTION);
     }
 
-    // --------- subscription ---------
+    // subscription ------------------------------------------------
 
     public double getPremiumMonthlyPrice() {
         return SubscriptionTier.PREMIUM.getMonthlyPrice();
@@ -57,16 +57,11 @@ public class UserController {
         getCurrentStudent().changeSubscription(SubscriptionTier.FREE);
     }
 
-    // --------- purchases ---------
+    // purchases ------------------------------------------------
 
-    public boolean hasCoins() {
-        return getCurrentStudent().getCoins() > 0;
-    }
+    public boolean hasEnoughCoinsForHint() { return getCurrentStudent().getCoins() >= getHintPrice(); }
 
-    public boolean hasEnoughCoinsForHint() { return getCurrentStudent().getCoins() >= 1; }
-
-    public boolean hasEnoughCoinsForUnit() { return getCurrentStudent().getCoins() >= 3; }
-
+    public boolean hasEnoughCoinsForUnit() { return getCurrentStudent().getCoins() >= getUnitPrice(); }
 
     public int getHintPrice() {
         return getCurrentStudent().getSubscription().getHintPrice();
@@ -84,7 +79,7 @@ public class UserController {
         getCurrentStudent().buyUnit();
     }
 
-    // --------- preferences ---------
+    // preferences ------------------------------------------------
 
     public boolean wantsHints() {
         return getCurrentStudent().getStudentPreferences().wantsHints();

@@ -8,14 +8,10 @@ import java.util.List;
 
 public class Subscription extends Feature {
     private SubscriptionTier tier;
-    private boolean isActive; // we leave this field for future purposes
-    // i.e. if the payment is not done in a premium plan, the subscription should be deactivated
-    // for now it is always active
 
-    public Subscription(SubscriptionTier tier, boolean active) {
+    public Subscription(SubscriptionTier tier) {
         super(FeatureType.SUBSCRIPTION);
         this.tier = tier;
-        this.isActive = active;
     }
 
     public SubscriptionTier getTier() {
@@ -40,10 +36,6 @@ public class Subscription extends Feature {
 
     public int getUnitPrice() {
         return tier.getUnitPrice();
-    }
-
-    public boolean isActive() {
-        return isActive;
     }
 
     @Override

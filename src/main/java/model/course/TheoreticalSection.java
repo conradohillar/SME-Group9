@@ -7,6 +7,7 @@ import model.feature.FeatureType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class TheoreticalSection extends Section {
     private final List<LearningMaterial> materials;
@@ -22,7 +23,7 @@ public class TheoreticalSection extends Section {
     }
 
     @Override
-    public List<String> getCurrentStateLog() {
+    public List<String> getCurrentStateLog(Predicate<FeatureType> isFeatureActive) {
         return new ArrayList<>(List.of(new String[]{"TheoreticalSection: { title: " + getTitle() + " }"}));
     }
 }

@@ -19,18 +19,18 @@ public class AppControllerTest {
     void setUp() {
         appController = AppController.getInstance();
         featureController = FeatureController.getInstance();
+        featureController.resetState();
+
     }
 
     @Test
     void testDeactivateNonMandatoryFeature() {
-        featureController.resetState();
         appController.activate(new String[]{FeatureType.EXAM.toString()}, new String[]{});
         assertFalse(featureController.isActive(FeatureType.EXAM));
     }
 
     @Test
     void testDeactivateMandatoryFeature() {
-        featureController.resetState();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 

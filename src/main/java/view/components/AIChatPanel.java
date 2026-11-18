@@ -12,7 +12,6 @@ public class AIChatPanel extends JPanel {
     private static final String BOT_RESPONSE = "Hello! I am your AI chatbot.";
 
     private static final int MESSAGE_MAX_WIDTH = 250;
-    private static final int HEADER_HEIGHT = 52;
 
     private final JPanel messagesPanel;
     private final JTextField messageField;
@@ -69,7 +68,6 @@ public class AIChatPanel extends JPanel {
         title.setForeground(Theme.TEXT_COLOR);
         title.setFont(new Font("Arial", Font.BOLD, 20));
 
-        // center the title vertically
         JPanel titleContainer = new JPanel(new GridBagLayout());
         titleContainer.setOpaque(false);
         titleContainer.add(title);
@@ -87,7 +85,6 @@ public class AIChatPanel extends JPanel {
         );
         closeButton.addActionListener(e -> onClose.run());
 
-        // center the close button vertically
         JPanel closeContainer = new JPanel(new GridBagLayout());
         closeContainer.setOpaque(false);
         closeContainer.add(closeButton);
@@ -120,12 +117,9 @@ public class AIChatPanel extends JPanel {
         messageArea.setWrapStyleWord(true);
         messageArea.setFont(UIManager.getFont("Label.font"));
         messageArea.setForeground(Theme.TEXT_COLOR);
-        messageArea.setBackground(
-                isUser ? Theme.USER_MESSAGE_COLOR : Theme.AI_MESSAGE_COLOR
-        );
+        messageArea.setBackground(isUser ? Theme.USER_MESSAGE_COLOR : Theme.AI_MESSAGE_COLOR);
         messageArea.setBorder(new EmptyBorder(8, 10, 8, 10));
 
-        // calculate a compact bubble width based on the message
         FontMetrics metrics = messageArea.getFontMetrics(messageArea.getFont());
         int textWidth = metrics.stringWidth(message) + 20;
         int bubbleWidth = Math.min(
@@ -133,7 +127,6 @@ public class AIChatPanel extends JPanel {
                 Math.max(80, textWidth)
         );
 
-        // calculate the actual height needed for the wrapped text
         messageArea.setSize(new Dimension(bubbleWidth, Short.MAX_VALUE));
         Dimension bubbleSize = messageArea.getPreferredSize();
         bubbleSize.width = bubbleWidth;
@@ -155,19 +148,15 @@ public class AIChatPanel extends JPanel {
 
         container.add(messageArea);
 
-        // prevent BoxLayout from stretching the message vertically
         int rowHeight = bubbleSize.height + 4;
         container.setPreferredSize(new Dimension(1, rowHeight));
         container.setMinimumSize(new Dimension(1, rowHeight));
-        container.setMaximumSize(
-                new Dimension(Integer.MAX_VALUE, rowHeight)
-        );
+        container.setMaximumSize(new Dimension(Integer.MAX_VALUE, rowHeight));
 
         messagesPanel.add(container);
         messagesPanel.revalidate();
         messagesPanel.repaint();
 
-        // scroll to the newest message
         SwingUtilities.invokeLater(() -> {
             JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
             verticalBar.setValue(verticalBar.getMaximum());

@@ -2,21 +2,18 @@ package model.course;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import controller.FeatureController;
 import model.feature.Feature;
 import model.feature.FeatureType;
-import model.user.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
-public class Unit extends Feature implements CompletableByStudent {
+public class Unit extends Feature {
     private final String title;
     private final List<Section> sections;
     private final Exam unitExam;
-
-    private final FeatureController featureController = FeatureController.getInstance();
 
     @JsonCreator
     public Unit(@JsonProperty("title") String title, @JsonProperty("sections") List<Section> sections, @JsonProperty("unitExam") Exam unitExam) {
@@ -24,9 +21,6 @@ public class Unit extends Feature implements CompletableByStudent {
         this.title = Objects.requireNonNull(title);
         this.sections = Objects.requireNonNull(List.copyOf(sections));
         this.unitExam = unitExam;
-        if (this.unitExam != null) {
-            unitExam.setUnit(this);
-        }
     }
 
     public String getTitle() {
@@ -34,38 +28,30 @@ public class Unit extends Feature implements CompletableByStudent {
     }
 
     public List<Section> getSections() {
-        List<Section> toReturn = sections.stream().filter(s -> featureController.isActive(s.getFeatureType())).toList();
-        return toReturn.isEmpty() ? null : toReturn;
+        return sections;
     }
 
     public Exam getUnitExam() {
-        if (!FeatureController.getInstance().isActive(FeatureType.EXAM) || unitExam.getExercises() == null) {
-            return null;
-        }
         return unitExam;
     }
 
-    public boolean canStudentTakeExam(Student student) {
-        return sections.stream().allMatch(section -> section.isCompletedByStudent(student));
-    }
-
-    public boolean isCompletedByStudent(Student student) {
-        return unitExam.isCompletedByStudent(student);
-    }
-
-    @Override
-    public List<String> getCurrentStateLog() {
+    public List<String> getCurrentStateLog(Predicate<FeatureType> isFeatureActive) {
         List<String> log = new ArrayList<>(List.of(new String[]{"Unit: { title: " + title + ", sections: ["}));
 
-        for (Section section : getSections()) {
-            List<String> sectionLog = section.getCurrentStateLog();
+        for (Section section : sections) {
+            if (!isFeatureActive.test(section.getFeatureType())) {
+                continue;
+            }
+            List<String> sectionLog = section.getCurrentStateLog(isFeatureActive);
             for (String s : sectionLog) {
                 log.add("\t"+s);
             }
         }
         log.add("\t],");
-        for (String s : unitExam.getCurrentStateLog()) {
-            log.add("\t"+s);
+        if (unitExam != null) {
+            for (String s : unitExam.getCurrentStateLog(isFeatureActive)) {
+                log.add("\t"+s);
+            }
         }
         log.add("}");
         return log;

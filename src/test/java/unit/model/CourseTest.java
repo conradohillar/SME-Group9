@@ -29,6 +29,7 @@ public class CourseTest {
                 "Sample course description",
                 List.of(mockDifficulty)
         );
+        featureController.resetState();
     }
 
     private static DifficultyLevel getMockDifficulty() {
@@ -77,8 +78,6 @@ public class CourseTest {
 
     @Test
     void testExamCheckAnswer() {
-        featureController.resetState();
-
         Exam exam = assertDoesNotThrow(() -> course.getDifficultyLevels().getFirst().getUnits().getFirst().getUnitExam());
 
         Map<Exercise, ContentType> exerciseMap = new HashMap<>();
@@ -91,8 +90,6 @@ public class CourseTest {
     }
 
     @Test void testCheckExerciseAnswer() {
-        featureController.resetState();
-
         Exercise exercise = assertDoesNotThrow(() -> course.getDifficultyLevels().getFirst().getUnits().getFirst().getUnitExam().getExercises().getFirst());
 
         assertTrue(exercise.checkAnswer(new Text("Option A")));

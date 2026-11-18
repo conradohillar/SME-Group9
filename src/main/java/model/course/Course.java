@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.feature.Feature;
 import model.feature.FeatureType;
-import model.user.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
-public class Course extends Feature implements CompletableByStudent {
+public class Course extends Feature {
     private final Topic topic;
     private final String title;
     private final String description;
@@ -37,6 +37,10 @@ public class Course extends Feature implements CompletableByStudent {
         return difficultyLevels;
     }
 
+    public DifficultyLevel getLastDifficultyLevel() {
+        return difficultyLevels.getLast();
+    }
+
     public Difficulty getDifficultyOfUnit(Unit unit) {
         return difficultyLevels.stream()
                 .filter(dl -> dl.getUnits().contains(unit))
@@ -55,23 +59,10 @@ public class Course extends Feature implements CompletableByStudent {
                 .orElse(List.of());
     }
 
-    public List<Unit> getAllUnits() {
-        List<Unit> units = new ArrayList<>();
-        for (Difficulty d : Difficulty.values()) {
-            units.addAll(getUnitsByDifficulty(d));
-        }
-        return units;
-    }
-
-    public boolean isCompletedByStudent(Student student) {
-        return difficultyLevels.stream().allMatch(dl -> dl.isCompletedByStudent(student));
-    }
-
-    @Override
-    public List<String> getCurrentStateLog() {
+    public List<String> getCurrentStateLog(Predicate<FeatureType> isFeatureActive) {
         List<String> log = new ArrayList<>(List.of(new String[]{"Course: { topic: " + topic + ", title: " + title + " }", "\tdifficultyLevels: ["}));
         for (DifficultyLevel dl : difficultyLevels) {
-            List<String> dlLog = dl.getCurrentStateLog();
+            List<String> dlLog = dl.getCurrentStateLog(isFeatureActive);
             for (String s : dlLog) {
                 log.add("\t"+s);
             }

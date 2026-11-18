@@ -8,6 +8,7 @@ import model.exercise.MultipleChoiceExercise;
 import model.feature.FeatureType;
 import model.subscription.SubscriptionTier;
 import model.user.Student;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,16 +24,17 @@ public class ConfigurationTest {
     FeatureController featureController;
     ExerciseController exerciseController;
     MultipleChoiceExercise exercise;
+    String user = "configTest";
 
     @BeforeEach
     public void setUp() {
-        student = new Student("user", "testuser", "password", SubscriptionTier.FREE);
+        student = new Student(user, user, user, SubscriptionTier.FREE);
 
         database = Database.getInstance();
         database.addStudent(student);
 
         authController = AuthController.getInstance();
-        authController.login("testuser", "password");
+        authController.login(user, user);
 
         exerciseController = ExerciseController.getInstance();
 
@@ -53,6 +55,11 @@ public class ConfigurationTest {
                 "First one",
                 "Always the first one"
         );
+    }
+
+    @AfterEach
+    void tearDown() {
+        database.removeStudent(user);
     }
 
     @Test

@@ -21,7 +21,7 @@ public class ExerciseController {
         }
         Student currentStudent = getCurrentStudent();
         boolean wantsHints = currentStudent.getStudentPreferences().wantsHints();
-        boolean canUseHints = currentStudent.getRemainingHints() > 0 || currentStudent.getRemainingHints() == -1;
+        boolean canUseHints = currentStudent.hasHintsLeft();
 
         return wantsHints && canUseHints;
     }

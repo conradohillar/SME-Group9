@@ -1,11 +1,11 @@
 
 package view.pages;
 
+import controller.CourseController;
 import controller.ExamController;
-import controller.ExerciseController;
 import utils.datatype.ContentType;
 import model.course.Exam;
-import database.ExamAttempt;
+import model.course.ExamAttempt;
 import model.exercise.Exercise;
 import view.components.PageHeading;
 import view.components.ScrollablePanel;
@@ -38,7 +38,7 @@ public class ExamPanel extends JPanel {
 
     private final ExamAttempt attempt;
 
-    public ExamPanel(ExamAttempt attempt, ExerciseViewFactory exerciseViewFactory, ExerciseController exerciseController, ExamController examController, Runnable backToUnit) {
+    public ExamPanel(ExamAttempt attempt, ExerciseViewFactory exerciseViewFactory, ExamController examController, Runnable backToUnit) {
         this.attempt = attempt;
         this.examController = examController;
         this.onFinished = backToUnit;
@@ -95,7 +95,7 @@ public class ExamPanel extends JPanel {
         VerticalListPanel exercisesPanel = new VerticalListPanel(15);
         exercisesPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        for (Exercise exercise : exam.getExercises()) {
+        for (Exercise exercise : CourseController.getInstance().getVisibleExercises(exam)) {
             ExerciseView exerciseView = exerciseViewFactory.create(exercise);
             ExercisePanel exercisePanel = new ExercisePanel(exercise, exerciseView);
 

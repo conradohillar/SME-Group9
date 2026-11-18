@@ -113,7 +113,7 @@ public class UserPanel extends JPanel {
                 new JCheckBox("Show hints", controller.wantsHints());
 
         JCheckBox aiChatbotCheckbox =
-                new JCheckBox("Enable AI chatbot (not implemented)", controller.wantsAiChatbot());
+                new JCheckBox("Show AI chatbot", controller.wantsAiChatbot());
 
         explanationsCheckbox.addActionListener(e ->
                 controller.setExplanationsEnabled(explanationsCheckbox.isSelected())
@@ -182,7 +182,7 @@ public class UserPanel extends JPanel {
             try {
                 controller.buyHint();
                 refreshAccountInformation();
-            } catch (IllegalStateException ex) {
+            } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage());
             }
         });
@@ -191,7 +191,7 @@ public class UserPanel extends JPanel {
             try {
                 controller.buyUnit();
                 refreshAccountInformation();
-            } catch (IllegalStateException ex) {
+            } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage());
             }
         });

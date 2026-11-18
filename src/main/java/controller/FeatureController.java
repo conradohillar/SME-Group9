@@ -2,6 +2,8 @@ package controller;
 
 import model.LoggableState;
 import model.feature.FeatureType;
+import utils.ErrorCodes;
+import utils.FeatureActivationException;
 
 import java.lang.Boolean;
 import java.util.*;
@@ -23,12 +25,13 @@ public class FeatureController implements LoggableState {
     public void activate(FeatureType featureType) {
         // the following is not an error but a useful message to print later. We capture the exception so no crashing occurs
         if (this.isActive(featureType)) {
-            throw new IllegalStateException(featureType + " is already activated.");
+            throw new FeatureActivationException(ErrorCodes.ALREADY_IN_REQUESTED_STATE, featureType + " is already activated.");
         }
+
         // we have to check if all dependencies are being met
         for (FeatureType parentFeature : featureType.getDependencies()) {
             if (!activationsMap.get(parentFeature)) {
-                throw new IllegalStateException("Parent feature " + parentFeature + " is not activated. Activate " + parentFeature + " to automatically activate " + featureType + ".");
+                throw new FeatureActivationException(ErrorCodes.MISSING_DEPENDENCY, "Parent feature " + parentFeature + " is not activated. Activate " + parentFeature + " to automatically activate " + featureType + ".");
             }
         }
         featureType.getHandler().activate();
@@ -41,16 +44,37 @@ public class FeatureController implements LoggableState {
     }
 
     public void deactivate(FeatureType featureType) {
-        if(!featureType.canBeDeactivated()) {
-            throw new IllegalStateException("Feature " + featureType.name() + " is mandatory, it cannot be deactivated");
-        }
-        // the following is not an error but a useful message to print later. We capture the exception so no crashing occurs
+        validateMandatory(featureType);
+        // the following is not an error but a useful message to print later
         if (!this.isActive(featureType)) {
-            throw new IllegalStateException(featureType + " is already deactivated.");
+            throw new FeatureActivationException(ErrorCodes.ALREADY_IN_REQUESTED_STATE, featureType + " is already deactivated.");
         }
+        validateDeactivation(featureType);
+        deactivateWithChildren(featureType);
+    }
+
+    private void validateMandatory(FeatureType featureType) {
+        if (!featureType.canBeDeactivated()) {
+            throw new FeatureActivationException(ErrorCodes.MANDATORY_FEATURE, "Feature " + featureType.name() + " is mandatory, it cannot be deactivated");
+        }
+    }
+
+    private void validateDeactivation(FeatureType featureType) {
+        validateMandatory(featureType);
+        featureType.getHandler().validateDeactivation(this::isActive);
+        for (FeatureType childFeature : featureType.getChildrenFeatures()) {
+            if (isActive(childFeature)) {
+                validateDeactivation(childFeature);
+            }
+        }
+    }
+
+    private void deactivateWithChildren(FeatureType featureType) {
         // when we deactivate a feature, we also deactivate all the child features (design choice)
         for (FeatureType childFeature : featureType.getChildrenFeatures()) {
-            deactivate(childFeature);
+            if (isActive(childFeature)) {
+                deactivateWithChildren(childFeature);
+            }
         }
         featureType.getHandler().deactivate();
         activationsMap.put(featureType, false);
@@ -73,6 +97,7 @@ public class FeatureController implements LoggableState {
         return logs;
     }
 
+    // method used for tests, so that we have no problems because of the shared state caused by FeatureController being a singleton
     public void resetState() {
         for (FeatureType featureType : activationsMap.keySet()) {
             activateRecursively(featureType);

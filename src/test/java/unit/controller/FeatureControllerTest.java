@@ -13,25 +13,24 @@ public class FeatureControllerTest {
     @BeforeEach
     void setUp() {
         featureController = FeatureController.getInstance();
+        featureController.resetState();
+
     }
 
     @Test
     void testDeactivateNonMandatoryFeature() {
-        featureController.resetState();
         assertDoesNotThrow(() -> featureController.deactivate(FeatureType.EXAM));
         assertFalse(featureController.isActive(FeatureType.EXAM));
     }
 
     @Test
     void testDeactivateMandatoryFeature() {
-        featureController.resetState();
         assertThrows(IllegalStateException.class, () -> featureController.deactivate(FeatureType.COURSE));
         assertTrue(featureController.isActive(FeatureType.COURSE));
     }
 
     @Test
     void testDeactivateFeatureWithInactiveDependencyFeature() {
-        featureController.resetState();
         featureController.deactivate(FeatureType.EXERCISE);
         assertThrows(IllegalStateException.class, () -> featureController.deactivate(FeatureType.EXAM));
         assertFalse(featureController.isActive(FeatureType.EXAM));

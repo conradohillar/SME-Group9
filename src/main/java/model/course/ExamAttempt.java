@@ -1,9 +1,5 @@
-package database;
+package model.course;
 
-import model.course.Course;
-import model.course.Difficulty;
-import model.course.Exam;
-import model.course.Unit;
 import model.user.Student;
 
 import java.time.Instant;
@@ -50,10 +46,6 @@ public class ExamAttempt {
 
     public Exam getExam() {
         return exam;
-    }
-
-    public static ExamAttempt getLatestForStudent(Student student, Unit unit) {
-        return Database.getInstance().getLatestExamAttempt(student, unit);
     }
 
     public double getScore() {

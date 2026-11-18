@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import controller.FeatureController;
 import model.feature.Feature;
 import model.feature.FeatureType;
-import model.user.Student;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -21,15 +21,12 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = PracticalSection.class, name = "PRACTICAL"),
         @JsonSubTypes.Type(value = Exam.class, name = "EXAM")
 })
-public abstract class Section extends Feature implements CompletableByStudent {
+public abstract class Section extends Feature {
     private final String title;
     private final String description;
 
     @JsonCreator
     protected Section(@JsonProperty("title") String title, @JsonProperty("description") String description, FeatureType featureType) {
-        if (!FeatureController.getInstance().isActive(featureType)) {
-            throw new IllegalArgumentException("Feature " + "\"" + featureType + "\" is not active, cannot be instantiated");
-        }
         super(featureType);
         this.title = Objects.requireNonNull(title);
         this.description = Objects.requireNonNull(description);
@@ -43,8 +40,5 @@ public abstract class Section extends Feature implements CompletableByStudent {
         return description;
     }
 
-    public boolean isCompletedByStudent(Student student) {
-        //By default, the sections don't have to necessarily be completed (only the unit's exam), although they could in the future.
-        return true;
-    }
+    public abstract List<String> getCurrentStateLog(Predicate<FeatureType> isFeatureActive);
 }

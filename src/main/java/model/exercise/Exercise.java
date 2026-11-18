@@ -45,7 +45,7 @@ public abstract class Exercise extends Feature {
     public abstract boolean checkAnswer(ContentType userAnswer);
 
     public String getCorrectAnswer() {
-        return null;
+        return " ";
     }
 
     public String getHint() {

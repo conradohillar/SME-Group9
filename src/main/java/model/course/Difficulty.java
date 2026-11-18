@@ -16,15 +16,6 @@ public enum Difficulty {
         return name;
     }
 
-    public Difficulty getPreviousDifficulty() {
-        return switch (this) {
-            case ELEMENTARY -> null;
-            case BEGINNER -> Difficulty.ELEMENTARY;
-            case INTERMEDIATE -> Difficulty.BEGINNER;
-            case ADVANCED -> Difficulty.INTERMEDIATE;
-        };
-    }
-
     public Difficulty getNextDifficulty() {
         return switch (this) {
             case ELEMENTARY -> Difficulty.BEGINNER;

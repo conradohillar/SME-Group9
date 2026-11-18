@@ -1,18 +1,15 @@
 package model.feature;
 
-import controller.FeatureController;
+import utils.ErrorCodes;
+import utils.FeatureActivationException;
+
+import java.util.function.Predicate;
 
 public class TheoreticalSectionFeatureHandler implements FeatureHandler {
-
     @Override
-    public void activate() {
-
-    }
-
-    @Override
-    public void deactivate() {
-        if (!FeatureController.getInstance().isActive(FeatureType.PRACTICAL_SECTION)) {
-            throw new IllegalArgumentException("Cannot deactivate theoretical section when practical section is deactivated.");
+    public void validateDeactivation(Predicate<FeatureType> isActive) {
+        if (!isActive.test(FeatureType.PRACTICAL_SECTION)) {
+            throw new FeatureActivationException(ErrorCodes.CONSTRAINT_VIOLATION, "Cannot deactivate theoretical section when practical section is deactivated.");
         }
     }
 }
