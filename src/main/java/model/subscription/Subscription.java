@@ -10,6 +10,7 @@ public class Subscription extends Feature {
     private SubscriptionTier tier;
     private boolean isActive; // we leave this field for future purposes
     // i.e. if the payment is not done in a premium plan, the subscription should be deactivated
+    // for now it is always active
 
     public Subscription(SubscriptionTier tier, boolean active) {
         super(FeatureType.SUBSCRIPTION);
@@ -33,16 +34,16 @@ public class Subscription extends Feature {
         return tier.getMaxHintsPerWeek();
     }
 
-    public double getMonthlyPrice() {
-        return tier.getMonthlyPrice();
-    }
-
     public int getHintPrice() {
         return tier.getHintPrice();
     }
 
     public int getUnitPrice() {
         return tier.getUnitPrice();
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     @Override

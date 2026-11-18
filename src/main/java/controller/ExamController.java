@@ -31,11 +31,10 @@ public class ExamController {
     }
 
     public void finishExam(ExamAttempt attempt, Map<Exercise, ContentType> exercises) {
-        Instant finishedAt = Instant.now();
         Exam exam = attempt.getExam();
         double score = exam.checkAnswers(exercises);
-        boolean passed = exam.isPassed(score, Duration.between(attempt.getStartedAt(), finishedAt));
-        attempt.finish(finishedAt, passed, score);
+        boolean passed = exam.isPassed(score, Duration.between(attempt.getStartedAt(), Instant.now()));
+        attempt.finish(passed, score);
         Database.getInstance().saveExamAttempt(attempt);
         if (passed) {
             CourseController.getInstance().passUnitForStudent(attempt.getStudent(), attempt.getUnit(), attempt.getCourse(), attempt.getDifficulty());

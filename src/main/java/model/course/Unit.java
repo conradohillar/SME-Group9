@@ -35,10 +35,7 @@ public class Unit extends Feature implements CompletableByStudent {
 
     public List<Section> getSections() {
         List<Section> toReturn = sections.stream().filter(s -> featureController.isActive(s.getFeatureType())).toList();
-        if (toReturn.isEmpty()) {
-            return null;
-        }
-        return toReturn;
+        return toReturn.isEmpty() ? null : toReturn;
     }
 
     public Exam getUnitExam() {

@@ -1,6 +1,7 @@
 package view.pages;
 
 import model.exercise.*;
+import view.pages.exerciseTypes.*;
 
 public class ExerciseViewFactory {
     public ExerciseView create(Exercise exercise) {

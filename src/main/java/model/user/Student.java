@@ -21,7 +21,7 @@ public class Student extends User {
     private int hintsPurchased = 0;
     private int unitsPurchased = 0;
 
-    private Subscription subscription;
+    private final Subscription subscription;
     private final StudentPreferences studentPreferences;
 
     @JsonCreator
@@ -43,7 +43,7 @@ public class Student extends User {
             throw new IllegalArgumentException("Coins to add cannot be negative.");
         }
         if (this.subscription.getTier().equals(SubscriptionTier.PREMIUM)) {
-            throw new IllegalStateException("Premium users can't add coins");
+            throw new IllegalArgumentException("Premium users can't add coins");
         }
         this.coins += coins;
     }
@@ -53,7 +53,7 @@ public class Student extends User {
             throw new IllegalArgumentException("Coins to spend cannot be negative.");
         }
         if (this.subscription.getTier().equals(SubscriptionTier.PREMIUM)) {
-            throw new IllegalStateException("Premium users can't spend coins");
+            throw new IllegalArgumentException("Premium users can't spend coins");
         }
         if (coins > this.coins) {
             return false;
@@ -125,7 +125,7 @@ public class Student extends User {
     public void buyHint() {
         resetWeeklyCounters();
         if (subscription.getMaxHintsPerWeek() < 0) {
-            throw new IllegalStateException("Hints are unlimited.");
+            throw new IllegalArgumentException("Hints are unlimited.");
         }
         if(spendCoins(subscription.getHintPrice())) {
             hintsPurchased++;
@@ -149,7 +149,7 @@ public class Student extends User {
     public void buyUnit() {
         resetWeeklyCounters();
         if (subscription.getMaxUnitsPerWeek() < 0) {
-            throw new IllegalStateException("Units are unlimited.");
+            throw new IllegalArgumentException("Units are unlimited.");
         }
         if (spendCoins(subscription.getUnitPrice())) {
             unitsPurchased++;

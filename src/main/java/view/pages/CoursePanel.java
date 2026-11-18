@@ -11,6 +11,7 @@ import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class CoursePanel extends JPanel {
@@ -19,15 +20,16 @@ public class CoursePanel extends JPanel {
     public CoursePanel(Course course, Consumer<DifficultyLevel> onDifficultySelected) {
         courseController = CourseController.getInstance();
 
+        Objects.requireNonNull(onDifficultySelected, "onDifficultySelected cannot be null");
+
         setLayout(new GridBagLayout());
 
         VerticalListPanel difficultiesPanel = new VerticalListPanel(12);
 
-        PageHeading heading = new PageHeading(course.getTitle(), course.getDescription(), 22);
+        PageHeading heading = new PageHeading(course.getTitle(), course.getDescription());
         heading.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         difficultiesPanel.addItem(heading);
-        difficultiesPanel.addItem(Box.createVerticalStrut(8));
 
         for (DifficultyLevel level : course.getDifficultyLevels()) {
             JButton difficultyButton = createDifficultyButton(course, level, onDifficultySelected);

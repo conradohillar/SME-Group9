@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MultipleChoiceExercise extends Exercise {
-    private List<Text> options;
+    private final List<Text> options;
     private final Text correctAnswer;
 
     @JsonCreator

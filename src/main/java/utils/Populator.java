@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Populator {
 
-    public static ObjectMapper objectMapper = new ObjectMapper();
+    public static final ObjectMapper objectMapper = new ObjectMapper();
 
     public Populator() {
     }

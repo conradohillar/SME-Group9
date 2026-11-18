@@ -1,4 +1,6 @@
 package unit.model;
+import controller.FeatureController;
+import model.feature.FeatureType;
 import utils.datatype.ContentType;
 import utils.datatype.LearningMaterial;
 import utils.datatype.Text;
@@ -16,9 +18,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CourseTest {
     private Course course;
+    FeatureController featureController = FeatureController.getInstance();
 
     @BeforeEach
     public void setUp() {
+        DifficultyLevel mockDifficulty = getMockDifficulty();
+        course = new Course(
+                Topic.MATH,
+                "Sample Course Title",
+                "Sample course description",
+                List.of(mockDifficulty)
+        );
+    }
+
+    private static DifficultyLevel getMockDifficulty() {
         Exercise mockExercise = new MultipleChoiceExercise(
                 "Sample Question",
                 List.of("Option A", "Option B", "Option C"),
@@ -33,6 +46,10 @@ public class CourseTest {
                 List.of(mockExercise)
         );
 
+        return getMockDifficulty(mockExercise, mockPracticalSection);
+    }
+
+    private static DifficultyLevel getMockDifficulty(Exercise mockExercise, PracticalSection mockPracticalSection) {
         LearningMaterial mockMaterial = new Text("Sample Learning Material");
 
         TheoreticalSection mockTheoreticalSection = new TheoreticalSection(
@@ -55,18 +72,13 @@ public class CourseTest {
                 mockExam
         );
 
-        DifficultyLevel mockDifficulty = new DifficultyLevel(Difficulty.ELEMENTARY, List.of(mockUnit));
-
-        course = new Course(
-                Topic.MATH,
-                "Sample Course Title",
-                "Sample course description",
-                List.of(mockDifficulty)
-        );
+        return new DifficultyLevel(Difficulty.ELEMENTARY, List.of(mockUnit));
     }
 
     @Test
     void testExamCheckAnswer() {
+        featureController.resetState();
+
         Exam exam = assertDoesNotThrow(() -> course.getDifficultyLevels().getFirst().getUnits().getFirst().getUnitExam());
 
         Map<Exercise, ContentType> exerciseMap = new HashMap<>();
@@ -79,6 +91,8 @@ public class CourseTest {
     }
 
     @Test void testCheckExerciseAnswer() {
+        featureController.resetState();
+
         Exercise exercise = assertDoesNotThrow(() -> course.getDifficultyLevels().getFirst().getUnits().getFirst().getUnitExam().getExercises().getFirst());
 
         assertTrue(exercise.checkAnswer(new Text("Option A")));

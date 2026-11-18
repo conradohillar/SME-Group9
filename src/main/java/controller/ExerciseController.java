@@ -39,6 +39,9 @@ public class ExerciseController {
     }
 
     public boolean isAnswerCorrect(Exercise exercise, ContentType userAnswer) {
+        if (userAnswer == null) {
+            return false;
+        }
         return exercise.checkAnswer(userAnswer);
     }
 

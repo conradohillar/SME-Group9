@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class DifficultyLevel extends Feature implements CompletableByStudent {
     private final Difficulty difficulty;
-    List<Unit> units;
+    private final List<Unit> units;
 
     @JsonCreator
     public DifficultyLevel(@JsonProperty("difficulty") Difficulty difficulty, @JsonProperty("units") List<Unit> units) {

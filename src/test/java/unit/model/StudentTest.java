@@ -64,14 +64,14 @@ public class StudentTest {
 
     @Test
     void testBuyAnythingAsPremiumStudent() {
-        assertThrows(IllegalStateException.class, () -> premiumStudent.buyHint());
-        assertThrows(IllegalStateException.class, () -> premiumStudent.buyUnit());
+        assertThrows(IllegalArgumentException.class, () -> premiumStudent.buyHint());
+        assertThrows(IllegalArgumentException.class, () -> premiumStudent.buyUnit());
     }
 
     @Test
     void testAddOrSpendCoinsAsPremiumStudent() {
-        assertThrows(IllegalStateException.class, () -> premiumStudent.addCoins(1));
-        assertThrows(IllegalStateException.class, () -> premiumStudent.spendCoins(1));
+        assertThrows(IllegalArgumentException.class, () -> premiumStudent.addCoins(1));
+        assertThrows(IllegalArgumentException.class, () -> premiumStudent.spendCoins(1));
     }
 
     @Test

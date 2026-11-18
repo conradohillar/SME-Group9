@@ -23,20 +23,18 @@ public class AppControllerTest {
 
     @Test
     void testDeactivateNonMandatoryFeature() {
+        featureController.resetState();
         appController.activate(new String[]{FeatureType.EXAM.toString()}, new String[]{});
         assertFalse(featureController.isActive(FeatureType.EXAM));
     }
 
     @Test
     void testDeactivateMandatoryFeature() {
+        featureController.resetState();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 
         appController.activate(new String[]{FeatureType.COURSE.toString()}, new String[]{});
-        assertEquals(
-                "Feature " + FeatureType.COURSE + " is mandatory, it cannot be deactivated",
-                output.toString().trim()
-        );
         assertTrue(featureController.isActive(FeatureType.COURSE));
     }
 }

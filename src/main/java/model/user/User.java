@@ -31,9 +31,4 @@ public class User extends Feature {
     public boolean checkPassword(String password) {
         return password.equals(this.password);
     }
-
-    @Override
-    public List<String> getCurrentStateLog() {
-        return List.of();
-    }
 }

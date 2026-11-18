@@ -8,9 +8,9 @@ public class CLIView {
 
     private static final PrintStream output = System.out;
 
-    public static void showNextCommandPrompt() {
-        output.print(">: ");
-    }
+//    public static void showNextCommandPrompt() {
+//        output.print(">: ");
+//    }
 
     public static void showHelp() {
         output.println("Available commands: " + CLIController.getHelp());

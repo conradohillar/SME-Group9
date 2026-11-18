@@ -18,10 +18,11 @@ public class CLIController {
 
     public void runConsoleLoop() {
         CLIView.showHelp();
+//        CLIView.showNextCommandPrompt();
+
         Scanner scanner = new Scanner(System.in);
 
         while(true) {
-            CLIView.showNextCommandPrompt();
 
             String[] tokens = scanner.nextLine().toUpperCase().split(" ");
             String command = tokens[0];
@@ -37,6 +38,10 @@ public class CLIController {
                     CLIView.showError(e.getMessage());
                 }
 
+            }
+
+            if (command.equals("exit")) {
+                break;
             }
         }
     }
@@ -57,13 +62,15 @@ public class CLIController {
         ),
         ACTIVATE(
                 args -> {
-                    if(checkArgsNotEmpty(args)) AppController.getInstance().activate(new String[]{}, args);
+                    checkArgsNotEmpty(args);
+                    AppController.getInstance().activate(new String[]{}, args);
                     },
                 "activate [feature1 feature2 ... featureN]"
         ),
         DEACTIVATE(
                 args -> {
-                    if(checkArgsNotEmpty(args)) AppController.getInstance().activate(args, new String[]{});
+                    checkArgsNotEmpty(args);
+                    AppController.getInstance().activate(args, new String[]{});
                     },
                 "deactivate [feature1 feature 2 ... featureN]"
         ),
@@ -72,7 +79,7 @@ public class CLIController {
                 "log"
         ),
         ENABLEUI(
-                CLICommand::accept,
+                _-> AppController.getInstance().enableUIView(),
                 "enableUI"
         ),
         DISABLEUI(
@@ -93,10 +100,6 @@ public class CLIController {
             this.tooltip = tooltip;
         }
 
-        private static void accept(String[] args) {
-            AppController.getInstance().enableUIView();
-        }
-
         public void executeCommand(String[] args) {
             this.action.accept(args);
         }
@@ -114,11 +117,10 @@ public class CLIController {
             return true;
         }
 
-        private static boolean checkArgsNotEmpty(String[] args) throws IllegalArgumentException {
-            if(args.length == 0) {
+        private static void checkArgsNotEmpty(String[] args) throws IllegalArgumentException {
+            if (args.length == 0) {
                 throw new IllegalArgumentException("Command arguments cannot be empty");
             }
-            return true;
         }
     }
 }

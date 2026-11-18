@@ -2,26 +2,42 @@
 package view.pages;
 
 import controller.CourseController;
+import controller.FeatureController;
 import model.course.Course;
+import model.feature.FeatureType;
+import view.components.AIChatButton;
+import view.components.AIChatPanel;
 import view.components.CenteredActionButton;
+import view.components.PageHeading;
 import view.components.VerticalListPanel;
+import view.components.WrapLayout;
 import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public class AppPanel extends JPanel {
 
+    private static final int CHAT_WIDTH = 320;
+    private static final int CHAT_HEIGHT = 400;
+
     private final CourseController courseController;
+    private final FeatureController featureController;
 
     private JPanel breadcrumbPanel;
     private final JPanel contentPanel;
     private final JPanel homePanel;
+
+    private final JLayeredPane contentLayer;
+    private final JPanel footerPanel;
+    private final AIChatButton chatButton;
+    private AIChatPanel chatPanel;
+
+    private boolean insideCourse;
+    private boolean chatOpen;
 
     private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
     private final Map<Course, JButton> courseButtons = new HashMap<>();
@@ -29,15 +45,55 @@ public class AppPanel extends JPanel {
 
     public record Breadcrumb(String label, Runnable action) {}
 
-    public AppPanel(List<Course> courses, Consumer<Course> onCourseSelected, Runnable onUserProfileClicked) {
+    public AppPanel(
+            List<Course> courses,
+            Consumer<Course> onCourseSelected,
+            Runnable onUserProfileClicked
+    ) {
         courseController = CourseController.getInstance();
+        featureController = FeatureController.getInstance();
+
+        Objects.requireNonNull(onCourseSelected, "onCourseSelected cannot be null");
+        Objects.requireNonNull(onUserProfileClicked, "onUserProfileClicked cannot be null");
 
         setLayout(new BorderLayout());
 
         add(createHeaderPanel(onUserProfileClicked), BorderLayout.NORTH);
 
         contentPanel = new JPanel(new BorderLayout());
-        add(contentPanel, BorderLayout.CENTER);
+
+        contentLayer = new JLayeredPane() {
+            @Override
+            public void doLayout() {
+                contentPanel.setBounds(0, 0, getWidth(), getHeight());
+
+                int chatX = getWidth() - CHAT_WIDTH - 15;
+                int chatY = getHeight() - CHAT_HEIGHT - 10;
+
+                chatPanel.setBounds(
+                        chatX,
+                        chatY,
+                        CHAT_WIDTH,
+                        CHAT_HEIGHT
+                );
+            }
+        };
+
+        contentLayer.add(contentPanel, JLayeredPane.DEFAULT_LAYER);
+
+        chatPanel = new AIChatPanel(this::closeChat);
+        chatPanel.setVisible(false);
+        contentLayer.add(chatPanel, JLayeredPane.PALETTE_LAYER);
+
+        add(contentLayer, BorderLayout.CENTER);
+
+        footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 8));
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
+
+        chatButton = new AIChatButton(this::toggleChat);
+        footerPanel.add(chatButton);
+
+        add(footerPanel, BorderLayout.SOUTH);
 
         homePanel = createHomePanel(courses, onCourseSelected);
 
@@ -47,23 +103,25 @@ public class AppPanel extends JPanel {
     private JPanel createHeaderPanel(Runnable onUserProfileClicked) {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
-        headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 12, 20));
 
         JLabel appTitle = new JLabel("Learning Platform");
-        appTitle.setFont(appTitle.getFont().deriveFont(Font.BOLD, 24f));
+        appTitle.setFont(Theme.HEADER_FONT);
 
         userProfileButton = new JButton("♙");
         userProfileButton.addActionListener(e -> onUserProfileClicked.run());
         userProfileButton.setToolTipText("User Profile");
-        userProfileButton.setFont(userProfileButton.getFont().deriveFont(20f));
+        userProfileButton.setFont(Theme.HEADER_FONT);
         userProfileButton.setFocusPainted(false);
-        userProfileButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        userProfileButton.setCursor(
+                Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)
+        );
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.add(appTitle, BorderLayout.WEST);
         topPanel.add(userProfileButton, BorderLayout.EAST);
 
-        breadcrumbPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        breadcrumbPanel = new JPanel(new WrapLayout(FlowLayout.LEFT, 5, 5));
         breadcrumbPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         headerPanel.add(topPanel);
@@ -73,21 +131,24 @@ public class AppPanel extends JPanel {
         return headerPanel;
     }
 
-    private JPanel createHomePanel(List<Course> courses, Consumer<Course> onCourseSelected) {
+    private JPanel createHomePanel(
+            List<Course> courses,
+            Consumer<Course> onCourseSelected
+    ) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         VerticalListPanel coursesPanel = new VerticalListPanel(12);
-
-        JLabel title = new JLabel("Available courses");
-        title.setFont(title.getFont().deriveFont(Font.BOLD, 22f));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        coursesPanel.addItem(title);
+        coursesPanel.addItem(new PageHeading("Available courses", null));
 
         for (Course course : courses) {
             if (courseController.canShowCourse(course)) {
-                JButton courseButton = new CenteredActionButton(course.getTitle(), 400, 45, () -> onCourseSelected.accept(course));
+                JButton courseButton = new CenteredActionButton(
+                        course.getTitle(),
+                        400,
+                        45,
+                        () -> onCourseSelected.accept(course)
+                );
 
                 courseButtons.put(course, courseButton);
                 coursesPanel.addItem(courseButton);
@@ -100,6 +161,8 @@ public class AppPanel extends JPanel {
     }
 
     public void showHome() {
+        setChatbotContext(false);
+
         clearBreadcrumbs();
         updateCourseButtons();
 
@@ -108,9 +171,40 @@ public class AppPanel extends JPanel {
         setBreadcrumbsVisible(false);
     }
 
-    public void showNoHeaderPanel(Component profilePanel) {
+    public void showPanelWithoutProfileButton(Component profilePanel) {
         setContent(profilePanel);
         setUserProfileButtonVisible(false);
+    }
+
+    public void setChatbotContext(boolean insideCourse) {
+        this.insideCourse = insideCourse;
+        updateChatbotVisibility();
+    }
+
+    private void updateChatbotVisibility() {
+        boolean visible = insideCourse
+                && featureController.isActive(FeatureType.AI_CHATBOT);
+
+        footerPanel.setVisible(visible);
+
+        if (!visible) {
+            closeChat();
+        }
+
+        revalidate();
+        repaint();
+    }
+
+    private void toggleChat() {
+        chatOpen = !chatOpen;
+        chatPanel.setVisible(chatOpen);
+        contentLayer.repaint();
+    }
+
+    private void closeChat() {
+        chatOpen = false;
+        chatPanel.setVisible(false);
+        contentLayer.repaint();
     }
 
     public void setUserProfileButtonVisible(boolean visible) {
@@ -184,9 +278,9 @@ public class AppPanel extends JPanel {
 
     private JLabel createBreadcrumbLabel(Breadcrumb breadcrumb, boolean isLast) {
         JLabel label = new JLabel(breadcrumb.label());
-        if (isLast) {
-            label.setFont(label.getFont().deriveFont(Font.BOLD));
-        }
+        label.setFont(
+                isLast ? Theme.BREADCRUMB_BOLD_FONT : Theme.BREADCRUMB_FONT
+        );
 
         return label;
     }

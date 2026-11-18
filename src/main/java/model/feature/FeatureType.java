@@ -19,18 +19,19 @@ public enum FeatureType {
     LEARNING_MATERIAL       (false),
     USER                    (false),
     SUBSCRIPTION            (true, new SubscriptionFeatureHandler()),     // deactivating subs. gives all users access to everything
-//    ONLINE_CLASS            (true),     // not implemented for now
-//    GROUP_CLASS             (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
-//    PERSONAL_CLASS          (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
+    ONLINE_CLASS            (true),     // not implemented for now
+    GROUP_CLASS             (true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
+    PRIVATE_CLASS(true, new HashSet<>(Set.of(FeatureType.ONLINE_CLASS))),    // not implemented for now
     PRACTICAL_SECTION       (true, new PracticalSectionFeatureHandler(), new HashSet<>(Set.of(FeatureType.EXERCISE))),        // deactivates the section completely means no exercises shown
-    THEORETICAL_SECTION     (true, new TheoreticalSectionFeatureHandler());     // deactivating theoretical sections means that you can't learn anything
+    THEORETICAL_SECTION     (true, new TheoreticalSectionFeatureHandler()),     // deactivating theoretical sections means that you can't learn anything
+    AI_CHATBOT(true);
 
     private final boolean canBeDeactivated;
     private final FeatureHandler handler;
     private Set<FeatureType> dependencies = new HashSet<>();
 
     // If a feature doesn't do anything in particular during (de)activation, it returns a default handler that does nothing
-    private FeatureType(boolean canBeDeactivated) {
+    FeatureType(boolean canBeDeactivated) {
         this.canBeDeactivated = canBeDeactivated;
         this.handler = new FeatureHandler() {
             @Override
@@ -43,17 +44,20 @@ public enum FeatureType {
         };
     }
 
-    private FeatureType(boolean canBeDeactivated, FeatureHandler handler) {
+    // even though canBeDeactivated is clearly always true for this case, we leave it for comprehension and tidiness reasons
+    FeatureType(boolean canBeDeactivated, FeatureHandler handler) {
         this.canBeDeactivated = canBeDeactivated;
         this.handler = handler;
     }
 
-    private FeatureType(boolean canBeDeactivated, FeatureHandler handler, Set<FeatureType> dependsOn) {
+    // even though canBeDeactivated is clearly always true for this case, we leave it for comprehension and tidiness reasons
+    FeatureType(boolean canBeDeactivated, FeatureHandler handler, Set<FeatureType> dependsOn) {
         this(canBeDeactivated, handler);
         this.dependencies = dependsOn;
     }
 
-    private FeatureType(boolean canBeDeactivated, Set<FeatureType> dependsOn) {
+    // even though canBeDeactivated is clearly always true for this case, we leave it for comprehension and tidiness reasons
+    FeatureType(boolean canBeDeactivated, Set<FeatureType> dependsOn) {
         this(canBeDeactivated);
         this.dependencies = dependsOn;
     }

@@ -49,6 +49,19 @@ public class LogTest {
             featureController.deactivate(FeatureType.SUBSCRIPTION);
         }
 
+        DifficultyLevel mockDifficulty = getMockDifficulty();
+
+        Course mockCourse = new Course(
+                Topic.MATH,
+                "Sample Course Title",
+                "Sample course description",
+                List.of(mockDifficulty)
+        );
+
+        Database.getInstance().addCourse(mockCourse);
+    }
+
+    private static DifficultyLevel getMockDifficulty() {
         Exercise mockExercise = new MultipleChoiceExercise(
                 "Sample Question",
                 List.of("Option A", "Option B", "Option C"),
@@ -63,6 +76,10 @@ public class LogTest {
                 List.of(mockExercise)
         );
 
+        return getMockDifficulty(mockExercise, mockPracticalSection);
+    }
+
+    private static DifficultyLevel getMockDifficulty(Exercise mockExercise, PracticalSection mockPracticalSection) {
         LearningMaterial mockMaterial = new Text("Sample Learning Material");
 
         TheoreticalSection mockTheoreticalSection = new TheoreticalSection(
@@ -85,16 +102,7 @@ public class LogTest {
                 mockExam
         );
 
-        DifficultyLevel mockDifficulty = new DifficultyLevel(Difficulty.ELEMENTARY, List.of(mockUnit));
-
-        Course mockCourse = new Course(
-                Topic.MATH,
-                "Sample Course Title",
-                "Sample course description",
-                List.of(mockDifficulty)
-        );
-
-        Database.getInstance().addCourse(mockCourse);
+        return new DifficultyLevel(Difficulty.ELEMENTARY, List.of(mockUnit));
     }
 
     @Test

@@ -15,33 +15,26 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SystemTest {
 
     Student student;
-    FeatureController featureController;
-    ExerciseController exerciseController;
+    FeatureController featureController = FeatureController.getInstance();
+    ExerciseController exerciseController = ExerciseController.getInstance();
 
     @BeforeEach
     public void setUp() {
-        featureController = FeatureController.getInstance();
-        exerciseController = ExerciseController.getInstance();
-
-        if (!featureController.isActive(FeatureType.EXERCISE)) {
-            featureController.activate(FeatureType.EXERCISE);
-        }
-
-        if (featureController.isActive(FeatureType.EXERCISE_HINTS)) {
-            featureController.deactivate(FeatureType.EXERCISE_HINTS);
-        }
-
-        if (featureController.isActive(FeatureType.EXERCISE_EXPLANATIONS)) {
-            featureController.deactivate(FeatureType.EXERCISE_EXPLANATIONS);
-        }
-
-        student = new Student("System Test", "systemtest", "password", SubscriptionTier.FREE);
+        student = new Student("System Test", "test", "password", SubscriptionTier.FREE);
         Database.getInstance().addStudent(student);
-        assertTrue(AuthController.getInstance().login("systemtest", "password"));
+        assertTrue(AuthController.getInstance().login("test", "password"));
     }
 
     @Test
     public void testRuntimeFeatureAdaptation() {
+        featureController.resetState();
+
+        featureController.deactivate(FeatureType.EXERCISE_HINTS);
+        featureController.deactivate(FeatureType.EXERCISE_EXPLANATIONS);
+
+        assertFalse(featureController.isActive(FeatureType.EXERCISE_HINTS));
+        assertFalse(featureController.isActive(FeatureType.EXERCISE_EXPLANATIONS));
+
         assertFalse(exerciseController.shouldShowHint());
         assertFalse(exerciseController.shouldShowExplanation());
 
@@ -62,7 +55,6 @@ public class SystemTest {
         assertEquals(initialHintsUsed + 1, student.getWeeklyHintsUsed());
 
         featureController.deactivate(FeatureType.EXERCISE_HINTS);
-
         assertFalse(featureController.isActive(FeatureType.EXERCISE_HINTS));
 
         assertFalse(exerciseController.shouldShowHint());

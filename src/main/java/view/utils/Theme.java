@@ -10,4 +10,12 @@ public abstract class Theme {
     public static final Color CORRECT_COLOR = new Color(0, 128, 0); // Dark Green
     public static final Color INCORRECT_COLOR = new Color(128, 0, 0); // Dark Red
 
+    public static final Color USER_MESSAGE_COLOR = new Color(220, 230, 255);
+    public static final Color AI_MESSAGE_COLOR =  new Color(240, 240, 240);
+
+    public static final Font HEADER_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
+    public static final Font SUBHEADER_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
+
+    public static final Font BREADCRUMB_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    public static final Font BREADCRUMB_BOLD_FONT = BREADCRUMB_FONT.deriveFont(Font.BOLD);
 }

@@ -4,12 +4,15 @@ import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 public class LoginPanel extends JPanel {
     private final JLabel errorLabel;
 
     public LoginPanel(BiConsumer<String, String> onLogin) {
+        Objects.requireNonNull(onLogin);
+
         setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = createConstraints();
@@ -36,7 +39,7 @@ public class LoginPanel extends JPanel {
 
     private JLabel createTitle() {
         JLabel title = new JLabel("Learning Platform", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setFont(Theme.HEADER_FONT);
 
         return title;
     }
@@ -95,5 +98,7 @@ public class LoginPanel extends JPanel {
 
     public void showError(String message) {
         errorLabel.setText(message);
+        revalidate();
+        repaint();
     }
 }

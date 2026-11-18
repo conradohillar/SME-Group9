@@ -9,11 +9,9 @@ import view.MainFrame;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.IO.println;
-
+import java.util.Arrays;
 
 public class AppController implements ControllerInterface {
     private static final AppController instance = new AppController();
@@ -47,11 +45,13 @@ public class AppController implements ControllerInterface {
         enableUIView();
     }
 
+    // TODO: falta que devuelva distintos ints si da error y manejar ese numero
     @Override
     public int activate(String[] deactivations, String[] activations){
         List<String> activationsList = Arrays.asList(activations);
         List<String> deactivationsList = Arrays.asList(deactivations);
 
+        boolean statusChanged = true;
         for (String deactivation : deactivationsList) {
             // If a feature is present in deactivations and activations it's silently ignored instead of returning an error
             if (activationsList.contains(deactivation)) {
@@ -65,7 +65,10 @@ public class AppController implements ControllerInterface {
                 if (e.getMessage().equals("No enum constant model.feature.FeatureType." + deactivation)) {
                     System.out.println("Feature type \"" + deactivation + "\" not found.");
                 }
-                System.out.println(e.getMessage());
+                else {
+                    System.out.println(e.getMessage());
+                }
+                statusChanged = false;
             }
         }
 
@@ -73,11 +76,19 @@ public class AppController implements ControllerInterface {
             try {
                 featureController.activate(FeatureType.valueOf(activation));
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                if (e.getMessage().equals("No enum constant model.feature.FeatureType." + activation)) {
+                    System.out.println("Feature type \"" + activation + "\" not found.");
+                }
+                else {
+                    System.out.println(e.getMessage());
+                }
+                statusChanged = false;
             }
         }
         refreshUIView();
-        CLIController.getInstance().printFeaturesStateAsLog(getFeaturesStateAsLog());
+        if (statusChanged) {
+            CLIController.getInstance().printFeaturesStateAsLog(getFeaturesStateAsLog());
+        }
 
         return 0;
     }
@@ -87,7 +98,7 @@ public class AppController implements ControllerInterface {
         if (mainFrame == null) {
             mainFrame = new MainFrame();
         }
-        mainFrame.setVisible(true);
+        SwingUtilities.invokeLater(() -> mainFrame.setVisible(true));
 
         return mainFrame.isDisplayable();
     }
@@ -97,8 +108,9 @@ public class AppController implements ControllerInterface {
         if (mainFrame == null) {
             return false;
         }
-        mainFrame.setVisible(false);
-        return false;
+        SwingUtilities.invokeLater(() -> mainFrame.setVisible(false));
+
+        return true;
     }
 
     public boolean isUIEnabled() {

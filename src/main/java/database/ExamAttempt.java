@@ -16,7 +16,6 @@ public class ExamAttempt {
     private final Unit unit;
     private final Exam exam;
     private final Instant startedAt;
-    private Instant finishedAt;
 
     private double score;
     private boolean passed = false;
@@ -69,8 +68,7 @@ public class ExamAttempt {
         return startedAt;
     }
 
-    public void finish(Instant finishedAt, boolean passed, double score) {
-        this.finishedAt = finishedAt;
+    public void finish(boolean passed, double score) {
         this.passed = passed;
         this.score = score;
     }

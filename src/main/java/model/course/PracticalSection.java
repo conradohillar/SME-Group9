@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PracticalSection extends Section {
-    protected List<Exercise> exercises;
+    // protected so exam can access the exercises
+    protected final List<Exercise> exercises;
 
     FeatureController featureController = FeatureController.getInstance();
 
@@ -33,10 +34,7 @@ public class PracticalSection extends Section {
         }
         // we only return the exercises that are active, if none are active we return null
         List<Exercise> toReturn = exercises.stream().filter(e -> featureController.isActive(e.getFeatureType())).toList();
-        if (toReturn.isEmpty()) {
-            return null;
-        }
-        return toReturn;
+        return toReturn.isEmpty() ? null : toReturn;
     }
 
     Map<ExerciseType, Integer> getExerciseCounts() {

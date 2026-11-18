@@ -13,15 +13,15 @@ public class PracticalSectionPanel extends JPanel {
     private final JButton submitButton;
 
     public PracticalSectionPanel(List<ExercisePanel> exercises) {
-        this.exercises = exercises;
+        this.exercises = List.copyOf(exercises);
         submitButton = new JButton("Submit");
 
         setLayout(new BorderLayout());
 
         VerticalListPanel contentPanel = new VerticalListPanel(10);
 
-        for (ExercisePanel exercise : exercises) {
-            exercise.setMaximumSize(new Dimension(Integer.MAX_VALUE, exercise.getPreferredSize().height + 10));
+        for (ExercisePanel exercise : this.exercises) {
+            exercise.setOnHintUsed(this::updateHintButtons);
             contentPanel.addItem(exercise);
         }
 
@@ -37,6 +37,13 @@ public class PracticalSectionPanel extends JPanel {
         for (ExercisePanel exercise : exercises) {
             exercise.submitAnswer();
         }
+
         submitButton.setEnabled(false);
+    }
+
+    private void updateHintButtons() {
+        for (ExercisePanel exercise : exercises) {
+            exercise.updateHintButton();
+        }
     }
 }

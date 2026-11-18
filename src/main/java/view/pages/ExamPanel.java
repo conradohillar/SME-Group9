@@ -10,6 +10,7 @@ import model.exercise.Exercise;
 import view.components.PageHeading;
 import view.components.ScrollablePanel;
 import view.components.VerticalListPanel;
+import view.pages.exerciseTypes.ExerciseView;
 import view.utils.Theme;
 
 import javax.swing.*;
@@ -55,7 +56,7 @@ public class ExamPanel extends JPanel {
         resultLabel = createResultLabel();
 
         add(createHeaderPanel(exam), BorderLayout.NORTH);
-        add(createExercisesScrollPane(exam, exerciseViewFactory, exerciseController), BorderLayout.CENTER);
+        add(createExercisesScrollPane(exam, exerciseViewFactory), BorderLayout.CENTER);
         add(createFooterPanel(), BorderLayout.SOUTH);
 
         updateTimerLabel();
@@ -69,7 +70,7 @@ public class ExamPanel extends JPanel {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 5, 20));
 
-        PageHeading heading = new PageHeading(exam.getTitle(), exam.getDescription(), 22);
+        PageHeading heading = new PageHeading(exam.getTitle(), exam.getDescription());
 
         headerPanel.add(heading, BorderLayout.CENTER);
         headerPanel.add(timerLabel, BorderLayout.EAST);
@@ -79,24 +80,24 @@ public class ExamPanel extends JPanel {
 
     private JLabel createTimerLabel() {
         JLabel label = new JLabel();
-        label.setFont(label.getFont().deriveFont(Font.BOLD, 18f));
+        label.setFont(Theme.SUBHEADER_FONT);
         label.setHorizontalAlignment(SwingConstants.RIGHT);
         return label;
     }
 
     private JLabel createResultLabel() {
         JLabel label = new JLabel();
-        label.setFont(label.getFont().deriveFont(Font.BOLD, 16f));
+        label.setFont(Theme.SUBHEADER_FONT);
         return label;
     }
 
-    private JScrollPane createExercisesScrollPane(Exam exam, ExerciseViewFactory exerciseViewFactory, ExerciseController exerciseController) {
+    private JScrollPane createExercisesScrollPane(Exam exam, ExerciseViewFactory exerciseViewFactory) {
         VerticalListPanel exercisesPanel = new VerticalListPanel(15);
         exercisesPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         for (Exercise exercise : exam.getExercises()) {
             ExerciseView exerciseView = exerciseViewFactory.create(exercise);
-            ExercisePanel exercisePanel = new ExercisePanel(exercise, exerciseView, exerciseController);
+            ExercisePanel exercisePanel = new ExercisePanel(exercise, exerciseView);
 
             exercisePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             exercisePanels.add(exercisePanel);

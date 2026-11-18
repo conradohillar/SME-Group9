@@ -1,4 +1,4 @@
-package view.pages;
+package view.pages.exerciseTypes;
 
 import utils.datatype.ContentType;
 import utils.datatype.Text;

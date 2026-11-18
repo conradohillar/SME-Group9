@@ -1,4 +1,4 @@
-package view.pages;
+package view.pages.exerciseTypes;
 
 import utils.datatype.Boolean;
 import utils.datatype.ContentType;
@@ -6,14 +6,13 @@ import utils.datatype.ContentType;
 import javax.swing.*;
 
 public class TrueFalseView extends ExerciseView {
-    private final ButtonGroup group;
     private final JRadioButton trueButton;
     private final JRadioButton falseButton;
 
     public TrueFalseView() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        group = new ButtonGroup();
+        ButtonGroup group = new ButtonGroup();
 
         trueButton = new JRadioButton("True");
         falseButton = new JRadioButton("False");

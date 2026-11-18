@@ -17,21 +17,23 @@ public class FeatureControllerTest {
 
     @Test
     void testDeactivateNonMandatoryFeature() {
+        featureController.resetState();
         assertDoesNotThrow(() -> featureController.deactivate(FeatureType.EXAM));
         assertFalse(featureController.isActive(FeatureType.EXAM));
     }
 
     @Test
     void testDeactivateMandatoryFeature() {
-        assertThrows(IllegalArgumentException.class, () -> featureController.deactivate(FeatureType.COURSE));
+        featureController.resetState();
+        assertThrows(IllegalStateException.class, () -> featureController.deactivate(FeatureType.COURSE));
         assertTrue(featureController.isActive(FeatureType.COURSE));
     }
 
     @Test
     void testDeactivateFeatureWithInactiveDependencyFeature() {
-        featureController.activate(FeatureType.EXAM);
+        featureController.resetState();
         featureController.deactivate(FeatureType.EXERCISE);
-        assertThrows(IllegalArgumentException.class, () -> featureController.deactivate(FeatureType.EXAM));
+        assertThrows(IllegalStateException.class, () -> featureController.deactivate(FeatureType.EXAM));
         assertFalse(featureController.isActive(FeatureType.EXAM));
     }
 }

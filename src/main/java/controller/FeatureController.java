@@ -4,10 +4,7 @@ import model.LoggableState;
 import model.feature.FeatureType;
 
 import java.lang.Boolean;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FeatureController implements LoggableState {
     private static final FeatureController instance = new FeatureController();
@@ -24,20 +21,20 @@ public class FeatureController implements LoggableState {
     }
 
     public void activate(FeatureType featureType) {
-        // the following is not an error, but it's a useful message to print later. Since we capture the exception, no crashing occurs
-        // TODO: ask professors if there is a cleaner way to handle this (also in deactivate)
+        // the following is not an error but a useful message to print later. We capture the exception so no crashing occurs
         if (this.isActive(featureType)) {
-            throw new IllegalArgumentException(featureType + " is already activated.");
+            throw new IllegalStateException(featureType + " is already activated.");
         }
         // we have to check if all dependencies are being met
         for (FeatureType parentFeature : featureType.getDependencies()) {
             if (!activationsMap.get(parentFeature)) {
-                throw new IllegalArgumentException("Parent feature " + parentFeature + " is not activated. First activate " + parentFeature + " and try again.");
+                throw new IllegalStateException("Parent feature " + parentFeature + " is not activated. Activate " + parentFeature + " to automatically activate " + featureType + ".");
             }
         }
         featureType.getHandler().activate();
         activationsMap.put(featureType, true);
-        // when we activate a feature, we reactivate all child features as well (our design choice)
+
+        // when we activate a feature, we reactivate all child features as well (design choice)
         for (FeatureType childFeature : featureType.getChildrenFeatures()) {
             activate(childFeature);
         }
@@ -45,11 +42,11 @@ public class FeatureController implements LoggableState {
 
     public void deactivate(FeatureType featureType) {
         if(!featureType.canBeDeactivated()) {
-            throw new IllegalArgumentException("Feature " + featureType.name() + " is mandatory, it cannot be deactivated");
+            throw new IllegalStateException("Feature " + featureType.name() + " is mandatory, it cannot be deactivated");
         }
-        // the following is not an error, but it's a useful message to print later. Since we capture the exception, no crashing occurs
+        // the following is not an error but a useful message to print later. We capture the exception so no crashing occurs
         if (!this.isActive(featureType)) {
-            throw new IllegalArgumentException(featureType + " is already deactivated.");
+            throw new IllegalStateException(featureType + " is already deactivated.");
         }
         // when we deactivate a feature, we also deactivate all the child features (design choice)
         for (FeatureType childFeature : featureType.getChildrenFeatures()) {
@@ -68,9 +65,28 @@ public class FeatureController implements LoggableState {
         List<String> logs = new ArrayList<>();
         logs.add("featureActivations: [");
         for (FeatureType featureType : activationsMap.keySet()) {
-            logs.add("\t" + featureType.name() + " is " + (activationsMap.get(featureType) ? "activated" : "deactivated") + ", canBeDeactivated: " + featureType.canBeDeactivated());
+            String dependencies = String.join(", ", featureType.getDependencies().stream().map(Enum::name).toList());
+            logs.add("\t" + featureType.name() + " is " + (activationsMap.get(featureType) ? "activated" : "deactivated")
+                    + ", canBeDeactivated: " + featureType.canBeDeactivated() + (dependencies.isBlank() ? " " : (", dependsOn: " + dependencies)));
         }
         logs.add("]");
         return logs;
+    }
+
+    public void resetState() {
+        for (FeatureType featureType : activationsMap.keySet()) {
+            activateRecursively(featureType);
+        }
+    }
+
+    private void activateRecursively(FeatureType featureType) {
+        for (FeatureType dependency : featureType.getDependencies()) {
+            if (!activationsMap.get(dependency)) {
+                activateRecursively(dependency);
+            }
+        }
+        if (!activationsMap.get(featureType)) {
+            activate(featureType);
+        }
     }
 }

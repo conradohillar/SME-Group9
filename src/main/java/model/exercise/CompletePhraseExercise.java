@@ -20,7 +20,7 @@ public class CompletePhraseExercise extends Exercise {
         if (phrases == null || phrases.size() != 2) {
             throw new IllegalArgumentException("Phrases must contain exactly 2 strings.");
         }
-        this.phrases = List.copyOf(phrases);;
+        this.phrases = List.copyOf(phrases);
         this.correctAnswer = new Text(Objects.requireNonNull(correctAnswer));
     }
 

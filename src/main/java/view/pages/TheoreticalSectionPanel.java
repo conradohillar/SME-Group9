@@ -18,7 +18,7 @@ public class TheoreticalSectionPanel extends JPanel {
     public TheoreticalSectionPanel(String title, String description, List<LearningMaterial> materials) {
         setLayout(new BorderLayout(10, 10));
 
-        PageHeading heading = new PageHeading(title, description, 24);
+        PageHeading heading = new PageHeading(title, description);
         heading.setBorder(BorderFactory.createEmptyBorder(15, 15, 10, 15));
 
         add(heading, BorderLayout.NORTH);
@@ -59,8 +59,7 @@ public class TheoreticalSectionPanel extends JPanel {
                 imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 panel.add(imageLabel, BorderLayout.CENTER);
             } else {
-                panel.add(new JLabel("Image not found: " + image.getContent()), BorderLayout.CENTER);
-            }
+                panel.add(new JLabel("Image not found: " + image.getContent()), BorderLayout.CENTER);            }
         } else {
             JTextArea contentArea = new JTextArea(String.valueOf(material.getContent()));
             contentArea.setEditable(false);
@@ -69,11 +68,7 @@ public class TheoreticalSectionPanel extends JPanel {
             contentArea.setOpaque(false);
             contentArea.setFocusable(false);
 
-            JScrollPane scrollPane = new JScrollPane(contentArea);
-            scrollPane.setBorder(null);
-            scrollPane.setPreferredSize(new Dimension(0, 130));
-
-            panel.add(scrollPane, BorderLayout.CENTER);
+            panel.add(contentArea, BorderLayout.CENTER);
         }
 
         return panel;

@@ -34,10 +34,6 @@ public enum Difficulty {
         };
     }
 
-    public static Difficulty getLastDifficulty() {
-        return ADVANCED;
-    }
-
     @Override
     public String toString() {
         return name;

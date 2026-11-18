@@ -1,3 +1,4 @@
+
 package view;
 
 import controller.*;
@@ -7,7 +8,7 @@ import model.course.*;
 import database.ExamAttempt;
 import model.exercise.Exercise;
 import view.pages.ExercisePanel;
-import view.pages.ExerciseView;
+import view.pages.exerciseTypes.ExerciseView;
 import view.pages.ExerciseViewFactory;
 import view.pages.PracticalSectionPanel;
 import view.pages.TheoreticalSectionPanel;
@@ -59,9 +60,15 @@ public class MainFrame extends JFrame {
     private void showAppPanel(String username, String password) {
         if (authController.login(username, password)) {
             if (appPanel == null) {
-                appPanel = new AppPanel(Database.getInstance().getCourses(), this::showCourse, this::showUser);
+                appPanel = new AppPanel(
+                        Database.getInstance().getCourses(),
+                        this::showCourse,
+                        this::showUser
+                );
+
                 contentPanel.add(appPanel, APP);
             }
+
             loginPanel.showError(" ");
             showHome();
         } else {
@@ -72,26 +79,33 @@ public class MainFrame extends JFrame {
     private void showHome() {
         currentViewRefresh = this::showHome;
 
+        appPanel.setChatbotContext(false);
         appPanel.showHome();
+
         cardLayout.show(contentPanel, APP);
     }
 
     private void showUser() {
         currentViewRefresh = this::showUser;
 
+        appPanel.setChatbotContext(false);
+
         UserPanel userPanel = new UserPanel();
         setBreadcrumbs(null, null, null, null);
         appPanel.addBreadcrumb("User Preferences", null);
-        appPanel.showNoHeaderPanel(userPanel);
+        appPanel.showPanelWithoutProfileButton(userPanel);
     }
 
     private void showCourse(Course course) {
         currentViewRefresh = () -> showCourse(course);
 
         setBreadcrumbs(course, null, null, null);
-        CoursePanel coursePanel = new CoursePanel(course,
+
+        CoursePanel coursePanel = new CoursePanel(
+                course,
                 level -> showDifficulty(course, level)
         );
+
         showContent(coursePanel);
     }
 
@@ -99,9 +113,13 @@ public class MainFrame extends JFrame {
         currentViewRefresh = () -> showDifficulty(course, level);
 
         setBreadcrumbs(course, level, null, null);
-        DifficultyLevelPanel difficultyPanel = new DifficultyLevelPanel(course, level,
+
+        DifficultyLevelPanel difficultyPanel = new DifficultyLevelPanel(
+                course,
+                level,
                 unit -> showUnit(course, level, unit)
         );
+
         showContent(difficultyPanel);
     }
 
@@ -122,57 +140,63 @@ public class MainFrame extends JFrame {
         showContent(unitPanel);
     }
 
-    private boolean showSection(Course course, DifficultyLevel level, Unit unit, Section section) {
+    private void showSection(
+            Course course,
+            DifficultyLevel level,
+            Unit unit,
+            Section section
+    ) {
         currentViewRefresh = () -> showUnit(course, level, unit);
 
         setBreadcrumbs(course, level, unit, section);
-        if (section instanceof PracticalSection practicalSection) {
-            return showPracticalSection(practicalSection);
-        } else if (section instanceof TheoreticalSection theoreticalSection) {
-            return showTheoreticalSection(theoreticalSection);
-        }
 
-        return false;
+        if (section instanceof PracticalSection practicalSection
+                && courseController.shouldShowPracticalSection()) {
+
+            showPracticalSection(practicalSection);
+
+        } else if (section instanceof TheoreticalSection theoreticalSection
+                && courseController.shouldShowTheoreticalSection()) {
+
+            showTheoreticalSection(theoreticalSection);
+        }
     }
 
-    private boolean showPracticalSection(PracticalSection section) {
+    private void showPracticalSection(PracticalSection section) {
         List<ExercisePanel> exercisePanels = new ArrayList<>();
-        if (!courseController.shouldShowPracticalSection()) {
-            return false;
-        }
+
         for (Exercise exercise : section.getExercises()) {
             ExerciseView exerciseView = exerciseViewFactory.create(exercise);
-            ExercisePanel exercisePanel = new ExercisePanel(exercise, exerciseView, exerciseController);
+            ExercisePanel exercisePanel = new ExercisePanel(exercise, exerciseView);
             exercisePanels.add(exercisePanel);
         }
-        PracticalSectionPanel sectionPanel = new PracticalSectionPanel(exercisePanels);
-        showContent(sectionPanel);
 
-        return true;
+        PracticalSectionPanel sectionPanel =
+                new PracticalSectionPanel(exercisePanels);
+
+        showContent(sectionPanel);
     }
 
-    private boolean showTheoreticalSection(TheoreticalSection section) {
-        if (!courseController.shouldShowTheoreticalSection()) {
-            return false;
-        }
-
+    private void showTheoreticalSection(TheoreticalSection section) {
         List<LearningMaterial> materials = section.getLearningMaterials();
+
         TheoreticalSectionPanel sectionPanel = new TheoreticalSectionPanel(
                 section.getTitle(),
                 section.getDescription(),
                 materials
         );
-        showContent(sectionPanel);
 
-        return true;
+        showContent(sectionPanel);
     }
 
-    private boolean showExam(Course course, DifficultyLevel level, Unit unit) {
+    private void showExam(Course course, DifficultyLevel level, Unit unit) {
         currentViewRefresh = () -> showUnit(course, level, unit);
 
         if (!courseController.shouldShowExam()) {
-            return false;
+            return;
         }
+
+        appPanel.setChatbotContext(false);
         appPanel.clearBreadcrumbs();
         appPanel.setBreadcrumbsVisible(false);
 
@@ -191,10 +215,8 @@ public class MainFrame extends JFrame {
                 () -> backToUnit(course, level, unit)
         );
 
-        appPanel.showNoHeaderPanel(examPanel);
+        appPanel.showPanelWithoutProfileButton(examPanel);
         cardLayout.show(contentPanel, APP);
-
-        return true;
     }
 
     public void refreshWholeView() {
@@ -206,34 +228,61 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
-    private void backToUnit(Course course, DifficultyLevel level, Unit unit) {
+    private void backToUnit(
+            Course course,
+            DifficultyLevel level,
+            Unit unit
+    ) {
         appPanel.setBreadcrumbsVisible(true);
         showUnit(course, level, unit);
     }
 
-    private void setBreadcrumbs(Course course, DifficultyLevel level, Unit unit, Section section) {
+    private void setBreadcrumbs(
+            Course course,
+            DifficultyLevel level,
+            Unit unit,
+            Section section
+    ) {
         appPanel.clearBreadcrumbs();
         appPanel.addBreadcrumb("Home", this::showHome);
         appPanel.setBreadcrumbsVisible(true);
+
         if (course == null) {
             return;
         }
-        appPanel.addBreadcrumb(course.getTitle(), () -> showCourse(course));
+
+        appPanel.addBreadcrumb(
+                course.getTitle(),
+                () -> showCourse(course)
+        );
+
         if (level == null) {
             return;
         }
-        appPanel.addBreadcrumb(level.getDifficulty().getFeatureName(), () -> showDifficulty(course, level));
+
+        appPanel.addBreadcrumb(
+                level.getDifficulty().getFeatureName(),
+                () -> showDifficulty(course, level)
+        );
+
         if (unit == null) {
             return;
         }
-        appPanel.addBreadcrumb(unit.getTitle(), () -> showUnit(course, level, unit));
+
+        appPanel.addBreadcrumb(
+                unit.getTitle(),
+                () -> showUnit(course, level, unit)
+        );
+
         if (section != null) {
             appPanel.addBreadcrumb(section.getTitle(), null);
         }
     }
 
     private void showContent(JComponent component) {
+        appPanel.setChatbotContext(true);
         appPanel.setContent(component);
+
         cardLayout.show(contentPanel, APP);
     }
 }

@@ -3,11 +3,9 @@ package database;
 
 import model.course.Course;
 import model.course.Difficulty;
-import model.course.Exam;
 import model.course.Unit;
 import model.user.Student;
 
-import java.time.Instant;
 import java.util.*;
 
 public class Database {
@@ -127,7 +125,7 @@ public class Database {
         ExamAttempt previousAttempt = attemptsByUnit.get(unit);
 
         if (previousAttempt != null && previousAttempt.isPassed()) {
-            throw new IllegalStateException("This unit has already been approved.");
+            throw new IllegalArgumentException("This unit has already been approved.");
         }
         attemptsByUnit.put(unit, attempt);
     }

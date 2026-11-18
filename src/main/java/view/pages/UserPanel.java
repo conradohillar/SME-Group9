@@ -2,6 +2,7 @@
 package view.pages;
 
 import controller.UserController;
+import view.utils.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +53,7 @@ public class UserPanel extends JPanel {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
         JLabel title = new JLabel("User Profile");
-        title.setFont(title.getFont().deriveFont(Font.BOLD, 24f));
+        title.setFont(Theme.HEADER_FONT);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         mainPanel.add(title);
@@ -71,7 +72,7 @@ public class UserPanel extends JPanel {
         accountPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel accountTitle = new JLabel("Account Information");
-        accountTitle.setFont(accountTitle.getFont().deriveFont(Font.BOLD, 18f));
+        accountTitle.setFont(Theme.SUBHEADER_FONT);
         accountTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JPanel container = new JPanel();
@@ -102,7 +103,7 @@ public class UserPanel extends JPanel {
         preferencesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel preferencesTitle = new JLabel("User Preferences");
-        preferencesTitle.setFont(preferencesTitle.getFont().deriveFont(Font.BOLD, 18f));
+        preferencesTitle.setFont(Theme.SUBHEADER_FONT);
         preferencesTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JCheckBox explanationsCheckbox =
